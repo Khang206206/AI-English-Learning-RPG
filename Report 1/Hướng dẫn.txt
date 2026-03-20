@@ -1,0 +1,12 @@
+Cấu trúc thư mục:
+Figure : Chứa TẤT CẢ hình ảnh, sơ đồ, lưu đồ. 
+Reference: Chứa các tài liệu tham khảo (file `.bib`).
+Main Content: Chứa các file tex nội dung của báo cáo. (Lưu ý: Nên chia ra nhiều file để dễ theo dõi và bảo trì)
+main.tex: File cấu hình lõi, chỉ dùng để gọi thư viện và dùng lệnh `\input{}` để ghép các phần và \chapter* để thêm chapter. KHÔNG viết nội dung trực tiếp vào đây và PHẢI tạo mục lục.
+
+
+Quy trình cập nhật nội dung:
+1. Pull mới nhất: Trước khi làm việc, luôn chạy lệnh `git pull origin main` để lấy file mới nhất về máy.
+2. Thêm nội dung: Cần làm phần nào thì mở file `.tex` của phần đó lên để gõ văn bản. 
+3. Kiểm tra (Compile): Chỉ compile file `main.tex` để xem kết quả toàn bộ báo cáo.
+4. Commit & Push: Đẩy code lên GitHub với thông điệp rõ ràng (vd: `git commit -m "Update: Them so do As-Is vao Phan 3"`).

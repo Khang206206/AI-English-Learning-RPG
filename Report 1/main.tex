@@ -1,0 +1,115 @@
+\documentclass[oneside,a4paper,14pt]{extreport}
+
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\DeclareTextSymbolDefault{\DH}{T1}
+
+\usepackage{booktabs} 
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\usepackage[
+  top=20mm,
+  bottom=10mm,
+  left=30mm,
+  right=20mm,
+  footskip=15mm,
+  includefoot
+]{geometry}
+
+\usepackage{indentfirst} 
+\setlength{\parindent}{2em} 
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+
+\usepackage{graphicx}
+\graphicspath{{Figure/}} 
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage[backend=bibtex,sorting=none]{biblatex}
+\addbibresource{Reference/ref.bib}
+
+\usepackage{listings}
+
+\definecolor{codeblue}{rgb}{0,0,1}      
+\definecolor{codegreen}{rgb}{0,0.6,0}   
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegray},      
+    keywordstyle=\color{codeblue},      
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codegreen},      
+    basicstyle=\footnotesize\ttfamily,
+    breaklines=true,                 
+    captionpos=b,                    
+    numbers=left,                    
+    showstringspaces=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{tocloft}
+
+\renewcommand{\chaptername}{Chương}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh sách hình}
+\renewcommand{\listtablename}{Danh sách bảng}
+\renewcommand{\figurename}{Hình}
+
+\titleformat{\chapter}[display] 
+    {\normalfont\bfseries\Large}{\chaptername \ \thechapter}{10pt}{\huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{40pt}
+
+\titleformat{\section}
+    {\normalfont\bfseries\large}{\thesection}{1em}{}
+ 
+\titleformat{\subsection}
+    {\normalfont\bfseries\normalsize}{\thesubsection}{1em}{}
+
+\renewcommand{\thesection}{\arabic{section}.} 
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}} 
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black, 
+    urlcolor=blue,   
+    citecolor=black
+}
+
+\begin{document}
+
+\setcounter{secnumdepth}{3} 
+
+\input{title} 
+\addtocontents{toc}{\protect\contentsline{chapter}{Trang bìa}{1}{page.1}}
+
+
+
+
+
+\end{document}
