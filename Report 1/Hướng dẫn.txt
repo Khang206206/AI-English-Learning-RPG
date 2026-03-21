@@ -1,3 +1,5 @@
+Link youtube cách tải: https://youtu.be/uKetjJTDSqk?si=-oCNjxF47IDSDK-S
+
 Cấu trúc thư mục:
 Figure : Chứa TẤT CẢ hình ảnh, sơ đồ, lưu đồ. 
 Reference: Chứa các tài liệu tham khảo (file `.bib`).
