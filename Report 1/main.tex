@@ -31,7 +31,8 @@
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{tcolorbox}
-
+\usepackage{enumitem}
+\usepackage{indentfirst}
 \usepackage{graphicx}
 \graphicspath{{Figure/}} 
 
@@ -104,12 +105,14 @@
 \begin{document}
 
 \setcounter{secnumdepth}{3} 
-
+\pagenumbering{empty} 
 \input{title} 
-\addtocontents{toc}{\protect\contentsline{chapter}{Trang bìa}{1}{page.1}}
-
-
-
-
+\newpage
+\pagenumbering{roman} 
+\tableofcontents
+\newpage
+\pagenumbering{arabic} 
+\input{section1}
+\input{section2}
 
 \end{document}
