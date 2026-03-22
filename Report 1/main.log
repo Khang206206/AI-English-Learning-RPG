@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  22 MAR 2026 14:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  22 MAR 2026 20:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1422,8 +1422,8 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 {C:/Users/phuct/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./Figure/Log
 o-HCMUS.png
 
-pdfTeX warning: pdflatex.exe (file ./Figure/Logo-HCMUS.png): large interlaced P
-NG might cause out of memory (use non-interlaced PNG to fix this)
+pdfTeX warning: pdflatex (file ./Figure/Logo-HCMUS.png): large interlaced PNG m
+ight cause out of memory (use non-interlaced PNG to fix this)
 >]) (main.toc)
 \tf@toc=\write6
 \openout6 = `main.toc'.
@@ -1434,34 +1434,39 @@ File: Figure/chuky_khang.png Graphic file (type png)
 <use Figure/chuky_khang.png>
 Package pdftex.def Info: Figure/chuky_khang.png  used on input line 17.
 (pdftex.def)             Requested size: 114.76917pt x 56.9055pt.
-<Figure/chuky_phu.jpg, id=66, 523.9575pt x 347.04657pt>
-File: Figure/chuky_phu.jpg Graphic file (type jpg)
-<use Figure/chuky_phu.jpg>
-Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 18.
-(pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
-File: Figure/chuky_phu.jpg Graphic file (type jpg)
-<use Figure/chuky_phu.jpg>
-Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 19.
-(pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
-File: Figure/chuky_phu.jpg Graphic file (type jpg)
-<use Figure/chuky_phu.jpg>
-Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 22.
-(pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
+<Figure/chuky_khoa.jpg, id=66, 900.36375pt x 741.52031pt>
+File: Figure/chuky_khoa.jpg Graphic file (type jpg)
+<use Figure/chuky_khoa.jpg>
+Package pdftex.def Info: Figure/chuky_khoa.jpg  used on input line 18.
+(pdftex.def)             Requested size: 69.09055pt x 56.9055pt.
+<Figure/chuky_manh.jpg, id=67, 773.89125pt x 589.4522pt>
+File: Figure/chuky_manh.jpg Graphic file (type jpg)
+<use Figure/chuky_manh.jpg>
+Package pdftex.def Info: Figure/chuky_manh.jpg  used on input line 19.
+(pdftex.def)             Requested size: 74.7013pt x 56.9055pt.
+<Figure/chuky_nguyen.jpg, id=68, 717.43031pt x 615.0478pt>
+File: Figure/chuky_nguyen.jpg Graphic file (type jpg)
+<use Figure/chuky_nguyen.jpg>
+Package pdftex.def Info: Figure/chuky_nguyen.jpg  used on input line 22.
+(pdftex.def)             Requested size: 66.37221pt x 56.9055pt.
+<Figure/chuky_phu.jpg, id=69, 523.9575pt x 347.04657pt>
 File: Figure/chuky_phu.jpg Graphic file (type jpg)
 <use Figure/chuky_phu.jpg>
 Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 23.
 (pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
-File: Figure/chuky_phu.jpg Graphic file (type jpg)
-<use Figure/chuky_phu.jpg>
-Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 24.
-(pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
+<Figure/chuky_phuc.jpg, id=70, 1407.2575pt x 588.1975pt>
+File: Figure/chuky_phuc.jpg Graphic file (type jpg)
+<use Figure/chuky_phuc.jpg>
+Package pdftex.def Info: Figure/chuky_phuc.jpg  used on input line 24.
+(pdftex.def)             Requested size: 136.13876pt x 56.9055pt.
 
-Overfull \hbox (25.37982pt too wide) in paragraph at lines 13--26
+Overfull \hbox (29.13448pt too wide) in paragraph at lines 13--26
  [] 
  []
 
-) (section2.tex [1 <./Figure/chuky_khang.png> <./Figure/chuky_phu.jpg>]
-[2]) (section3.tex
+) (section2.tex [1 <./Figure/chuky_khang.png> <./Figure/chuky_khoa.jpg> <./Figu
+re/chuky_manh.jpg> <./Figure/chuky_nguyen.jpg> <./Figure/chuky_phu.jpg> <./Figu
+re/chuky_phuc.jpg>] [2]) (section3.tex
 Overfull \hbox (12.12262pt too wide) in paragraph at lines 20--20
 []|\T5/cmr/bx/n/14.4 Stakeholder|  
  []
@@ -1477,7 +1482,7 @@ Underfull \hbox (badness 1122) in paragraph at lines 20--20
  []
 
 [3] [4] [5]
-<Figure/flowchart.png, id=93, 604.8999pt x 375.44266pt>
+<Figure/flowchart.png, id=97, 604.8999pt x 375.44266pt>
 File: Figure/flowchart.png Graphic file (type png)
 <use Figure/flowchart.png>
 Package pdftex.def Info: Figure/flowchart.png  used on input line 60.
@@ -1494,16 +1499,16 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DA3134914ED80EC351F5EE030235CFB4;1387.
+(rerunfilecheck)             Checksum: 57E9B00C5BA8522CDB860FFCE0D7B380;1545.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33912 strings out of 467871
- 650234 string characters out of 5418376
+ 33949 strings out of 467871
+ 651063 string characters out of 5418376
  1261868 words of memory out of 5000000
- 62268 multiletter control sequences out of 15000+600000
+ 62304 multiletter control sequences out of 15000+600000
  641791 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  116i,11n,121p,1886b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1513,9 +1518,9 @@ x12.pfb><C:/Users/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnr
 12.pfb><C:/Users/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnti
 12.pfb><C:/Users/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt
 12.pfb>
-Output written on main.pdf (11 pages, 703360 bytes).
+Output written on main.pdf (11 pages, 974606 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
- 33 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 158 PDF objects out of 1000 (max. 8388607)
+ 34 named destinations out of 1000 (max. 500000)
+ 125 words of extra memory for PDF output out of 10000 (max. 10000000)
 
