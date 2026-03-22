@@ -1,0 +1,98 @@
+\section{Phân tích vấn đề:}
+\subsection{Problem Statement:}
+Học sinh/ sinh viên mất đi động lực khi đối mặt với việc học các chương trình ngữ pháp khô khan, từ vựng khó nhớ, dẫn đến thiếu ứng dụng và kém tiến bộ trong quá trình học ngôn ngữ; vì vậy cần 1 hệ thống RPG tích hợp AI để biến quá trình học tiếng Anh như một trò chơi giải trí, giúp tăng sự hứng thú và ghi nhớ dài hạn thông qua tương tác cốt truyện.
+
+\subsection{Bảng Stakeholder:}
+
+
+\begin{table}[H]
+\centering
+\caption{Bảng Stakeholder}
+\renewcommand{\arraystretch}{1.5} % Giúp các hàng dãn ra cho dễ đọc
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{2.5cm}|X|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.8cm}|}
+\hline
+\textbf{Stakeholder} & \textbf{Vai trò} & \textbf{Nhu cầu/mong đợi} & \textbf{Ảnh hưởng} & \textbf{Mức độ quan trọng} \\ \hline
+Sinh viên & Người dùng cuối & Game mượt, từ vựng sát thực tế, cảm giác "lên trình" tiếng Anh qua các chỉ số (level, rank). & Cao & Cao \\ \hline
+Nhóm phát triển & Đội ngũ thực thi & Quy trình code rõ ràng, tài liệu đầy đủ, không bị chồng chéo nhiệm vụ. & Cao & Cao \\ \hline
+Giảng viên hướng dẫn & Người đánh giá & Áp dụng đúng đắn các quy tắc, công thức tư duy của môn học, báo cáo đúng tiến độ công việc. & Trung bình & Cao \\ \hline
+Nhà cung cấp AI & Đối tác hạ tầng & API ổn định, chi phí thấp (hoặc miễn phí), phản hồi nhanh. & Thấp & Trung bình \\ \hline
+Người yêu thích game/RPG & Người dùng mở rộng & Cốt truyện hấp dẫn, cơ chế chơi độc đáo, tương tác với NPC thú vị. & Thấp & Thấp \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Phạm vi bài toán:}
+\subsubsection{Trong phạm vi (In-scope):}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.5cm}|X|>{\raggedright\arraybackslash}p{4cm}|}
+\hline
+\textbf{Nội dung} & \textbf{Chi tiết thực hiện} & \textbf{Ghi chú} \\ \hline
+Chức năng phát triển & - Hệ thống hội thoại AI (Text-based) để học từ vựng/ngữ pháp. \newline - Cơ chế của game nhập vai: Thu thập vật phẩm, tăng cấp (Level up), bảng chỉ số (Stats). \newline - Hệ thống nhiệm vụ (Quests) dựa trên các bài tập & Phân rã: Chia nhỏ thành các Module độc lập để mọi người trong nhóm có thể code song song \\ \hline
+Đối tượng phục vụ & Sinh viên đại học (đặc biệt là khối không chuyên Anh) muốn cải thiện vốn từ vựng và kỹ năng đọc hiểu thông qua giải trí & Trừu tượng hóa: Chỉ tập trung vào nhu cầu "Học mà chơi", lược bỏ các tính năng mạng xã hội phức tạp \\ \hline
+Địa điểm/Phạm vi & Triển khai dưới dạng ứng dụng Web hoặc Mobile (hoặc cả hai). Phục vụ trong môi trường học tập cá nhân. & Nhận dạng mẫu: Sử dụng cấu trúc Client-Server phổ biến để dễ dàng quản lý mã nguồn trên GitHub. \\ \hline
+Thời gian thực hiện & Khoảng 10 tuần (Từ giai đoạn lên ý tưởng đến khi Demo sản phẩm cuối cùng). & Thuật toán: Phân bổ thời gian theo sơ đồ Gantt để tối ưu hóa năng suất nhóm. \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Ngoài phạm vi (Out-scope):}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.5cm}|X|>{\raggedright\arraybackslash}p{4cm}|}
+\hline
+\textbf{Tính năng/hạng mục} & \textbf{Lý do loại trừ} & \textbf{Khả năng phát triển sau này} \\ \hline
+Luyện nói (Speaking) và Luyện nghe (Listening) & Độ phức tạp: Đòi hỏi tích hợp Speech-to-Text và xử lý âm thanh phức tạp, dễ gây lỗi trễ (latency). & Rất khó có khả năng (chỉ tính đến khi và chỉ khi giai đoạn 2.0 sau khi ổn định Reading/Vocab). \\ \hline
+Đồ họa 3D / Thế giới mở & Thời gian và Kỹ năng: Nhóm 6 người làm trong khoảng 10 tuần thì không đủ nguồn lực để làm Animation 3D mượt mà. & Có thể nâng cấp đồ họa, nhưng không ưu tiên bằng Logic học tập. \\ \hline
+Chế độ chơi nhiều người (Multiplayer) & Kỹ thuật: Cần quản lý Server, Database thời gian thực và giải quyết vấn đề đồng bộ hóa. & Có (Dưới dạng bảng xếp hạng - Leaderboard đơn giản). \\ \hline
+Hệ thống thanh toán / Thương mại hóa & Ngân sách và Pháp lý: Dự án tập trung vào học thuật và giải quyết vấn đề tư duy tính toán, không phải kinh doanh. & Không ưu tiên. \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Quy trình hiện tại (AS-IS process):}
+\subsubsection{Sơ đồ quy trình hiện tại:}
+
+\noindent \textbf{Sơ đồ quy trình hiện tại (flowchart):} \medskip
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{flowchart.png}
+    \caption{Sơ đồ quy trình AS-IS hiện tại}
+    \label{fig:as_is_flowchart}
+\end{figure}
+
+\vspace{1em} % Tạo khoảng cách giữa ảnh và tiêu đề bảng tiếp theo
+\noindent \textbf{Quy trình AS - IS process chi tiết:} \smallskip
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.6}
+\begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}p{3cm}|X|>{\centering\arraybackslash}p{2.5cm}|}
+\hline
+\textbf{Bước} & \textbf{Tên hoạt động thực tế} & \textbf{Mô tả chi tiết (Góc nhìn thuật toán)} & \textbf{Thời gian ước tính} \\ \hline
+1 & Bắt đầu phiên học & \texttt{Initialize\_Session()}: Sinh viên thiết lập môi trường (mở giáo trình, tìm bài đọc, chuẩn bị giấy bút). & 5 phút \\ \hline
+2 & Đọc đoạn văn (Reading) & \texttt{While not End\_of\_Text}: Bắt đầu tiến trình đọc hiểu. Bộ não xử lý thông tin. & 15 - 20 phút \\ \hline
+3 & Dừng lại \& Tra cứu & \texttt{IF gặp\_từ\_mới == True}: Kích hoạt hàm ngắt mạch. Sinh viên rời mắt khỏi bài đọc, mở điện thoại hoặc từ điển để tra nghĩa. & 10 - 15 phút (cộng dồn) \\ \hline
+4 & Chép từ & \texttt{Save\_to\_Local()}: Ghi chép từ vựng và nghĩa tiếng Việt ra vở một cách thủ công. Sau đó quay lại Bước 2. & 5 - 10 phút (cộng dồn) \\ \hline
+5 & Làm bài tập & \texttt{Execute\_Task()}: Khi \texttt{Hết\_đoạn\_văn == True}, chuyển sang làm các bài tập trắc nghiệm dựa trên trí nhớ ngắn hạn. & 15 - 20 phút \\ \hline
+6 & Kiểm tra đáp án & \texttt{Validate\_Results()}: Lật cuối sách xem đáp án hoặc đợi giáo viên chữa. Độ trễ phản hồi cao khiến não khó liên kết lỗi sai. & 5 - 10 phút \\ \hline
+7 & Chữa bài tập \& Tự ôn tập & \texttt{Error\_Correction()} \& \texttt{Rote\_Memorization()}: Lập danh sách lỗi và học thuộc lòng từ vựng không có ngữ cảnh tương tác. & 10 phút \\ \hline
+8 & Kết thúc phiên học & \texttt{End\_Session()}: Output trả về là "Ghi nhớ ngắn hạn" và trạng thái tâm lý "Thiếu động lực". & - \\ \hline
+\multicolumn{3}{|r|}{\textbf{Tổng thời gian học dự kiến}} & \textbf{65 - 90 phút} \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Điểm nghẽn (Bottlenecks):}
+\begin{enumerate}[label=\alph*), nosep]
+    \item Điểm nghẽn 1: Sự gián đoạn ngữ cảnh: Sinh viên liên tục phải chuyển đổi trạng thái giữa việc "Đọc hiểu" và "Tra từ điển". Điều này phá vỡ luồng tập trung  và làm giảm tốc độ xử lý thông tin.
+    \item Điểm nghẽn 2: Vòng lặp phản hồi trễ: Khi làm sai sinh viên chỉ biết đáp án đúng là gì chứ không được giải thích tại sao sai ngay tại thời điểm đó (trừ khi có gia sư).
+    \item Điểm nghẽn 3: Ghi nhớ cơ học: Việc chép từ vựng ra vở thiếu tính lặp lại, gây ngắt quãng và thiếu cảm xúc/tương tác, dẫn đến tỷ lệ rụng rớt thông tin rất cao.
+\end{enumerate}
+
+\subsubsection{Tồn tại (Vấn đề phát sinh):}
+\begin{enumerate}[label = \alph*), nosep]
+	\item Thiếu động lực: Quá trình học tiếng Anh mang tính "tuyến tính" và khô khan. Sinh viên không có phần thưởng ngay lập tức để duy trì hứng thú học tập.
+	\item Hiệu suất kém: Dành ra nhiều tiếng đồng hồ nhưng lượng từ vựng thực sự đọng lại ở Trí nhớ dài hạn rất thấp do các từ này không được đặt trong các tình huống ứng dụng thực tế.
+\end{enumerate}

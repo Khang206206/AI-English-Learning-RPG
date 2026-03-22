@@ -2,3 +2,13 @@
 \contentsline {section}{\numberline {2.}Giới thiệu chung}{1}{section.0.2}%
 \contentsline {subsection}{\numberline {2.1}Bối cảnh hiện nay}{1}{subsection.0.2.1}%
 \contentsline {subsection}{\numberline {2.2}Mục tiêu}{2}{subsection.0.2.2}%
+\contentsline {section}{\numberline {3.}Phân tích vấn đề:}{3}{section.0.3}%
+\contentsline {subsection}{\numberline {3.1}Problem Statement:}{3}{subsection.0.3.1}%
+\contentsline {subsection}{\numberline {3.2}Bảng Stakeholder:}{4}{subsection.0.3.2}%
+\contentsline {subsection}{\numberline {3.3}Phạm vi bài toán:}{5}{subsection.0.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Trong phạm vi (In-scope):}{5}{subsubsection.0.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Ngoài phạm vi (Out-scope):}{6}{subsubsection.0.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Quy trình hiện tại (AS-IS process):}{6}{subsection.0.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Sơ đồ quy trình hiện tại:}{6}{subsubsection.0.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Điểm nghẽn (Bottlenecks):}{8}{subsubsection.0.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Tồn tại (Vấn đề phát sinh):}{9}{subsubsection.0.3.4.3}%
