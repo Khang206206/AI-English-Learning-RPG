@@ -11,3 +11,4 @@
 \contentsline {subsection}{\numberline {3.4}Phân tích hiện trạng (AS-IS process):}{6}{subsection.0.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Sơ đồ quy trình hiện tại:}{6}{subsubsection.0.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Giải pháp có trên thị trường:}{9}{subsubsection.0.3.4.2}%
+\contentsline {section}{\numberline {4.}Phú}{9}{section.0.4}%
