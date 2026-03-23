@@ -11,6 +11,7 @@
 \contentsline {subsection}{\numberline {3.4}Phân tích hiện trạng (AS-IS process):}{6}{subsection.0.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Sơ đồ quy trình hiện tại:}{6}{subsubsection.0.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Giải pháp có trên thị trường:}{9}{subsubsection.0.3.4.2}%
+<<<<<<< HEAD
 \contentsline {subsection}{\numberline {3.5}Kiểm chứng điểm đau (Pain Point Validation):}{10}{subsection.0.3.5}%
 \contentsline {subsection}{\numberline {3.6}Đề xuất giải pháp sơ bộ (Proposed Solution):}{10}{subsection.0.3.6}%
 \contentsline {subsubsection}{\numberline {3.6.1}Ý tưởng giải pháp}{10}{subsubsection.0.3.6.1}%
@@ -22,3 +23,7 @@
 \contentsline {subsubsection}{\numberline {3.8.1}Chỉ số định lượng (Quantitative Metrics)}{15}{subsubsection.0.3.8.1}%
 \contentsline {subsubsection}{\numberline {3.8.2}Chỉ số định tính (Qualitative Metrics)}{15}{subsubsection.0.3.8.2}%
 \contentsline {subsubsection}{\numberline {3.8.3}Cách đo lường}{15}{subsubsection.0.3.8.3}%
+=======
+\contentsline {subsubsection}{\numberline {3.4.3}Phân tích SWOT}{10}{subsubsection.0.3.4.3}%
+\contentsline {section}{\numberline {4.}Phú}{11}{section.0.4}%
+>>>>>>> 4591da895ccc0d391ce7596132a0cb5212d063a2
