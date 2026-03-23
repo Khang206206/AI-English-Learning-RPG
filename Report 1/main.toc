@@ -11,4 +11,14 @@
 \contentsline {subsection}{\numberline {3.4}Phân tích hiện trạng (AS-IS process):}{6}{subsection.0.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Sơ đồ quy trình hiện tại:}{6}{subsubsection.0.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Giải pháp có trên thị trường:}{9}{subsubsection.0.3.4.2}%
-\contentsline {section}{\numberline {4.}Phú}{9}{section.0.4}%
+\contentsline {subsection}{\numberline {3.5}Kiểm chứng điểm đau (Pain Point Validation):}{10}{subsection.0.3.5}%
+\contentsline {subsection}{\numberline {3.6}Đề xuất giải pháp sơ bộ (Proposed Solution):}{10}{subsection.0.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Ý tưởng giải pháp}{10}{subsubsection.0.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Quy trình đề xuất (To-Be Process)}{10}{subsubsection.0.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Tính khả thi}{10}{subsubsection.0.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.4}Các tính năng chính (Core Features)}{10}{subsubsection.0.3.6.4}%
+\contentsline {subsection}{\numberline {3.7}Rủi ro (Risks)}{12}{subsection.0.3.7}%
+\contentsline {subsection}{\numberline {3.8}Tiêu chí thành công (Success Criteria)}{15}{subsection.0.3.8}%
+\contentsline {subsubsection}{\numberline {3.8.1}Chỉ số định lượng (Quantitative Metrics)}{15}{subsubsection.0.3.8.1}%
+\contentsline {subsubsection}{\numberline {3.8.2}Chỉ số định tính (Qualitative Metrics)}{15}{subsubsection.0.3.8.2}%
+\contentsline {subsubsection}{\numberline {3.8.3}Cách đo lường}{15}{subsubsection.0.3.8.3}%
