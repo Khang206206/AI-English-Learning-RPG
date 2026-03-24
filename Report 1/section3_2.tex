@@ -1,7 +1,81 @@
-\subsection{Kiểm chứng điểm đau (Pain Point Validation):}
 \subsection{Đề xuất giải pháp sơ bộ (Proposed Solution):}
 \subsubsection{Ý tưởng giải pháp}
+Từ các pain points đã xác định, nhóm đề xuất một giải pháp nhằm cải thiện trải nghiệm học tập và giải quyết các vấn đề cốt lõi của người học.
+\textbf{Tên giải pháp: AI RPG English Learning System}
+\begin{itemize}[label=-]
+\item \textbf{Mô tả ngắn:} 
+\begin{itemize}[label=+]
+\item Giải pháp được xây dựng dưới dạng một hệ thống học tiếng Anh tích hợp trí tuệ nhân tạo, kết hợp với mô hình \textbf{game nhập vai (RPG)}. Trong đó, người học sẽ tương tác với các nhân vật (NPC) để thực hiện nhiệm vụ, từ đó học từ vựng và ngữ pháp trong bối cảnh cụ thể.
+\item Khác với các phương pháp học truyền thống, hệ thống không chỉ cung cấp kiến thức mà còn tạo điều kiện để người học \textbf{vận dụng kiến thức ngay trong quá trình học}, thông qua các tình huống mô phỏng thực tế.
+\end{itemize}
+\item \textbf{Tính mới:} Giải pháp kết hợp ba thành phần chính:
+\begin{itemize}[label=+]
+\item \textbf{AI hội thoại (LLM):}Tạo phản hồi tự nhiên và sửa lỗi theo thời gian thực.
+\item \textbf{Game hóa (RPG):}Tạo động lực và duy trì sự hứng thú.
+\item \textbf{Learning Loop:}Cá nhân hóa lộ trình học.
+\end{itemize}
+
+\item \textbf{Cách giải quyết Pain Points (Mapping):}
+\begin{itemize}[label=+]
+\item \textbf{Pain Point 1: Thiếu phản hồi theo thời gian thực.}
+
+\textbf{$\rightarrow$ AI Feedback Engine:} phát hiện và sửa lỗi ngay trong hội thoại.
+\item \textbf{Pain Point 2: Áp lực khi diễn đạt.}
+
+$\rightarrow$ \textbf{Role-play với NPC:} tạo môi trường luyện tập an toàn, không áp lực.
+\item \textbf{Pain Point 3: Thiếu ngữ cảnh thực hành.}
+
+$\rightarrow$ \textbf{Quest-based Learning:} học thông qua nhiệm vụ và tình huống cụ thể.
+\end{itemize}
+\end{itemize}
 \subsubsection{Quy trình đề xuất (To-Be Process)}
+\textbf{1. Sơ đồ quy trình (Flowchart)}
+\begin{figure}[H]
+    \centering
+    % Tăng lên 85% chiều cao trang giấy (bự hết cỡ có thể)
+    \includegraphics[height=0.85\textheight, keepaspectratio]{Figure/chart.jpg}
+    \caption{Sơ đồ vòng lặp học tập thích ứng (Integrated Learning Loop)}
+    \label{fig:learning-loop}
+\end{figure}
+\textbf{2. Quy trình chi tiết}
+\vspace{0.3cm} % Tạo khoảng trống nhẹ dưới hình
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5} % Dãn dòng cho thoáng và dễ đọc
+    % Chia 4 cột: c (giữa), l (trái), l (trái), c (giữa)
+    \begin{tabular}{|c|l|l|c|}
+        \hline
+        \textbf{Bước} & \centering\arraybackslash\textbf{Hoạt động} & \centering\arraybackslash\textbf{Mô tả} & \textbf{Thời gian} \\ \hline
+        1 & Bắt đầu & Initialize Player Profile & 2 phút \\ \hline
+        2 & Nhận nhiệm vụ & Generate Quest & 2 phút \\ \hline
+        3 & Tương tác & AI Dialogue với NPC & 20--30 phút \\ \hline
+        4 & Nhận phản hồi & Sửa lỗi real-time & Ngay lập tức \\ \hline
+        5 & Lưu tiến trình & Update User Model & 1 phút \\ \hline
+        6 & Kết thúc & End Session & - \\ \hline
+    \end{tabular}
+    \caption{Chi tiết các hoạt động và thời gian trong một phiên chơi}
+    \label{tab:session-time}
+\end{table}
+\textbf{3. So sánh Before / After}
+\vspace{0.3cm}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5} % Dãn dòng cho dễ đọc
+    % Căn lề trái (l) cho nội dung, chia độ rộng các cột cho cân đối
+    \begin{tabular}{|p{3.5cm}|p{4cm}|p{5cm}|}
+        \hline
+        \centering\arraybackslash \textbf{Tiêu chí} & \centering\arraybackslash \textbf{AS-IS} & \centering\arraybackslash \textbf{TO-BE} \\ \hline
+        Ngữ cảnh & Rời rạc & Liên tục (Game) \\ \hline
+        Phản hồi & Trễ & Real-time \\ \hline
+        Động lực & Thấp & Cao \\ \hline
+        Ghi nhớ & Ngắn hạn & Dài hạn \\ \hline
+        Trải nghiệm & Thụ động & Có tính tương tác \\ \hline
+    \end{tabular}
+    \caption{Bảng so sánh thực trạng (AS-IS) và giải pháp đề xuất (TO-BE)}
+    \label{tab:as-is-to-be}
+\end{table}
 \subsubsection{Tính khả thi}
 \begin{table}[H]
     \centering % Lệnh này sẽ tự động căn giữa bảng 0.9\textwidth
@@ -28,20 +102,22 @@
 \end{table}
 \subsubsection{Các tính năng chính (Core Features)}
 \begin{itemize}[label=-]
-\item \textbf{Interactive AI NPCs (Giao tiếp với nhân vật ảo):} 
-Người chơi trò chuyện trực tiếp với các NPC được tích hợp LLM để nhận nhiệm vụ và thực hành tiếng Anh, giải quyết tình trạng thiếu môi trường giao tiếp thực tế.
+\item \textbf{Hệ thống Phản hồi AI Tức thời (Real-time AI Feedback Engine):} 
 
-\item \textbf{Real-time Grammar Correction:} 
-Hệ thống tự động phát hiện và hướng dẫn sửa lỗi ngữ pháp ngay trong lúc người chơi đang "chat" với NPC, giải quyết vấn đề người học không biết mình sai ở đâu khi giao tiếp.
+\textbf{Mô tả:} Khi người chơi tương tác với NPC thông qua việc chọn đáp án từ vựng/ngữ pháp hoặc điền từ vào chỗ trống (dựa trên bài đọc), hệ thống AI LLM sẽ lập tức đánh giá đúng/sai và đưa ra lời giải thích chi tiết về quy tắc ngữ pháp hoặc ngữ nghĩa của từ vựng đó ngay trên màn hình.
 
-\item \textbf{Dynamic Vocabulary Notebook:} 
-Ghi nhận từ vựng mới vào túi đồ (Inventory/Notebook) và AI sẽ chủ động lồng ghép lại các từ này vào lời thoại của NPC trong các bối cảnh sau, giải quyết việc học từ rời rạc, dễ quên.
+\textbf{Giải quyết:} Pain Point 1 (Thiếu phản hồi & sửa lỗi theo thời gian thực). Nó giúp giải quyết tình trạng người học không nhận diện và sửa lỗi kịp thời. 
+\item \textbf{Hội thoại Phân nhánh theo Ngữ cảnh (Contextual Choice-Based Dialogue)} 
 
-\item \textbf{Adaptive Quest System (Hệ thống nhiệm vụ thích ứng):}
-Tự động sinh ra các thử thách, bài tập (điền từ, giải đố) dưới dạng "Nhiệm vụ trong game" (Quests) dựa trên lỗi sai lịch sử của người chơi, giải quyết việc luyện tập không cá nhân hóa.
+\textbf{Mô tả:} Người chơi không cần gõ câu trả lời (loại bỏ Writing). Thay vào đó, họ phải đọc hiểu (Reading) lời thoại của NPC và đưa ra quyết định bằng cách chọn các câu phản hồi có sẵn. Các lựa chọn này chứa từ vựng hoặc cấu trúc ngữ pháp mục tiêu. Chọn đúng ngữ cảnh sẽ giúp hội thoại tiếp tục trơn tru.
 
-\item \textbf{Error Tracking \& Boss Review:} 
-Lưu lại "bệnh án" lỗi sai và tái sử dụng chúng làm chướng ngại vật hoặc câu hỏi khi đánh Boss định kỳ, giải quyết việc lặp lại lỗi cũ mà không có động lực cải thiện.
+\textbf{Giải quyết:} Pain Point 2 (Áp lực khi tự viết câu, thiếu tự tin). Bằng cách này, người chơi vẫn học được cách sử dụng từ trong câu mà không bị rào cản tâm lý khi phải tự "sản xuất" (produce) ngôn ngữ.
+
+\item \textbf{Học tập dựa trên Nhiệm vụ (Quest-based Learning System)}
+
+\textbf{Mô tả:} Từ vựng và bài tập đọc hiểu không xuất hiện dưới dạng danh sách khô khan, mà được lồng ghép vào các nhiệm vụ RPG (ví dụ: đọc một bức thư cổ để tìm mật mã, hoặc chọn đúng từ vựng phép thuật để mở cửa). Hoàn thành nhiệm vụ sẽ được thưởng EXP và vật phẩm.
+
+\textbf{Giải quyết:} Pain Point 3 (Học thụ động, thiếu môi trường thực hành). Giúp người học áp dụng kiến thức vào các tình huống mô phỏng thực tế , xóa bỏ sự nhàm chán của việc lặp đi lặp lại một kiểu câu hỏi.
 \end{itemize}
 Dưới đây là sơ đồ minh họa chi tiết kiến trúc hệ thống 3 lớp (3-tier architecture) của đồ án, thể hiện rõ luồng tương tác giữa người chơi (Frontend), các module xử lý AI tại Backend (FastAPI) và hệ thống lưu trữ dữ liệu (Firebase).
 \begin{figure}[H]
