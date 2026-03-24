@@ -10,16 +10,16 @@
 \contentsline {subsubsection}{\numberline {3.3.2}Ngoài phạm vi (Out-of-scope):}{6}{subsubsection.0.3.3.2}%
 \contentsline {subsection}{\numberline {3.4}Phân tích hiện trạng (AS-IS process):}{6}{subsection.0.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Sơ đồ quy trình hiện tại:}{6}{subsubsection.0.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}Giải pháp có trên thị trường:}{9}{subsubsection.0.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}Phân tích SWOT}{10}{subsubsection.0.3.4.3}%
-\contentsline {subsection}{\numberline {3.5}Các điểm đau của người dùng (Paint Points):}{11}{subsection.0.3.5}%
-\contentsline {subsection}{\numberline {3.6}Đề xuất giải pháp sơ bộ (Proposed Solution):}{11}{subsection.0.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}Ý tưởng giải pháp}{11}{subsubsection.0.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}Quy trình đề xuất (To-Be Process)}{12}{subsubsection.0.3.6.2}%
-\contentsline {subsubsection}{\numberline {3.6.3}Tính khả thi}{15}{subsubsection.0.3.6.3}%
-\contentsline {subsubsection}{\numberline {3.6.4}Các tính năng chính (Core Features)}{15}{subsubsection.0.3.6.4}%
-\contentsline {subsection}{\numberline {3.7}Rủi ro (Risks)}{17}{subsection.0.3.7}%
-\contentsline {subsection}{\numberline {3.8}Tiêu chí thành công (Success Criteria)}{20}{subsection.0.3.8}%
-\contentsline {subsubsection}{\numberline {3.8.1}Chỉ số định lượng (Quantitative Metrics)}{20}{subsubsection.0.3.8.1}%
-\contentsline {subsubsection}{\numberline {3.8.2}Chỉ số định tính (Qualitative Metrics)}{20}{subsubsection.0.3.8.2}%
-\contentsline {subsubsection}{\numberline {3.8.3}Cách đo lường}{20}{subsubsection.0.3.8.3}%
+\contentsline {subsubsection}{\numberline {3.4.2}Giải pháp hiện có trên thị trường}{9}{subsubsection.0.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Phân tích SWOT}{11}{subsubsection.0.3.4.3}%
+\contentsline {subsection}{\numberline {3.5}Các điểm đau của người dùng (Paint Points):}{12}{subsection.0.3.5}%
+\contentsline {subsection}{\numberline {3.6}Đề xuất giải pháp sơ bộ (Proposed Solution):}{13}{subsection.0.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Ý tưởng giải pháp}{13}{subsubsection.0.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Quy trình đề xuất (To-Be Process)}{14}{subsubsection.0.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Tính khả thi}{17}{subsubsection.0.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.4}Các tính năng chính (Core Features)}{17}{subsubsection.0.3.6.4}%
+\contentsline {subsection}{\numberline {3.7}Rủi ro (Risks)}{19}{subsection.0.3.7}%
+\contentsline {subsection}{\numberline {3.8}Tiêu chí thành công (Success Criteria)}{22}{subsection.0.3.8}%
+\contentsline {subsubsection}{\numberline {3.8.1}Chỉ số định lượng (Quantitative Metrics)}{22}{subsubsection.0.3.8.1}%
+\contentsline {subsubsection}{\numberline {3.8.2}Chỉ số định tính (Qualitative Metrics)}{22}{subsubsection.0.3.8.2}%
+\contentsline {subsubsection}{\numberline {3.8.3}Cách đo lường}{22}{subsubsection.0.3.8.3}%

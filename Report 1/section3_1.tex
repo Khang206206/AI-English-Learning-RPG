@@ -101,45 +101,114 @@ Hệ thống thanh toán / Thương mại hóa & Ngân sách và Pháp lý: Dự
 
 \end{enumerate}
 
-\subsubsection{Giải pháp có trên thị trường:}
+\subsubsection{Giải pháp hiện có trên thị trường}
+
+Khi đánh giá về các giải pháp tiêu biểu hiện nay trên thị trường, có ba nhóm chính đó là:
+
+\begin{itemize}
+    \item \textbf{Nhóm 1:} App học truyền thống có yếu tố kết hợp trò chơi cho người dùng tương tác (Gamification): Duolingo, Memrise.
+    \item \textbf{Nhóm 2:} Chatbot AI phổ biến hiện nay: ChatGPT Voice, Character.ai, Replika, v.v.
+    \item \textbf{Nhóm 3:} Những game RPG hoàn toàn bằng tiếng Anh: Genshin Impact, Persona, v.v.
+\end{itemize}
 
 \begin{table}[H]
 \centering
-\caption{Phân tích thực trạng các giải pháp học tiếng Anh hiện nay}
-\label{tab:phan-tich-thuc-trang}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabularx}{\textwidth}{|p{3cm}|X|X|X|}
+\caption{Bảng đánh giá các điểm mạnh, điểm yếu của ba nhóm sản phẩm hỗ trợ học tiếng Anh}
+\label{tab:danh-gia-giai-phap}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{Giải pháp hiện trường} & \textbf{Điểm mạnh} & \textbf{Điểm yếu} & \textbf{Bài học rút ra} \\ \hline
-\textbf{Các ứng dụng Gamification} (Duolingo, Memrise) & Giao diện thân thiện, cơ chế tích điểm (streak) gây nghiện, giúp ghi nhớ từ vựng tốt qua các bài tập nhỏ. & Các câu thoại rời rạc, thiếu ngữ cảnh thực tế, không có sự tương tác hội thoại tự do cho người dùng. & Cần áp dụng cơ chế phần thưởng (Reward system) mạnh mẽ để duy trì động lực và giữ chân người dùng. \\ \hline
-\textbf{Ứng dụng luyện phát âm AI} (ELSA Speak) & Công nghệ nhận diện giọng nói chính xác, sửa lỗi phát âm chi tiết đến từng âm tiết cho người học. & Chỉ tập trung vào phát âm, kịch bản giao tiếp còn cứng nhắc, thiếu tính sáng tạo và linh hoạt trong câu trả lời. & Tích hợp AI không chỉ để sửa lỗi phát âm mà còn phải hiểu được ý nghĩa và ngữ cảnh hội thoại linh hoạt. \\ \hline
-\textbf{Công cụ AI hội thoại} (ChatGPT, Replika) & Khả năng phản hồi tự nhiên như người thật, hiểu và xử lý được nhiều chủ đề đa dạng, phong phú. & Không chuyên biệt cho giáo dục (thiếu sửa lỗi ngữ pháp chi tiết), thiếu cốt truyện và mục tiêu học tập cụ thể. & Cần xây dựng một thế giới nhập vai (RPG) với các mục tiêu cụ thể để hướng dẫn người dùng sử dụng các cấu trúc tiếng Anh. \\ \hline
+\textbf{Giải pháp} & \textbf{Điểm mạnh} & \textbf{Điểm yếu} & \textbf{Bài học rút ra} \\ \hline
+\textbf{Nhóm 1} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Giao diện bắt mắt, tính năng trò chơi hóa (streak, bảng xếp hạng) giữ chân người dùng tốt.
+    \item Có thuật toán lặp lại ngắt quãng (Spaced Repetition) giúp ghi nhớ dài hạn.
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Thiếu ngữ cảnh: Các câu ví dụ thường rời rạc, máy móc.
+    \item Không có tính nhập vai (Role-play), người dùng tương tác thụ động.
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Phát triển hệ thống Quest (Nhiệm vụ): Dùng LLM tạo nhiệm vụ dựa trên ngữ cảnh game thay vì dịch câu rời rạc.
+    \item Giữ lại Spaced Repetition để ôn tập từ mới sau mỗi nhiệm vụ.
+\end{itemize} \\ \hline
+
+\textbf{Nhóm 2} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Giao tiếp tự nhiên, ngữ cảnh mở.
+    \item Phản hồi thời gian thực, hỗ trợ nhập liệu bằng giọng nói (Speech-to-text).
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Thiếu định hướng học tập: Không có lộ trình độ khó tăng dần.
+    \item Không tự động lưu trữ và phân tích lỗi sai có hệ thống.
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Tích hợp vào Game các xử lý logic: thêm FastAPI xử lý logic để trích xuất từ vựng (Vocabulary extraction) và sửa lỗi ngữ pháp (Grammar correction) ngầm, sau đó lưu vào Firebase.
+\end{itemize} \\ \hline
+
+\textbf{Nhóm 3} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Ngữ cảnh giao tiếp thực tế đa dạng, động lực chơi cao, thu hút người dùng.
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Rào cản ngôn ngữ lớn: Độ khó của ngữ pháp, từ vựng mà không có dịch nghĩa của ngôn ngữ mẹ đẻ sẽ khiến người mới học sẽ bị ngợp, nản chí và dẫn đến bỏ cuộc.
+\end{itemize} & 
+\begin{itemize}[leftmargin=*, nosep]
+    \item Tích hợp vào Game các chế độ khó tùy chọn (Adaptive difficulty)
+    \item Xây dựng rule để LLM điều chỉnh từ vựng của NPC dựa trên hồ sơ lỗi của người chơi. Từ vựng nào còn yếu, sai nhiều sẽ xuất hiện nhiều hơn.
+\end{itemize} \\ \hline
 \end{tabularx}
 \end{table}
+→ Các giải pháp hiện tại hoặc là quá thiên về học thuật, thiếu bối cảnh (Duolingo), hoặc là quá tự do, thiếu cấu trúc sư phạm (Chatbot AI). Mục tiêu của dự án sẽ là trung hòa các điểm mạnh của các giải pháp trên và hạn chế các điểm yếu hiện hữu.
 
 \subsubsection{Phân tích SWOT}
 \begin{enumerate}
 \item Strengths (Điểm mạnh của tổ chức/đơn vị): \newline
-- Với nhân lực là một nhóm làm ứng dụng nhưng sẽ cố gắng hết sức giúp ứng dụng phát triển tốt nhất, cũng biết thị hiếu người dùng hiện nay như thế nào nên sẽ có thể dễ tiếp cận nhiều người dùng hơn. \newline
-- Trải nghiệm nhập vai: Khác với các ứng dụng học Tiếng Anh thông thường, đây sẽ là phần mềm giúp cho người dùng thích thú hơn, giảm bớt áp lực khi học và tăng tính phản xạ tự nhiên. \newline
-- Hỗ trợ từ AI: Khi người dùng có lỗi sai sẽ được AI phân tích và điều chỉnh nội dung cho phù hợp với trình độ của người dùng. \newline
-- Tính giải trí: Ứng dụng có hệ thống nhiệm vụ, vật phẩm và cốt truyện giúp người dùng duy trì động lực học, tránh cảm giác nhàm chán. \newline
-- Phản hồi tức thì (Real-time Feedback): AI đóng vai trò như một gia sư sẽ giúp người chơi bất cứ khi nào cần.
-
+- Nhân sự: nhóm với 6 người giúp khối lượng công việc dễ dàng được phân chia, hiệu suất làm việc tối ưu nhất. \newline
+- Ứng dụng các công nghệ phổ biến có tính ứng dụng cao như: AI tạo đoạn hội thoại, tính năng nhắc nhở ôn tập từ vựng. \newline
+- Trải nghiệm mới mẻ: học tiếng Anh thông qua việc giao tiếp, tương tác với nhân vật trong Game thay vì các dạng câu hỏi bài tập truyền thống dễ gây nhàm chán.
 
 \item Weaknesses (Điểm yếu): \newline
-- Chi phí vận hành: Với nguồn nhân lực nhỏ và thiết bị máy móc không nhiều nên chi phí vận hành khó đáp ứng, sử dụng các API mô hình ngôn ngữ lớn có chi phí cao nếu số lượng người dùng và lượt hội thoại nhiều. \newline
-- Rủi ro về độ chính xác: Các thông tin của AI đôi lúc không chính xác, cần người dùng góp ý để chỉnh sửa.
+- Cần ưu tiên những tính năng cốt lõi nhất, tránh việc cố làm quá nhiều tính năng dẫn đến việc Game không đạt được yêu cầu tương tác với người dùng. \newline
+- Cần nhiều thời gian để các thành viên tự tìm hiểu và ghép nối các công nghệ mới lại với nhau. \newline
+- Việc sử dụng các dịch vụ AI của bên thứ ba (LLM,API trả lời câu hỏi) thường bị giới hạn lượt dùng miễn phí hoặc có thể phát sinh chi phí khi nhóm thử nghiệm liên tục.
 
 \item Opportunities (Cơ hội): \newline
-- Với nhu cầu học Tiếng Anh trực tuyến và áp dụng công nghệ AI vào giáo dục sẽ giúp ứng dụng dễ đến với người dùng. \newline
-- Ứng dụng vẫn có thể phát triển sâu nên có thể được sự đầu tư từ các nhà hỗ trợ. \newline
-- Cơ hội hợp tác với các tổ chức giáo dục: Tiềm năng trở thành công cụ hỗ trợ cho các trung tâm Tiếng Anh 
+- Tiềm năng phát triển: Giải quyết đúng nhu cầu thực tế của sinh viên (ngại giao tiếp tiếng Anh). Sản phẩm hoàn thiện có thể làm điểm nhấn giá trị trong CV xin việc hoặc tham gia các cuộc thi công nghệ. \newline
+- Tài nguyên hỗ trợ dồi dào: Hiện nay có rất nhiều thư viện lập trình, mã nguồn mở và tài liệu về AI/Game được chia sẻ miễn phí, giúp tiết kiệm thời gian xây dựng từ đầu. \newline
+
 
 \item Threats (Thách thức): \newline
-- Đối thủ cạnh tranh: Các ông lớn như Duolingo, ELSA Speak có tiềm lực tài chính mạnh và cũng đang bắt đầu tích hợp AI hội thoại vào sản phẩm của họ, bên cạnh đó cũng có những ứng dụng có ý tưởng đột phá nổi lên cạnh tranh. \newline
-- Vấn đề bảo mật dữ liệu: Quy định về thu thập dữ liệu giọng nói và văn bản của người dùng ngày càng khắt khe (GDPR, nghị định bảo vệ dữ liệu cá nhân) là một thách thức với 1 nhóm phát triển ứng dụng như chúng em. \newline
-- Thay đổi công nghệ: Sự phụ thuộc vào các bên cung cấp AI thứ ba (OpenAI, Google) khiến dự án dễ bị ảnh hưởng nếu họ thay đổi chính sách hoặc giá cả API.
+- Rủi ro vận hành khi báo cáo: Sản phẩm phụ thuộc nhiều vào kết nối mạng và tốc độ phản hồi của server AI. Nếu đường truyền mạng yếu hoặc server lỗi lúc demo, trải nghiệm sẽ bị gián đoạn. \newline
+- Rủi ro tiến độ: Dự án có nhiều thành phần liên kết chặt chẽ (người làm giao diện game phải đợi người làm dữ liệu AI). Nếu một khâu bị chậm trễ sẽ kéo theo toàn bộ tiến độ của nhóm bị ảnh hưởng. \newline
+- Tính ổn định của sản phẩm: So với các đề tài an toàn khác, việc AI tự sinh câu trả lời có nguy cơ phát sinh nhiều lỗi (bug) không lường trước được trong quá trình chạy thực tế.
 \end{enumerate}
 
 \subsection{Các điểm đau của người dùng (Paint Points):}
+Link phỏng vấn sâu (5 người):
+\url{https://docs.google.com/forms/d/e/1FAIpQLSe44wZf9WbY6Nu-zK6tJdWbus8pBflSfa5TZw3yNxYk3n1DjQ/viewform?usp=header} \newline
+\newcommand{\redcircle}{\textcolor{red}{$\bullet$}}
+\newcommand{\yellowcircle}{\textcolor{yellow}{$\bullet$}}
+
+
+\renewcommand{\arraystretch}{1.5} % Giúp các hàng có khoảng thở, không bị dính chữ
+
+\begin{table}[H]
+\centering
+\caption{Bảng tổng hợp các điểm đau (Pain points) từ khảo sát người dùng}
+\label{tab:pain-points}
+\footnotesize % Chuyển xuống size này để bảng dễ thở hơn trên khổ giấy A4
+\begin{tabularx}{\textwidth}{|c|>{\hsize=0.8\hsize}X|>{\hsize=1.2\hsize}X|c|c|c|}
+\hline
+\textbf{STT} & \textbf{\makecell{Pain point\\từ khảo sát}} & \textbf{Mô tả chi tiết} & \textbf{\makecell{Mức độ\\nghiêm\\trọng}} & \textbf{\makecell{\% Người\\gặp phải}} & \textbf{Tần suất} \\ \hline
+
+1 & \redcircle Thiếu người sửa lỗi và giải thích cặn kẽ. & Người dùng không hài lòng khi các công cụ (Grammarly, Study4, sách ngữ pháp) "chỉ hiện dấu tích xanh/đỏ hoặc cung cấp đáp án đúng chứ không giải thích lý do đằng sau". Việc tự mày mò nguyên nhân tốn nhiều thời gian, ngại hỏi bạn bè nên lỗi sai dần trở thành thói quen không sửa được. & 5 & 56,5\% & Hằng ngày \\ \hline
+
+2 & \redcircle  Áp lực đánh giá, "bí từ" khi ghép câu. & Có ý tưởng bằng tiếng Việt nhưng khi cần tự viết câu (nhắn tin, viết email, tham gia seminar Zoom) thì lúng túng, e ngại cách diễn đại không đúng chuẩn dẫn đến việc tốn thời gian vô ích. & 4 & 47,8\% & Hằng tuần \\ \hline
+
+3 & \redcircle  Học thụ động, thiếu môi trường thực hành. & Việc ghi chép flashcard (Anki, sổ tay) hay học app (Duolingo) bị đánh giá là thụ động và rời rạc. Người được khảo sát cảm thấy các ví dụ quá máy móc, không có ngữ cảnh thực tế. Vì học chay và không có môi trường thực hành dẫn đến việc phản ứng chậm trong các tình huống thực tế. & 4 & 43,5\% & Hằng ngày \\ \hline
+
+4 & \yellowcircle Phương pháp học nhàm chán, rập khuôn. & Việc học bằng flashcard hay chọn đáp án A, B, C, D có sẵn trên app bị lặp đi lặp lại mà không có sự sáng tạo mới mẻ, gây ra chán nản và làm cho người học dễ bỏ cuộc. Người học cần một thế giới tương tác, có mục tiêu rõ ràng, sử dụng tiếng Anh làm công cụ để vượt qua thử thách. & 3 & 39,1\% & Hằng ngày \\ \hline
+
+\end{tabularx}
+\end{table}
