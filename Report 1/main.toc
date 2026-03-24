@@ -13,13 +13,17 @@
 \contentsline {subsubsection}{\numberline {3.4.2}Giải pháp hiện có trên thị trường}{9}{subsubsection.0.3.4.2}%
 \contentsline {subsubsection}{\numberline {3.4.3}Phân tích SWOT}{11}{subsubsection.0.3.4.3}%
 \contentsline {subsection}{\numberline {3.5}Các điểm đau của người dùng (Paint Points):}{12}{subsection.0.3.5}%
-\contentsline {subsection}{\numberline {3.6}Đề xuất giải pháp sơ bộ (Proposed Solution):}{13}{subsection.0.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}Ý tưởng giải pháp}{13}{subsubsection.0.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}Quy trình đề xuất (To-Be Process)}{14}{subsubsection.0.3.6.2}%
-\contentsline {subsubsection}{\numberline {3.6.3}Tính khả thi}{17}{subsubsection.0.3.6.3}%
-\contentsline {subsubsection}{\numberline {3.6.4}Các tính năng chính (Core Features)}{17}{subsubsection.0.3.6.4}%
-\contentsline {subsection}{\numberline {3.7}Rủi ro (Risks)}{19}{subsection.0.3.7}%
-\contentsline {subsection}{\numberline {3.8}Tiêu chí thành công (Success Criteria)}{22}{subsection.0.3.8}%
-\contentsline {subsubsection}{\numberline {3.8.1}Chỉ số định lượng (Quantitative Metrics)}{22}{subsubsection.0.3.8.1}%
-\contentsline {subsubsection}{\numberline {3.8.2}Chỉ số định tính (Qualitative Metrics)}{22}{subsubsection.0.3.8.2}%
-\contentsline {subsubsection}{\numberline {3.8.3}Cách đo lường}{22}{subsubsection.0.3.8.3}%
+\contentsline {subsection}{\numberline {3.6}Kiểm chứng điểm đau (Pain Point Validation)}{13}{subsection.0.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Kết quả khảo sát:}{13}{subsubsection.0.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Top 3 Pain Points quan trọng nhất}{16}{subsubsection.0.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Trích dẫn từ người dùng (Quotes)}{17}{subsubsection.0.3.6.3}%
+\contentsline {subsection}{\numberline {3.7}Đề xuất giải pháp sơ bộ (Proposed Solution):}{18}{subsection.0.3.7}%
+\contentsline {subsubsection}{\numberline {3.7.1}Ý tưởng giải pháp}{18}{subsubsection.0.3.7.1}%
+\contentsline {subsubsection}{\numberline {3.7.2}Quy trình đề xuất (To-Be Process)}{19}{subsubsection.0.3.7.2}%
+\contentsline {subsubsection}{\numberline {3.7.3}Tính khả thi}{22}{subsubsection.0.3.7.3}%
+\contentsline {subsubsection}{\numberline {3.7.4}Các tính năng chính (Core Features)}{22}{subsubsection.0.3.7.4}%
+\contentsline {subsection}{\numberline {3.8}Rủi ro (Risks)}{24}{subsection.0.3.8}%
+\contentsline {subsection}{\numberline {3.9}Tiêu chí thành công (Success Criteria)}{27}{subsection.0.3.9}%
+\contentsline {subsubsection}{\numberline {3.9.1}Chỉ số định lượng (Quantitative Metrics)}{27}{subsubsection.0.3.9.1}%
+\contentsline {subsubsection}{\numberline {3.9.2}Chỉ số định tính (Qualitative Metrics)}{27}{subsubsection.0.3.9.2}%
+\contentsline {subsubsection}{\numberline {3.9.3}Cách đo lường}{27}{subsubsection.0.3.9.3}%

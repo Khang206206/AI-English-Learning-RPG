@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  24 MAR 2026 21:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  24 MAR 2026 22:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1462,7 +1462,7 @@ Package biblatex Info: Reference section=0 on input line 112.
 Package biblatex Info: Reference segment=0 on input line 112.
 \c@lstlisting=\count510
  (title.tex
-<Figure/Logo-HCMUS.png, id=58, 64.07271pt x 51.392pt>
+<Figure/Logo-HCMUS.png, id=62, 64.07271pt x 51.392pt>
 File: Figure/Logo-HCMUS.png Graphic file (type png)
 <use Figure/Logo-HCMUS.png>
 Package pdftex.def Info: Figure/Logo-HCMUS.png  used on input line 13.
@@ -1488,32 +1488,32 @@ ight cause out of memory (use non-interlaced PNG to fix this)
 \openout8 = `main.toc'.
 
  [1] (section1.tex
-<Figure/chuky_khang.png, id=85, 716.6775pt x 355.3275pt>
+<Figure/chuky_khang.png, id=90, 716.6775pt x 355.3275pt>
 File: Figure/chuky_khang.png Graphic file (type png)
 <use Figure/chuky_khang.png>
 Package pdftex.def Info: Figure/chuky_khang.png  used on input line 17.
 (pdftex.def)             Requested size: 114.76917pt x 56.9055pt.
-<Figure/chuky_khoa.jpg, id=86, 900.36375pt x 741.52031pt>
+<Figure/chuky_khoa.jpg, id=91, 900.36375pt x 741.52031pt>
 File: Figure/chuky_khoa.jpg Graphic file (type jpg)
 <use Figure/chuky_khoa.jpg>
 Package pdftex.def Info: Figure/chuky_khoa.jpg  used on input line 18.
 (pdftex.def)             Requested size: 69.09055pt x 56.9055pt.
-<Figure/chuky_manh.jpg, id=87, 874.76813pt x 664.73344pt>
+<Figure/chuky_manh.jpg, id=92, 874.76813pt x 664.73344pt>
 File: Figure/chuky_manh.jpg Graphic file (type jpg)
 <use Figure/chuky_manh.jpg>
 Package pdftex.def Info: Figure/chuky_manh.jpg  used on input line 19.
 (pdftex.def)             Requested size: 74.88155pt x 56.9055pt.
-<Figure/chuky_nguyen.jpg, id=88, 717.43031pt x 615.0478pt>
+<Figure/chuky_nguyen.jpg, id=93, 717.43031pt x 615.0478pt>
 File: Figure/chuky_nguyen.jpg Graphic file (type jpg)
 <use Figure/chuky_nguyen.jpg>
 Package pdftex.def Info: Figure/chuky_nguyen.jpg  used on input line 22.
 (pdftex.def)             Requested size: 66.37221pt x 56.9055pt.
-<Figure/chuky_phu.jpg, id=89, 523.9575pt x 347.04657pt>
+<Figure/chuky_phu.jpg, id=94, 523.9575pt x 347.04657pt>
 File: Figure/chuky_phu.jpg Graphic file (type jpg)
 <use Figure/chuky_phu.jpg>
 Package pdftex.def Info: Figure/chuky_phu.jpg  used on input line 23.
 (pdftex.def)             Requested size: 85.91359pt x 56.9055pt.
-<Figure/chuky_phuc.jpg, id=90, 1407.2575pt x 588.1975pt>
+<Figure/chuky_phuc.jpg, id=95, 1407.2575pt x 588.1975pt>
 File: Figure/chuky_phuc.jpg Graphic file (type jpg)
 <use Figure/chuky_phuc.jpg>
 Package pdftex.def Info: Figure/chuky_phuc.jpg  used on input line 24.
@@ -1552,7 +1552,7 @@ as been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.38 
      ] [5]
-<Figure/flowchart.png, id=117, 604.8999pt x 375.44266pt>
+<Figure/flowchart.png, id=122, 604.8999pt x 375.44266pt>
 File: Figure/flowchart.png Graphic file (type png)
 <use Figure/flowchart.png>
 Package pdftex.def Info: Figure/flowchart.png  used on input line 60.
@@ -1717,20 +1717,62 @@ Underfull \hbox (badness 10000) in paragraph at lines 213--213
 \T5/cmr/m/n/10 nh�m ch�n, r�p
  []
 
-) (section3_2.tex [12] [13
+[12]
+<Figure/cau5.png, id=175, 469.755pt x 194.472pt>
+File: Figure/cau5.png Graphic file (type png)
+<use Figure/cau5.png>
+Package pdftex.def Info: Figure/cau5.png  used on input line 222.
+(pdftex.def)             Requested size: 364.19667pt x 150.77061pt.
+ [13
 pdfTeX warning (ext4): destination with the same identifier (name{table.0.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.8 \item G
-           iải pháp được xây dựng dưới dạng một hệ thốn...
-]
-<Figure/chart.jpg, id=179, 330.23375pt x 1075.01625pt>
+l.224 \end{figure}
+                  ]
+<Figure/cau1.png, id=185, 469.755pt x 197.757pt>
+File: Figure/cau1.png Graphic file (type png)
+<use Figure/cau1.png>
+Package pdftex.def Info: Figure/cau1.png  used on input line 228.
+(pdftex.def)             Requested size: 364.19667pt x 153.31741pt.
+<Figure/cau3.png, id=186, 469.755pt x 197.757pt>
+File: Figure/cau3.png Graphic file (type png)
+<use Figure/cau3.png>
+Package pdftex.def Info: Figure/cau3.png  used on input line 234.
+(pdftex.def)             Requested size: 364.19667pt x 153.31741pt.
+<Figure/cau6.png, id=187, 469.755pt x 197.757pt>
+File: Figure/cau6.png Graphic file (type png)
+<use Figure/cau6.png>
+Package pdftex.def Info: Figure/cau6.png  used on input line 240.
+(pdftex.def)             Requested size: 364.19667pt x 153.31741pt.
+ [14 <./Figure/cau5.png> <./Figure/cau1.png> <./Figure/cau3.png>]
+<tyle.png, id=195, 430.60875pt x 243.40938pt>
+File: tyle.png Graphic file (type png)
+<use tyle.png>
+Package pdftex.def Info: tyle.png  used on input line 246.
+(pdftex.def)             Requested size: 364.19667pt x 205.87383pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--257
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+
+ []
+
+[15 <./Figure/cau6.png> <./tyle.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
+
+ []
+
+[16]) (section3_2.tex [17] [18]
+<Figure/chart.jpg, id=218, 330.23375pt x 1075.01625pt>
 File: Figure/chart.jpg Graphic file (type jpg)
 <use Figure/chart.jpg>
 Package pdftex.def Info: Figure/chart.jpg  used on input line 36.
 (pdftex.def)             Requested size: 187.22235pt x 609.46242pt.
- [14] [15
+ [19] [20
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.2}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1751,7 +1793,7 @@ Underfull \hbox (badness 1521) in paragraph at lines 99--99
  kh�ng
  []
 
-[16
+[21
 pdfTeX warning (ext4): destination with the same identifier (name{table.0.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1763,7 +1805,7 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.103 ...{Các tính năng chính (Core Features)}
-                                                  ] [17
+                                                  ] [22
 pdfTeX warning (ext4): destination with the same identifier (name{table.0.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1771,12 +1813,12 @@ as been already used, duplicate ignored
 l.110 \item \textbf
                    {Hội thoại Phân nhánh theo Ngữ cảnh (Contextual...
 ]
-<Figure/architecture_map.png, id=205, 785.93625pt x 644.4075pt>
+<Figure/architecture_map.png, id=243, 785.93625pt x 644.4075pt>
 File: Figure/architecture_map.png Graphic file (type png)
 <use Figure/architecture_map.png>
 Package pdftex.def Info: Figure/architecture_map.png  used on input line 125.
 (pdftex.def)             Requested size: 409.71692pt x 335.93945pt.
- [18]
+ [23]
 
 Package array Warning: Column C is already defined on input line 132.
 
@@ -1790,30 +1832,30 @@ Overfull \hbox (8.7633pt too wide) in paragraph at lines 165--165
  []|\T5/cmr/bx/n/14.4 STT| 
  []
 
-[19
+[24
 pdfTeX warning (ext4): destination with the same identifier (name{figure.0.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.165 \end{xltabular}
                       <./Figure/architecture_map.png>]
-ignored error: Infinite glue shrinkage found in box being split [20] [21]
-[22]) [23] (main.aux)
+ignored error: Infinite glue shrinkage found in box being split [25] [26]
+[27]) [28] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4B861E6E5015E0D747BB4C85E60128A0;2635.
+(rerunfilecheck)             Checksum: D664AE65D43182958D00A4BA6D694483;2951.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35175 strings out of 467871
- 677431 string characters out of 5418376
- 1295679 words of memory out of 5000000
- 63444 multiletter control sequences out of 15000+600000
+ 35234 strings out of 467871
+ 678499 string characters out of 5418376
+ 1295987 words of memory out of 5000000
+ 63494 multiletter control sequences out of 15000+600000
  644618 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  116i,19n,121p,1886b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1829,9 +1871,9 @@ MiKTeX/fonts/type1/vntex/vnr/vnr10.pfb><C:/Users/phuct/AppData/Local/Programs/M
 iKTeX/fonts/type1/vntex/vnr/vnr12.pfb><C:/Users/phuct/AppData/Local/Programs/Mi
 KTeX/fonts/type1/vntex/vnr/vnti12.pfb><C:/Users/phuct/AppData/Local/Programs/Mi
 KTeX/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (25 pages, 1182564 bytes).
+Output written on main.pdf (30 pages, 1700539 bytes).
 PDF statistics:
- 302 PDF objects out of 1000 (max. 8388607)
- 72 named destinations out of 1000 (max. 500000)
- 167 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 343 PDF objects out of 1000 (max. 8388607)
+ 81 named destinations out of 1000 (max. 500000)
+ 200 words of extra memory for PDF output out of 10000 (max. 10000000)
 
