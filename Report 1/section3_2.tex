@@ -6,6 +6,7 @@ Từ các pain points đã xác định, nhóm đề xuất một giải pháp n
 \item \textbf{Mô tả ngắn:} 
 \begin{itemize}[label=+]
 \item Giải pháp được xây dựng dưới dạng một hệ thống học tiếng Anh tích hợp trí tuệ nhân tạo, kết hợp với mô hình \textbf{game nhập vai (RPG)}. Trong đó, người học sẽ tương tác với các nhân vật (NPC) để thực hiện nhiệm vụ, từ đó học từ vựng và ngữ pháp trong bối cảnh cụ thể.
+\item Hệ thống AI sẽ nhận dạng mẫu các câu/từ vựng mà người dùng thường xuyên chọn sai để điều chỉnh tần suất xuất hiện của từ đó trong tương lai.
 \item Khác với các phương pháp học truyền thống, hệ thống không chỉ cung cấp kiến thức mà còn tạo điều kiện để người học \textbf{vận dụng kiến thức ngay trong quá trình học}, thông qua các tình huống mô phỏng thực tế.
 \end{itemize}
 \item \textbf{Tính mới:} Giải pháp kết hợp ba thành phần chính:
@@ -33,7 +34,7 @@ $\rightarrow$ \textbf{Quest-based Learning:} học thông qua nhiệm vụ và t
 \begin{figure}[H]
     \centering
     % Tăng lên 85% chiều cao trang giấy (bự hết cỡ có thể)
-    \includegraphics[height=0.85\textheight, keepaspectratio]{Figure/chart.jpg}
+    \includegraphics[width=0.9\textwidth]{Figure/chart.png}
     \caption{Sơ đồ vòng lặp học tập thích ứng (Integrated Learning Loop)}
     \label{fig:learning-loop}
 \end{figure}
@@ -62,20 +63,20 @@ $\rightarrow$ \textbf{Quest-based Learning:} học thông qua nhiệm vụ và t
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.5} % Dãn dòng cho dễ đọc
-    % Căn lề trái (l) cho nội dung, chia độ rộng các cột cho cân đối
-    \begin{tabular}{|p{3.5cm}|p{4cm}|p{5cm}|}
-        \hline
-        \centering\arraybackslash \textbf{Tiêu chí} & \centering\arraybackslash \textbf{AS-IS} & \centering\arraybackslash \textbf{TO-BE} \\ \hline
+    \renewcommand{\arraystretch}{1.5} % Dãn dòng cho giống hình
+    \begin{tabular}{||c||c||c||}
+        \hline \hline
+        \textbf{Tiêu chí} & \textbf{AS-IS} & \textbf{TO-BE} \\ \hline \hline
         Ngữ cảnh & Rời rạc & Liên tục (Game) \\ \hline
         Phản hồi & Trễ & Real-time \\ \hline
         Động lực & Thấp & Cao \\ \hline
         Ghi nhớ & Ngắn hạn & Dài hạn \\ \hline
-        Trải nghiệm & Thụ động & Có tính tương tác \\ \hline
+        Trải nghiệm & Thụ động & Có tính tương tác \\ \hline \hline
     \end{tabular}
-    \caption{Bảng so sánh thực trạng (AS-IS) và giải pháp đề xuất (TO-BE)}
-    \label{tab:as-is-to-be}
+    \caption{Bảng so sánh thực trạng và giải pháp đề xuất}
+    \label{tab:as-is-to-be-double}
 \end{table}
+
 \subsubsection{Tính khả thi}
 \begin{table}[H]
     \centering % Lệnh này sẽ tự động căn giữa bảng 0.9\textwidth
@@ -124,35 +125,37 @@ $\rightarrow$ \textbf{Quest-based Learning:} học thông qua nhiệm vụ và t
 \newcolumntype{C}{>{\centering\arraybackslash}m{2cm}}   
 \newcolumntype{P}{>{\raggedright\arraybackslash}X}      
 
+\newcolumntype{S}{>{\centering\arraybackslash}m{0.8cm}} 
+\newcolumntype{C}{>{\centering\arraybackslash}m{2cm}}   
+\newcolumntype{P}{>{\raggedright\arraybackslash}X} 
+
 \begin{xltabular}{\textwidth}{|S|P|P|C|C|P|}
-    % Caption và Label phải đặt ở ĐẦU bảng trong xltabular
     \caption{Bảng phân tích rủi ro dự án (Risk Matrix)}
     \label{tab:rui-ro} \\
     \hline
     
-    % --- ĐÂY LÀ PHẦN TIÊU ĐỀ CHO TRANG ĐẦU TIÊN ---
     \rowcolor[HTML]{EFEFEF} 
     \textbf{STT} & \centering\arraybackslash \textbf{RỦI RO} & \centering\arraybackslash \textbf{NGUYÊN NHÂN} & \textbf{KHẢ NĂNG XẢY RA (1-5)} & \textbf{TÁC ĐỘNG (1-5)} & \centering\arraybackslash \textbf{BIỆN PHÁP PHÒNG NGỪA} \\ \hline
     \endfirsthead
     
-    % --- ĐÂY LÀ PHẦN TIÊU ĐỀ SẼ TỰ ĐỘNG LẶP LẠI NẾU BẢNG BỊ CẮT SANG TRANG 2 ---
     \hline
     \rowcolor[HTML]{EFEFEF} 
     \textbf{STT} & \centering\arraybackslash \textbf{RỦI RO} & \centering\arraybackslash \textbf{NGUYÊN NHÂN} & \textbf{KHẢ NĂNG XẢY RA (1-5)} & \textbf{TÁC ĐỘNG (1-5)} & \centering\arraybackslash \textbf{BIỆN PHÁP PHÒNG NGỪA} \\ \hline
     \endhead
     
-    % --- NỘI DUNG BẢNG ---
     1 & Người dùng không muốn sử dụng lâu dài & Game chưa đủ hấp dẫn, thiếu động lực & 4 & 4 & Thêm game hóa (quest, level, reward), thiết kế UI đơn giản, có daily quest \\ \hline
     
-    2 & AI sửa lỗi không chính xác & Prompt chưa tốt, model hạn chế & 3 & 5 & Tối ưu prompt, kiểm tra output, giới hạn dạng bài (chỉ grammar cơ bản) \\ \hline
+    2 & AI tạo đáp án nhiễu quá lộ liễu hoặc vô lý & Prompt chưa chặt chẽ, LLM thiếu ngữ cảnh & 3 & 5 & Tối ưu Prompt Engineering, yêu cầu AI giải thích lý do sai của từng đáp án nhiễu \\ \hline
     
     3 & Hệ thống hoạt động chậm & Gọi API AI có độ trễ & 3 & 3 & Xử lý async, loading UI, tối ưu request \\ \hline
     
     4 & Thiếu dữ liệu để cá nhân hóa & Ít người dùng hoặc ít tương tác & 2 & 3 & Dùng rule-based ban đầu, lưu toàn bộ lịch sử người dùng \\ \hline
     
-    5 & Người dùng nhập sai quá nhiều (input lỗi) & Trình độ thấp hoặc nhập linh tinh & 3 & 3 & Giới hạn input, gợi ý câu mẫu, validate dữ liệu đầu vào \\ \hline
+    5 & Người chơi "spam" click, chọn lụi đáp án liên tục & Lợi dụng cơ chế trắc nghiệm để qua màn nhanh & 4 & 4 & Thuật toán phạt (Penalty): Trừ HP, thêm thời gian chờ (Cooldown) sau khi chọn sai \\ \hline
     
     6 & Scope quá lớn, không kịp deadline & Thêm quá nhiều tính năng & 4 & 5 & Giới hạn chỉ vocab + grammar, ưu tiên core features trước \\ \hline
+    
+    7 & Người chơi mắc kẹt ở một câu hỏi & Chọn sai cạn HP, không hiểu từ vựng & 3 & 4 & Luồng điều khiển: Cung cấp Hint sau n lần sai, vật phẩm trợ giúp 50/50 \\ \hline
     
 \end{xltabular}
 \textbf{Công thức tính mức độ ưu tiên rủi ro:}
@@ -166,7 +169,7 @@ Dựa vào điểm số (Score), mức độ ưu tiên xử lý rủi ro đượ
 \subsubsection{Chỉ số định lượng (Quantitative Metrics)}
 \begin{itemize}[label=-]
 \item \textbf{Hiệu suất:} Thời gian phản hồi AI (sửa lỗi + sinh bài tập) $\leq$ 5 giây.
-\item \textbf{Sử dụng:} $\leq$ 70$\%$ người dùng quay lại ít nhất 2 lần/tuần.
+\item \textbf{Sử dụng:} $\geq$ 70$\%$ người dùng quay lại ít nhất 2 lần/tuần.
 \item \textbf{Hiệu quả học tập:} Điểm bài test ngữ pháp/từ vựng tăng $\geq$ 25$\%$ sau 2 tuần sử dụng.
 Hoàn thành nhiệm vụ: $\geq$ 80$\%$ quest được hoàn thành mỗi phiên chơi.
 \item \textbf{Độ chính xác AI:} $\geq$ 90$\%$ câu sửa ngữ pháp được đánh giá đúng.
