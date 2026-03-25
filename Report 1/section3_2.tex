@@ -104,28 +104,20 @@ $\rightarrow$ \textbf{Quest-based Learning:} học thông qua nhiệm vụ và t
 \begin{itemize}[label=-]
 \item \textbf{Hệ thống Phản hồi AI Tức thời (Real-time AI Feedback Engine):} 
 
-\textbf{Mô tả:} Khi người chơi tương tác với NPC thông qua việc chọn đáp án từ vựng/ngữ pháp hoặc điền từ vào chỗ trống (dựa trên bài đọc), hệ thống AI LLM sẽ lập tức đánh giá đúng/sai và đưa ra lời giải thích chi tiết về quy tắc ngữ pháp hoặc ngữ nghĩa của từ vựng đó ngay trên màn hình.
+\hspace{0.5cm} \textbf{Mô tả:} Khi người chơi tương tác với NPC thông qua việc chọn đáp án từ vựng/ngữ pháp hoặc điền từ vào chỗ trống (dựa trên bài đọc), hệ thống AI LLM sẽ lập tức đánh giá đúng/sai và đưa ra lời giải thích chi tiết về quy tắc ngữ pháp hoặc ngữ nghĩa của từ vựng đó ngay trên màn hình.
 
-\textbf{Giải quyết:} Pain Point 1 (Thiếu phản hồi $\&$ sửa lỗi theo thời gian thực). Nó giúp giải quyết tình trạng người học không nhận diện và sửa lỗi kịp thời. 
+\hspace{0.5cm} \textbf{Giải quyết:} Pain Point 1 (Thiếu phản hồi $\&$ sửa lỗi theo thời gian thực). Nó giúp giải quyết tình trạng người học không nhận diện và sửa lỗi kịp thời. 
 \item \textbf{Hội thoại Phân nhánh theo Ngữ cảnh (Contextual Choice-Based Dialogue)} 
 
-\textbf{Mô tả:} Người chơi không cần gõ câu trả lời (loại bỏ Writing). Thay vào đó, họ phải đọc hiểu (Reading) lời thoại của NPC và đưa ra quyết định bằng cách chọn các câu phản hồi có sẵn. Các lựa chọn này chứa từ vựng hoặc cấu trúc ngữ pháp mục tiêu. Chọn đúng ngữ cảnh sẽ giúp hội thoại tiếp tục trơn tru.
+\hspace{0.5cm} \textbf{Mô tả:} Người chơi không cần gõ câu trả lời (loại bỏ Writing). Thay vào đó, họ phải đọc hiểu (Reading) lời thoại của NPC và đưa ra quyết định bằng cách chọn các câu phản hồi có sẵn. Các lựa chọn này chứa từ vựng hoặc cấu trúc ngữ pháp mục tiêu. Chọn đúng ngữ cảnh sẽ giúp hội thoại tiếp tục trơn tru.
 
-\textbf{Giải quyết:} Pain Point 2 (Áp lực khi tự viết câu, thiếu tự tin). Bằng cách này, người chơi vẫn học được cách sử dụng từ trong câu mà không bị rào cản tâm lý khi phải tự "sản xuất" (produce) ngôn ngữ.
-
+\hspace{0.5cm} \textbf{Giải quyết:} Pain Point 2 (Áp lực khi tự viết câu, thiếu tự tin). Bằng cách này, người chơi vẫn học được cách sử dụng từ trong câu mà không bị rào cản tâm lý khi phải tự "sản xuất" (produce) ngôn ngữ.
 \item \textbf{Học tập dựa trên Nhiệm vụ (Quest-based Learning System)}
 
-\textbf{Mô tả:} Từ vựng và bài tập đọc hiểu không xuất hiện dưới dạng danh sách khô khan, mà được lồng ghép vào các nhiệm vụ RPG (ví dụ: đọc một bức thư cổ để tìm mật mã, hoặc chọn đúng từ vựng phép thuật để mở cửa). Hoàn thành nhiệm vụ sẽ được thưởng EXP và vật phẩm.
+\hspace{0.5cm} \textbf{Mô tả:} Từ vựng và bài tập đọc hiểu không xuất hiện dưới dạng danh sách khô khan, mà được lồng ghép vào các nhiệm vụ RPG (ví dụ: đọc một bức thư cổ để tìm mật mã, hoặc chọn đúng từ vựng phép thuật để mở cửa). Hoàn thành nhiệm vụ sẽ được thưởng EXP và vật phẩm.
 
-\textbf{Giải quyết:} Pain Point 3 (Học thụ động, thiếu môi trường thực hành). Giúp người học áp dụng kiến thức vào các tình huống mô phỏng thực tế , xóa bỏ sự nhàm chán của việc lặp đi lặp lại một kiểu câu hỏi.
+\hspace{0.5cm} \textbf{Giải quyết:} Pain Point 3 (Học thụ động, thiếu môi trường thực hành). Giúp người học áp dụng kiến thức vào các tình huống mô phỏng thực tế , xóa bỏ sự nhàm chán của việc lặp đi lặp lại một kiểu câu hỏi.
 \end{itemize}
-Dưới đây là sơ đồ minh họa chi tiết kiến trúc hệ thống 3 lớp (3-tier architecture) của đồ án, thể hiện rõ luồng tương tác giữa người chơi (Frontend), các module xử lý AI tại Backend (FastAPI) và hệ thống lưu trữ dữ liệu (Firebase).
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Figure/architecture_map.png}
-    \caption{Minh họa thêm kiến trúc hệ thống}
-    \label{fig:arch-map}
-\end{figure}
 \subsection{Rủi ro (Risks)}
 \renewcommand{\arraystretch}{1.6} 
 \newcolumntype{S}{>{\centering\arraybackslash}m{0.8cm}} 

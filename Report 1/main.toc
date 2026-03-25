@@ -22,8 +22,8 @@
 \contentsline {subsubsection}{\numberline {3.7.2}Quy trình đề xuất (To-Be Process)}{19}{subsubsection.0.3.7.2}%
 \contentsline {subsubsection}{\numberline {3.7.3}Tính khả thi}{22}{subsubsection.0.3.7.3}%
 \contentsline {subsubsection}{\numberline {3.7.4}Các tính năng chính (Core Features)}{22}{subsubsection.0.3.7.4}%
-\contentsline {subsection}{\numberline {3.8}Rủi ro (Risks)}{24}{subsection.0.3.8}%
-\contentsline {subsection}{\numberline {3.9}Tiêu chí thành công (Success Criteria)}{27}{subsection.0.3.9}%
-\contentsline {subsubsection}{\numberline {3.9.1}Chỉ số định lượng (Quantitative Metrics)}{27}{subsubsection.0.3.9.1}%
-\contentsline {subsubsection}{\numberline {3.9.2}Chỉ số định tính (Qualitative Metrics)}{27}{subsubsection.0.3.9.2}%
-\contentsline {subsubsection}{\numberline {3.9.3}Cách đo lường}{27}{subsubsection.0.3.9.3}%
+\contentsline {subsection}{\numberline {3.8}Rủi ro (Risks)}{23}{subsection.0.3.8}%
+\contentsline {subsection}{\numberline {3.9}Tiêu chí thành công (Success Criteria)}{26}{subsection.0.3.9}%
+\contentsline {subsubsection}{\numberline {3.9.1}Chỉ số định lượng (Quantitative Metrics)}{26}{subsubsection.0.3.9.1}%
+\contentsline {subsubsection}{\numberline {3.9.2}Chỉ số định tính (Qualitative Metrics)}{26}{subsubsection.0.3.9.2}%
+\contentsline {subsubsection}{\numberline {3.9.3}Cách đo lường}{26}{subsubsection.0.3.9.3}%
