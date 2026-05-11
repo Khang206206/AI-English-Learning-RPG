@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bfwdcjc0gda6f"]
+
+[ext_resource type="Script" uid="uid://b3e5735kin7eb" path="res://scripts/teleport_gate.gd" id="1_hkdvx"]
+[ext_resource type="PackedScene" uid="uid://bvlrlbv1wtv3c" path="res://scenes/door_interact.tscn" id="2_jy684"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d7bhm"]
+size = Vector2(72, 106.5)
+
+[node name="TeleportGate" type="Area2D" unique_id=527335235]
+script = ExtResource("1_hkdvx")
+target_scene_path = null
+destination_spawn_id = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2035105113]
+position = Vector2(11, -147.75)
+shape = SubResource("RectangleShape2D_d7bhm")
+
+[node name="DoorInteract" parent="." unique_id=843343296 instance=ExtResource("2_jy684")]
+position = Vector2(7, -185)

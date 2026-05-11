@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://d3k8fsrfa8b5k" path="res://assets/tileset nơi nhận sách/Statues.png" id="5_fr77l"]
 [ext_resource type="Texture2D" uid="uid://b7xc5abgcpx8w" path="res://assets/tileset nơi nhận sách/Candles.png" id="6_o5y4x"]
 [ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerTopDown.tscn" id="7_nog23"]
+[ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="8_ojiok"]
+[ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_xy6rp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i3ued"]
 texture = ExtResource("1_fteks")
@@ -140,6 +142,7 @@ texture = ExtResource("1_fteks")
 1:11/0 = 0
 2:11/0 = 0
 3:11/0 = 0
+3:11/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.613737, 8, 4.613737, 8, 8, -8, 8)
 4:11/0 = 0
 5:11/0 = 0
 7:11/0 = 0
@@ -794,3 +797,13 @@ layer_8/tile_data = PackedInt32Array(262172, 65539, 0, 327708, 65539, 1, 393244,
 
 [node name="PlayerTopDown" parent="." unique_id=1446754781 instance=ExtResource("7_nog23")]
 position = Vector2(543, 104)
+
+[node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("8_ojiok")]
+visible = false
+position = Vector2(538, 352)
+scale = Vector2(0.5, 0.5)
+
+[node name="TeleportGate" parent="." unique_id=527335235 instance=ExtResource("9_xy6rp")]
+position = Vector2(538, 351)
+scale = Vector2(0.5, 0.5)
+target_scene_path = "uid://ce8is5d4812re"
