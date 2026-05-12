@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GameManager="*uid://cbdnveia32mt2"
 
+[editor]
+
+movie_writer/movie_file="D:/AI-English-Learning-RPG/game-/records/Untitled.avi"
+
 [input]
 
 ui_left={

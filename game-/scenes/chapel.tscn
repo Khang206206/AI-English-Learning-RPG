@@ -6,7 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://ddyndhutliv5h" path="res://assets/tileset nơi nhận sách/Candelabra.png" id="4_davpk"]
 [ext_resource type="Texture2D" uid="uid://d3k8fsrfa8b5k" path="res://assets/tileset nơi nhận sách/Statues.png" id="5_fr77l"]
 [ext_resource type="Texture2D" uid="uid://b7xc5abgcpx8w" path="res://assets/tileset nơi nhận sách/Candles.png" id="6_o5y4x"]
-[ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerTopDown.tscn" id="7_nog23"]
+[ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerInChapel.tscn" id="7_nog23"]
+[ext_resource type="Script" path="res://scripts/player_in_chapel.gd" id="8_74dbc"]
 [ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="8_ojiok"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_xy6rp"]
 
@@ -795,8 +796,9 @@ layer_7/tile_data = PackedInt32Array(131109, 131073, 5, 196645, 131073, 6, 13110
 layer_8/name = "Layer8"
 layer_8/tile_data = PackedInt32Array(262172, 65539, 0, 327708, 65539, 1, 393244, 65539, 2, 458780, 65539, 3, 524316, 65539, 4, 262173, 131075, 0, 327709, 131075, 1, 393245, 131075, 2, 458781, 131075, 3, 524317, 131075, 4, 262182, 262147, 0, 327718, 262147, 1, 393254, 262147, 2, 458790, 262147, 3, 524326, 262147, 4, 262183, 327683, 0, 327719, 327683, 1, 393255, 327683, 2, 458791, 327683, 3, 524327, 327683, 4, 327720, 393219, 1, 393256, 393219, 2, 458792, 393219, 3, 524315, 3, 4, 458782, 196611, 3, 524318, 196611, 4, 524328, 393219, 4, 262177, 4, 2, 327713, 4, 3, 262178, 65540, 2, 327714, 65540, 3, 393248, 262148, 4, 458784, 262148, 5, 393249, 327684, 4, 458785, 327684, 5, 524320, 262148, 4, 589856, 262148, 5, 524321, 327684, 4, 589857, 327684, 5, 655392, 262148, 4, 720928, 262148, 5, 655393, 327684, 4, 720929, 327684, 5, 786464, 262148, 4, 852000, 262148, 5, 786465, 327684, 4, 852001, 327684, 5, 917536, 262148, 4, 983072, 262148, 5, 917537, 327684, 4, 983073, 327684, 5, 917538, 262148, 4, 983074, 262148, 5, 917539, 327684, 4, 983075, 327684, 5, 786466, 262148, 4, 852002, 262148, 5, 786467, 327684, 4, 852003, 327684, 5, 655394, 262148, 4, 720930, 262148, 5, 655395, 327684, 4, 720931, 327684, 5, 524322, 262148, 4, 589858, 262148, 5, 524323, 327684, 4, 589859, 327684, 5, 393250, 262148, 4, 458786, 262148, 5, 393251, 327684, 4, 458787, 327684, 5, 131102, 1, 8, 196638, 1, 9, 131103, 65537, 8, 196639, 65537, 9, 131108, 393217, 8, 196644, 393217, 9, 131109, 458753, 8, 196645, 458753, 9)
 
-[node name="PlayerTopDown" parent="." unique_id=1446754781 instance=ExtResource("7_nog23")]
-position = Vector2(543, 104)
+[node name="PlayerInChapel" parent="." unique_id=1446754781 instance=ExtResource("7_nog23")]
+position = Vector2(542, 97)
+script = ExtResource("8_74dbc")
 
 [node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("8_ojiok")]
 visible = false
