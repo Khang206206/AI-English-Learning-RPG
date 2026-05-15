@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://clc44mj5uvd60"]
 
 [ext_resource type="Texture2D" uid="uid://b502erqf38bu7" path="res://assets/npc hướng dẫn/Idle/Idle1.png" id="1_6gl70"]
-[ext_resource type="Script" path="res://scenes/instructor_side_view.gd" id="1_056m0"]
 [ext_resource type="Texture2D" uid="uid://cunbyvo8rr6x3" path="res://assets/npc hướng dẫn/Idle/Idle2.png" id="2_3svm1"]
 [ext_resource type="Texture2D" uid="uid://dt5h2iaa5l1jh" path="res://assets/npc hướng dẫn/Idle/Idle3.png" id="3_uk4n3"]
 [ext_resource type="Texture2D" uid="uid://cvvm81pmyeocg" path="res://assets/npc hướng dẫn/Idle/Idle4.png" id="4_6qlfo"]
@@ -46,10 +45,10 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="InstructorSideView" type="CharacterBody2D" unique_id=1955424867]
-script = ExtResource("1_056m0")
+[node name="Elia" type="CharacterBody2D" unique_id=1955424867]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=107805209]
+texture_filter = 1
 position = Vector2(9.5, -11)
 scale = Vector2(1.296875, 1.34375)
 sprite_frames = SubResource("SpriteFrames_ogtqo")

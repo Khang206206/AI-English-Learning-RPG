@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://sibltqkspavx"]
 
-[ext_resource type="Script" uid="uid://ub1ms4a4jvxq" path="res://scripts/player_side_view.gd" id="1_18too"]
+[ext_resource type="Script" uid="uid://cmdxvyt0vdhac" path="res://scripts/player_side_view.gd" id="1_18too"]
 [ext_resource type="Texture2D" uid="uid://clg0smmg0a2fo" path="res://assets/player2/Crouch/Crouch1.png" id="2_xolwe"]
 [ext_resource type="Texture2D" uid="uid://dvflqc0dt3p8t" path="res://assets/player2/Crouch/Crouch2.png" id="3_plunp"]
 [ext_resource type="Texture2D" uid="uid://c3r8ov0a3bpoi" path="res://assets/player2/Crouch/Crouch3.png" id="4_wm1p1"]
@@ -210,6 +210,7 @@ position = Vector2(543, 104)
 script = ExtResource("1_18too")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=662991125]
+texture_filter = 1
 position = Vector2(20.000004, -22.999998)
 scale = Vector2(3.3750002, 3.7499998)
 sprite_frames = SubResource("SpriteFrames_vau08")

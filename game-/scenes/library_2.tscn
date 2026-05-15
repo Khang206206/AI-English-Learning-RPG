@@ -3618,5 +3618,5 @@ position = Vector2(1017, 596)
 target_scene_path = ""
 destination_spawn_id = ""
 
-[node name="InstructorSideView" parent="." unique_id=1955424867 instance=ExtResource("7_sggt6")]
+[node name="Elia" parent="." unique_id=1955424867 instance=ExtResource("7_sggt6")]
 position = Vector2(704, 476)

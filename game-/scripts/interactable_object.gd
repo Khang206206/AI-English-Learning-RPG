@@ -21,5 +21,11 @@ func _input(event):
 		do_action()
 
 func do_action():
-	print("Bạn vừa tương tác với: ", name)
-	# Bạn có thể dùng lệnh match name để phân loại hành động
+	# Chạy animation lóe sáng
+	$AnimationPlayer.play("flash_and_change")
+	
+	# Đợi cho đến khi animation chạy xong (màn hình trắng xóa) mới chuyển cảnh
+	await $AnimationPlayer.animation_finished
+	
+	# Chuyển cảnh
+	get_tree().change_scene_to_file("res://scenes/library_1.tscn")
