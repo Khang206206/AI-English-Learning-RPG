@@ -1,0 +1,61 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- CÁC THƯ VIỆN CẦN THIẾT ---
+\usepackage[utf8]{vietnam}    % Hỗ trợ gõ tiếng Việt có dấu
+\usepackage{graphicx}         % Hỗ trợ chèn hình ảnh
+\usepackage{amsmath}          % Hỗ trợ soạn thảo công thức toán học
+\usepackage{geometry}         % Căn lề trang giấy
+\geometry{a4paper, left=3cm, right=2cm, top=2.5cm, bottom=2.5cm}
+\usepackage{tikz}             % Hỗ trợ vẽ khung bìa
+\usepackage{tabularx}         % Hỗ trợ tạo bảng
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{ragged2e}
+
+% Tự pha các mã màu chuẩn IDE
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+% Cấu hình form hiển thị cho code
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+% --- CẤU HÌNH ĐƯỜNG DẪN ẢNH ---
+% Lệnh này bảo LaTeX hãy tự động tìm ảnh trong thư mục "Figure"
+\graphicspath{{Figure/}} 
+
+\begin{document}
+
+% 1. GỌI TRANG BÌA
+\input{Main content/title}
+
+% 2. MỤC LỤC TỰ ĐỘNG
+\newpage
+\tableofcontents
+\newpage
+\input{Main content/part1}
+
+\end{document})

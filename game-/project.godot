@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*uid://cbdnveia32mt2"
+GameManager="*uid://boxqm7ufhdtu"
 
 [editor]
 
