@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://d3k8fsrfa8b5k" path="res://assets/tileset nơi nhận sách/Statues.png" id="5_fr77l"]
 [ext_resource type="Texture2D" uid="uid://b7xc5abgcpx8w" path="res://assets/tileset nơi nhận sách/Candles.png" id="6_o5y4x"]
 [ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerInChapel.tscn" id="7_nog23"]
-[ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="8_ojiok"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_xy6rp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i3ued"]
@@ -704,7 +703,9 @@ texture = ExtResource("5_fr77l")
 3:4/0 = 0
 4:4/0 = 0
 5:4/0 = 0
+5:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 5.6583557, -8, 4.4396324, -3.0468063, 1.828085, 1.1316719, -2.6986008, 3.0468082, -8, 1.1316719)
 6:4/0 = 0
+6:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -3.5691166, -8, -8, 1.1316719)
 7:4/0 = 0
 8:4/0 = 0
 9:4/0 = 0
@@ -767,12 +768,12 @@ sources/2 = SubResource("TileSetAtlasSource_fr77l")
 sources/3 = SubResource("TileSetAtlasSource_o5y4x")
 sources/4 = SubResource("TileSetAtlasSource_nog23")
 
-[sub_resource type="Animation" id="Animation_xy6rp"]
+[sub_resource type="Animation" id="Animation_ojiok"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../CanvasLayer/FlashRect:modulate")
+tracks/0/path = NodePath("TeleportGate/CanvasLayer/FlashRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -782,13 +783,13 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_74dbc"]
+[sub_resource type="Animation" id="Animation_xy6rp"]
 resource_name = "flash_and_change"
 length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../CanvasLayer/FlashRect:modulate")
+tracks/0/path = NodePath("TeleportGate/CanvasLayer/FlashRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -798,10 +799,10 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_yguj4"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_74dbc"]
 _data = {
-&"RESET": SubResource("Animation_xy6rp"),
-&"flash_and_change": SubResource("Animation_74dbc")
+&"RESET": SubResource("Animation_ojiok"),
+&"flash_and_change": SubResource("Animation_xy6rp")
 }
 
 [node name="chapel" type="Node2D" unique_id=301128506]
@@ -841,29 +842,23 @@ layer_8/tile_data = PackedInt32Array(262172, 65539, 0, 327708, 65539, 1, 393244,
 [node name="PlayerInChapel" parent="." unique_id=1446754781 instance=ExtResource("7_nog23")]
 position = Vector2(544, 143)
 
-[node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("8_ojiok")]
-visible = false
-position = Vector2(538, 352)
-scale = Vector2(0.5, 0.5)
-
-[node name="TeleportGate" parent="." unique_id=527335235 instance=ExtResource("9_xy6rp")]
-position = Vector2(538, 351)
+[node name="TeleportGate" parent="." unique_id=527335235 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
+position = Vector2(539, 149)
 scale = Vector2(0.5, 0.5)
 target_scene_path = "uid://ce8is5d4812re"
+destination_spawn_id = ""
+use_flash = true
+flash_animation_player = NodePath("../AnimationPlayer")
 
-[node name="InteractableObject2" parent="." unique_id=2076424014 instance=ExtResource("8_ojiok")]
-position = Vector2(539, 151)
-scale = Vector2(0.5, 0.5)
+[node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate" unique_id=1474954135]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="InteractableObject2" unique_id=1671485561]
-libraries/ = SubResource("AnimationLibrary_yguj4")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1474954135]
-
-[node name="FlashRect" type="ColorRect" parent="CanvasLayer" unique_id=1423402934]
+[node name="FlashRect" type="ColorRect" parent="TeleportGate/CanvasLayer" unique_id=1423402934]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=230635185]
+libraries/ = SubResource("AnimationLibrary_74dbc")

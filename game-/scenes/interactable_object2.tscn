@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bf6mkbk8ijqqg"]
+
+[ext_resource type="Script" uid="uid://codh27yrc85kk" path="res://scripts/interactable_object.gd" id="1_nkurx"]
+[ext_resource type="PackedScene" uid="uid://bvlrlbv1wtv3c" path="res://scenes/door_interact.tscn" id="2_i5pu4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ubwkx"]
+size = Vector2(103, 108.5)
+
+[node name="InteractableObject" type="Area2D" unique_id=1971411768 node_paths=PackedStringArray("quiz_ui_node")]
+position = Vector2(698, 598)
+script = ExtResource("1_nkurx")
+quiz_ui_node = NodePath("")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=865465090]
+position = Vector2(12.5, -148.75)
+shape = SubResource("RectangleShape2D_ubwkx")
+
+[node name="DoorInteract" parent="." unique_id=843343296 instance=ExtResource("2_i5pu4")]
+position = Vector2(7, -185)

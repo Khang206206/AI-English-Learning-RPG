@@ -204,13 +204,15 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hax0n"]
 radius = 4.0
-height = 10.0
+height = 8.0
 
 [node name="PlayerInChapel" type="CharacterBody2D" unique_id=1446754781]
+position = Vector2(0, 1)
 script = ExtResource("1_r702v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=662991125]
-texture_filter = 1
+texture_filter = 3
+texture_repeat = 2
 position = Vector2(1.4999999, -1.9999995)
 scale = Vector2(1.0625, 1.125)
 sprite_frames = SubResource("SpriteFrames_vau08")

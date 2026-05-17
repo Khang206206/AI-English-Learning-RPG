@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="5_midgi"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="6_qdpyw"]
 [ext_resource type="PackedScene" uid="uid://clc44mj5uvd60" path="res://scenes/instructor_side_view.tscn" id="7_sggt6"]
+[ext_resource type="PackedScene" uid="uid://bwisenv78tcms" path="res://scenes/quiz_ui.tscn" id="8_63gu8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdpyw"]
 texture = ExtResource("2_ubwkx")
@@ -3565,13 +3566,19 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_qdpyw")
 sources/1 = SubResource("TileSetAtlasSource_sggt6")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_63gu8"]
+size = Vector2(215, 139.375)
+
 [node name="Library2" type="Node2D" unique_id=1683452602]
+
+[node name="QuizUI" parent="." unique_id=70507873 instance=ExtResource("8_63gu8")]
+visible = false
 
 [node name="background" type="TextureRect" parent="." unique_id=1682581714]
 offset_left = 5.0
 offset_top = -2.0
-offset_right = 1056.0
-offset_bottom = 531.0
+offset_right = 1154.0
+offset_bottom = 639.0
 texture = ExtResource("1_sey31")
 
 [node name="TileMap" type="TileMap" parent="." unique_id=710715240]
@@ -3600,14 +3607,6 @@ position = Vector2(12, 485)
 position = Vector2(529, 277)
 zoom = Vector2(1.05, 1.1)
 
-[node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("5_midgi")]
-visible = false
-position = Vector2(21, 595)
-
-[node name="InteractableObject2" parent="." unique_id=411396207 instance=ExtResource("5_midgi")]
-visible = false
-position = Vector2(1020, 598)
-
 [node name="TeleportGate" parent="." unique_id=527335235 instance=ExtResource("6_qdpyw")]
 position = Vector2(21, 595)
 target_scene_path = "uid://ce8is5d4812re"
@@ -3620,3 +3619,13 @@ destination_spawn_id = ""
 
 [node name="Elia" parent="." unique_id=1955424867 instance=ExtResource("7_sggt6")]
 position = Vector2(704, 476)
+
+[node name="InteractableObject" parent="." unique_id=1971411768 node_paths=PackedStringArray("quiz_ui_node") instance=ExtResource("5_midgi")]
+position = Vector2(704, 598)
+quiz_ui_node = NodePath("../QuizUI")
+
+[node name="CollisionShape2D" parent="InteractableObject" index="0" unique_id=865465090]
+position = Vector2(11, -139.6875)
+shape = SubResource("RectangleShape2D_63gu8")
+
+[editable path="InteractableObject"]

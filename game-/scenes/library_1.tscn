@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://bid557n2og7wm" path="res://assets/tileset trong sách/spin off/BG 1/upstair_1.png" id="6_h01uo"]
 [ext_resource type="PackedScene" uid="uid://sibltqkspavx" path="res://scenes/PlayerSideView.tscn" id="7_4r3co"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_jgmht"]
-[ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="9_tnr7r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dr2oc"]
 texture = ExtResource("2_igipr")
@@ -3655,10 +3654,6 @@ position = Vector2(11, 628)
 [node name="Camera2D" type="Camera2D" parent="." unique_id=26063558]
 position = Vector2(524, 387)
 zoom = Vector2(1.07, 1.2)
-
-[node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("9_tnr7r")]
-visible = false
-position = Vector2(999, 741)
 
 [node name="TeleportGate" parent="." unique_id=527335235 instance=ExtResource("9_jgmht")]
 position = Vector2(1000, 744)
