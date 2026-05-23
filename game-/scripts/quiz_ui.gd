@@ -120,7 +120,6 @@ func _input(event):
 			else:
 				finish_quiz()
 
-# --- PHẦN GỌI OLLAMA AI ĐÃ ĐƯỢC LÀM MỚI ---
 func finish_quiz():
 	is_waiting_for_ai = true
 	answers_container.hide()
@@ -138,32 +137,31 @@ func finish_quiz():
 		if r.is_correct:
 			correct_count += 1
 		else:
-			mistakes_str += "Câu " + str(r.question_id) + " (Đúng: " + r.correct_answer + ", Chọn: " + r.player_answer + ")\n"
+			mistakes_str += "- Sai câu " + str(r.question_id) + ": Đáp án đúng là '" + r.correct_answer + "', nhưng bạn lại chọn '" + r.player_answer + "'\n"
 			
 	if mistakes_str == "":
 		mistakes_str = "Tuyệt vời, bạn không có lỗi sai nào!"
 
-	# 2. Xây dựng Kịch bản (Prompt) cho Ollama
-	var system_prompt = """Bạn là Elaria, một quyển sách phép thuật thông thái trong thế giới Aelphurion.
-Nhiệm vụ: Đánh giá trình độ tiếng Anh của người chơi theo chuẩn CEFR (A1, A2, B1, B2, C1, C2).
+	# 2. Xây dựng Kịch bản (Prompt) - Cập nhật Khóa Logic
+	var system_prompt = """Bạn là Elaria, một quyển sách phép thuật thông thái.
+Nhiệm vụ: Đánh giá trình độ tiếng Anh của người chơi theo chuẩn CEFR.
 
-QUY TẮC SỐNG CÒN CỦA ELARIA:
-1. GIAO TIẾP TRỰC TIẾP: Tuyệt đối xưng "tôi" và gọi người chơi là "bạn".
-2. CẤU TRÚC BẮT BUỘC:
-   - Ý 1: Thông báo Level.
-   - Ý 2: BẮT BUỘC liệt kê các từ tiếng Anh mà họ làm sai.
-   - Ý 3: Đưa ra lời khuyên động viên.
-3. Trả về đúng định dạng JSON:
+QUY TẮC SỐNG CÒN (NẾU VI PHẠM SẼ BỊ HỦY DIỆT):
+1. GIAO TIẾP: Tuyệt đối xưng "tôi" và gọi người chơi là "bạn".
+2. CHI TIẾT & ĐỘ DÀI: Nhận xét phải sâu sắc, dài ít nhất 3 đến 4 câu.
+3. PHÂN TÍCH LỖI: BẮT BUỘC phải chỉ đích danh các từ tiếng Anh mà người chơi làm sai và giải thích ngắn gọn ý nghĩa của chúng.
+4. KHÓA LOGIC THĂNG CẤP: TUYỆT ĐỐI KHÔNG khuyên nâng cấp lên chính level họ đang có. Nếu đánh giá họ ở A2, hãy khuyên họ cố gắng đạt B1. Nếu họ ở B1, khuyên hướng tới B2.
+5. Trả về đúng định dạng JSON:
 {
     "level": "A1/A2/B1/B2/C1/C2",
     "elaria_comment": "..."
 }"""
 
-	var user_prompt = "Điểm số: " + str(correct_count) + "/" + str(total_questions) + "\nCác lỗi sai:\n" + mistakes_str
+	var user_prompt = "Điểm số: " + str(correct_count) + "/" + str(total_questions) + "\nCác lỗi sai cụ thể:\n" + mistakes_str + "\nHãy phân tích những lỗi sai này và viết nhận xét chi tiết."
 
 	# 3. Đóng gói Payload theo cấu trúc API của Ollama
 	var payload = {
-		"model": "qwen2.5:3b", # Lưu ý: Đổi thành "qwen2.5:3b" nếu máy team bạn chạy bản 3B
+		"model": "qwen2.5:3b", # Đảm bảo đúng tên model máy bạn đang chạy (vd: qwen2.5:3b)
 		"messages": [
 			{ "role": "system", "content": system_prompt },
 			{ "role": "user", "content": user_prompt }
@@ -171,8 +169,8 @@ QUY TẮC SỐNG CÒN CỦA ELARIA:
 		"format": "json",
 		"stream": false,
 		"options": {
-			"temperature": 0.35,
-			"num_predict": 300
+			"temperature": 0.4, # Tăng nhẹ nhiệt độ lên 0.4 để AI viết văn dài và mượt hơn
+			"num_predict": 400  # Tăng giới hạn chữ để nó không bị cắt cụt đuôi
 		}
 	}
 	
