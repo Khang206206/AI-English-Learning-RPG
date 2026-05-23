@@ -8,9 +8,9 @@ extends CanvasLayer
 @onready var btn_c = $AnswersContainer/Btn_C
 @onready var btn_d = $AnswersContainer/Btn_D
 
-# Khai báo trạm kết nối mạng
+# Khai báo trạm kết nối mạng (Sử dụng cổng mặc định của Ollama)
 var http_request: HTTPRequest
-const SERVER_URL = "http://127.0.0.1:8000/evaluate_level"
+const SERVER_URL = "http://127.0.0.1:11434/api/chat"
 
 var buttons = []
 var current_question_index = 0
@@ -81,7 +81,7 @@ func _on_answer_selected(selected_index):
 	has_answered = true
 	var correct_index = quiz_data[current_question_index]["correct"]
 	
-	# Đóng gói dữ liệu bài thi (chuẩn định dạng AI cần)
+	# Đóng gói dữ liệu bài thi
 	var result_data = {
 		"question_id": current_question_index + 1,
 		"correct_answer": quiz_data[current_question_index]["options"][correct_index],
@@ -120,7 +120,6 @@ func _input(event):
 			else:
 				finish_quiz()
 
-# --- PHẦN GỌI AI ĐƯỢC THÊM VÀO ĐÂY ---
 func finish_quiz():
 	is_waiting_for_ai = true
 	answers_container.hide()
@@ -129,15 +128,59 @@ func finish_quiz():
 	# Hiển thị thông báo chờ AI suy nghĩ
 	question_text.text = "Elaria đang lật giở những trang sách ma thuật để đánh giá trình độ của bạn...\n(Quá trình này mất vài giây)"
 	
+	# 1. Tính toán điểm và lỗi sai
+	var mistakes_str = ""
+	var correct_count = 0
+	var total_questions = user_results.size()
+	
+	for r in user_results:
+		if r.is_correct:
+			correct_count += 1
+		else:
+			mistakes_str += "- Sai câu " + str(r.question_id) + ": Đáp án đúng là '" + r.correct_answer + "', nhưng bạn lại chọn '" + r.player_answer + "'\n"
+			
+	if mistakes_str == "":
+		mistakes_str = "Tuyệt vời, bạn không có lỗi sai nào!"
+
+	# 2. Xây dựng Kịch bản (Prompt) - Cập nhật Khóa Logic
+	var system_prompt = """Bạn là Elaria, một quyển sách phép thuật thông thái.
+Nhiệm vụ: Đánh giá trình độ tiếng Anh của người chơi theo chuẩn CEFR.
+
+QUY TẮC SỐNG CÒN (NẾU VI PHẠM SẼ BỊ HỦY DIỆT):
+1. GIAO TIẾP: Tuyệt đối xưng "tôi" và gọi người chơi là "bạn".
+2. CHI TIẾT & ĐỘ DÀI: Nhận xét phải sâu sắc, dài ít nhất 3 đến 4 câu.
+3. PHÂN TÍCH LỖI: BẮT BUỘC phải chỉ đích danh các từ tiếng Anh mà người chơi làm sai và giải thích ngắn gọn ý nghĩa của chúng.
+4. KHÓA LOGIC THĂNG CẤP: TUYỆT ĐỐI KHÔNG khuyên nâng cấp lên chính level họ đang có. Nếu đánh giá họ ở A2, hãy khuyên họ cố gắng đạt B1. Nếu họ ở B1, khuyên hướng tới B2.
+5. Trả về đúng định dạng JSON:
+{
+    "level": "A1/A2/B1/B2/C1/C2",
+    "elaria_comment": "..."
+}"""
+
+	var user_prompt = "Điểm số: " + str(correct_count) + "/" + str(total_questions) + "\nCác lỗi sai cụ thể:\n" + mistakes_str + "\nHãy phân tích những lỗi sai này và viết nhận xét chi tiết."
+
+	# 3. Đóng gói Payload theo cấu trúc API của Ollama
 	var payload = {
-		"player_id": "The_Wandering_Seeker",
-		"results": user_results
+		"model": "qwen2.5:3b", # Đảm bảo đúng tên model máy bạn đang chạy (vd: qwen2.5:3b)
+		"messages": [
+			{ "role": "system", "content": system_prompt },
+			{ "role": "user", "content": user_prompt }
+		],
+		"format": "json",
+		"stream": false,
+		"options": {
+			"temperature": 0.4, # Tăng nhẹ nhiệt độ lên 0.4 để AI viết văn dài và mượt hơn
+			"num_predict": 400  # Tăng giới hạn chữ để nó không bị cắt cụt đuôi
+		}
 	}
+	
 	var json_data = JSON.stringify(payload)
 	var headers = ["Content-Type: application/json"]
 	
+	# Bắn request trực tiếp lên Ollama
 	http_request.request(SERVER_URL, headers, HTTPClient.METHOD_POST, json_data)
 
+# --- XỬ LÝ KẾT QUẢ TỪ OLLAMA TRẢ VỀ ---
 func _on_http_request_completed(_result, response_code, _headers, body):
 	is_waiting_for_ai = false
 	
@@ -145,20 +188,31 @@ func _on_http_request_completed(_result, response_code, _headers, body):
 		var json = JSON.new()
 		if json.parse(body.get_string_from_utf8()) == OK:
 			var response_data = json.data
-			var ai_level = response_data.get("level", "Unknown")
-			var ai_comment = response_data.get("elaria_comment", "Elaria gật gù ghi chép lại kết quả.")
+			
+			# Lọc lấy nội dung trả về từ Ollama (Lớp ngoài)
+			if response_data.has("message") and response_data["message"].has("content"):
+				var ai_output_str = response_data["message"]["content"]
+				
+				# Parse JSON một lần nữa để lấy dữ liệu (Lớp trong)
+				var elaria_json = JSON.new()
+				if elaria_json.parse(ai_output_str) == OK:
+					var elaria_data = elaria_json.data
+					var ai_level = elaria_data.get("level", "Unknown")
+					var ai_comment = elaria_data.get("elaria_comment", "Elaria gật gù ghi chép lại kết quả.")
+					
+					# Lưu vào GameManager (Nếu có)
+					if GameManager and GameManager.has_method("save_player_assessment"):
+						GameManager.save_player_assessment(ai_level, ai_comment)
 
-			# Lưu vào GameManager
-			if GameManager and GameManager.has_method("save_player_assessment"):
-				GameManager.save_player_assessment(ai_level, ai_comment)
-
-			# In kết quả ra màn hình
-			question_text.text = "XẾP LOẠI CỦA BẠN: " + ai_level + "\n\n" + ai_comment
-			prompt_text.text = "Nhấn ENTER hoặc click chuột để tiếp tục"
-			prompt_text.show()
-			quiz_finished = true
-	else:
-		question_text.text = "Lỗi kết nối Server AI! Không thể liên lạc với Elaria."
-		prompt_text.text = "Nhấn ENTER để thoát"
-		prompt_text.show()
-		quiz_finished = true
+					# In kết quả ra màn hình UI
+					question_text.text = "XẾP LOẠI CỦA BẠN: " + ai_level + "\n\n" + ai_comment
+					prompt_text.text = "Nhấn ENTER hoặc click chuột để tiếp tục"
+					prompt_text.show()
+					quiz_finished = true
+					return # Thành công, thoát hàm
+					
+	# Nếu code chạy xuống tới đây, nghĩa là có lỗi kết nối hoặc AI sinh JSON bị hỏng
+	question_text.text = "Lỗi kết nối Server AI!\nHãy chắc chắn rằng Ollama đang chạy ngầm trên máy bạn."
+	prompt_text.text = "Nhấn ENTER để thoát"
+	prompt_text.show()
+	quiz_finished = true
