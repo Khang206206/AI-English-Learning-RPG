@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://bwisenv78tcms"]
+
+[ext_resource type="Script" uid="uid://uk3c75fn0kg" path="res://scripts/quiz_ui.gd" id="1_501xa"]
+[ext_resource type="Texture2D" uid="uid://br7xhmdr3cvdg" path="res://assets/tileset trong sách/black background.jpg" id="2_4vc25"]
+[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://assets/GuiAssets/GuiAssets/fonts/TinyPixie2.ttf" id="4_8dmau"]
+
+[sub_resource type="FontFile" id="FontFile_8dmau"]
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/18/0/ascent = 0.0
+cache/0/18/0/descent = 0.0
+cache/0/18/0/underline_position = 0.0
+cache/0/18/0/underline_thickness = 0.0
+cache/0/18/0/scale = 1.0
+
+[sub_resource type="FontFile" id="FontFile_topby"]
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+
+[node name="QuizUI" type="CanvasLayer" unique_id=70507873]
+process_mode = 3
+script = ExtResource("1_501xa")
+
+[node name="background" type="TextureRect" parent="." unique_id=37291263]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4vc25")
+
+[node name="QuestionText" type="Label" parent="." unique_id=1314767701]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 239.0
+grow_horizontal = 2
+theme_override_fonts/font = SubResource("FontFile_8dmau")
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 2
+
+[node name="AnswersContainer" type="VBoxContainer" parent="." unique_id=1290663546]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -19.0
+offset_bottom = 219.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Btn_A" type="Button" parent="AnswersContainer" unique_id=1425645378]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource("FontFile_topby")
+
+[node name="Btn_B" type="Button" parent="AnswersContainer" unique_id=2095310249]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource("FontFile_topby")
+
+[node name="Btn_C" type="Button" parent="AnswersContainer" unique_id=1443075829]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource("FontFile_topby")
+
+[node name="Btn_D" type="Button" parent="AnswersContainer" unique_id=2134125409]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource("FontFile_topby")
+
+[node name="PromptText" type="Label" parent="." unique_id=1042321698]
+offset_left = 684.0
+offset_top = 589.0
+offset_right = 1136.0
+offset_bottom = 617.0
+theme_override_fonts/font = ExtResource("4_8dmau")
+theme_override_font_sizes/font_size = 20
+text = "Nhấn ENTER hoặc click chuột để tiếp tục"
+horizontal_alignment = 1
+vertical_alignment = 1

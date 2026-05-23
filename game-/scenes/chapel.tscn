@@ -7,7 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://d3k8fsrfa8b5k" path="res://assets/tileset nơi nhận sách/Statues.png" id="5_fr77l"]
 [ext_resource type="Texture2D" uid="uid://b7xc5abgcpx8w" path="res://assets/tileset nơi nhận sách/Candles.png" id="6_o5y4x"]
 [ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerInChapel.tscn" id="7_nog23"]
+[ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="9_74dbc"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_xy6rp"]
+[ext_resource type="Script" uid="uid://fdyt8q0frpoe" path="res://scenes/battle_scene.gd" id="9_yguj4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i3ued"]
 texture = ExtResource("1_fteks")
@@ -862,3 +864,85 @@ grow_vertical = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=230635185]
 libraries/ = SubResource("AnimationLibrary_74dbc")
+
+[node name="BattleScene" type="Control" parent="." unique_id=381994698]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_yguj4")
+
+[node name="BackGround" type="TextureRect" parent="BattleScene" unique_id=2066920367]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("9_74dbc")
+
+[node name="Node2D" type="Node2D" parent="BattleScene" unique_id=1558597879]
+
+[node name="Player_Anim" type="AnimatedSprite2D" parent="BattleScene/Node2D" unique_id=1287472127]
+
+[node name="Monster_Anim" type="AnimatedSprite2D" parent="BattleScene/Node2D" unique_id=77565750]
+
+[node name="UI" type="CanvasLayer" parent="BattleScene" unique_id=1926695280]
+
+[node name="MainPanel" type="Control" parent="BattleScene/UI" unique_id=1172153136]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TopHUD" type="Control" parent="BattleScene/UI/MainPanel" unique_id=1375278161]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerHearts" type="HBoxContainer" parent="BattleScene/UI/MainPanel/TopHUD" unique_id=1230359965]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MonsterHearts" type="HBoxContainer" parent="BattleScene/UI/MainPanel/TopHUD" unique_id=117173861]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="QuestionBox" type="PanelContainer" parent="BattleScene/UI/MainPanel" unique_id=1509200223]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="BattleScene/UI/MainPanel/QuestionBox" unique_id=936464185]
+layout_mode = 2
+
+[node name="Answers" type="VBoxContainer" parent="BattleScene/UI/MainPanel" unique_id=408072221]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnA" type="Button" parent="BattleScene/UI/MainPanel/Answers" unique_id=1347385652]
+layout_mode = 2
+
+[node name="BtnB" type="Button" parent="BattleScene/UI/MainPanel/Answers" unique_id=195705393]
+layout_mode = 2
+
+[node name="BtnC" type="Button" parent="BattleScene/UI/MainPanel/Answers" unique_id=1126104826]
+layout_mode = 2
+
+[node name="BtnD" type="Button" parent="BattleScene/UI/MainPanel/Answers" unique_id=702179862]
+layout_mode = 2
+
+[node name="AITutorPopup" type="Panel" parent="BattleScene/UI" unique_id=1752502094]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ExplanationText" type="RichTextLabel" parent="BattleScene/UI/AITutorPopup" unique_id=279421516]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CloseBtn" type="Button" parent="BattleScene/UI/AITutorPopup" unique_id=506741931]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
