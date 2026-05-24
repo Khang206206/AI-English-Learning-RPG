@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameManager="*res://scripts/GameManager.gd"
 DatabaseManager="*uid://ri4xry4ev5i6"
+AIManager="*uid://67pgysvkved1"
 
 [display]
 
@@ -27,6 +28,7 @@ window/stretch/mode="canvas_items"
 [editor]
 
 movie_writer/movie_file="D:/AI-English-Learning-RPG/game-/records/Untitled.avi"
+version_control/autoload_on_startup=true
 
 [editor_plugins]
 
