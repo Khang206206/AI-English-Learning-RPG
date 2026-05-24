@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://bwhhjevm2e65s"]
+
+[ext_resource type="Script" uid="uid://fdyt8q0frpoe" path="res://scenes/battle_scene.gd" id="1_b278l"]
+[ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="2_hvnqj"]
+
+[node name="BattleScene" type="Control" unique_id=253914365]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b278l")
+
+[node name="BackGround" type="TextureRect" parent="." unique_id=1893131531]
+layout_mode = 0
+offset_right = 1183.0
+offset_bottom = 662.0
+texture = ExtResource("2_hvnqj")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1488577028]
+
+[node name="Player_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=1922410497]
+
+[node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=756303721]
+
+[node name="MainPanel" type="Control" parent="UI" unique_id=1366142292]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TopHUD" type="Control" parent="UI/MainPanel" unique_id=1230444073]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerHearts" type="FlowContainer" parent="UI/MainPanel/TopHUD" unique_id=1952722567]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MonsterHearts" type="FlowContainer" parent="UI/MainPanel/TopHUD" unique_id=1348017975]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 948.0
+offset_top = 1.0
+offset_right = 988.0
+offset_bottom = 41.0
+alignment = 2
+
+[node name="question" type="VBoxContainer" parent="UI/MainPanel" unique_id=497264850]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 1
+offset_left = 275.0
+offset_top = 4.0
+offset_right = 875.0
+offset_bottom = 204.0
+alignment = 1
+
+[node name="QuestionBox" type="PanelContainer" parent="UI/MainPanel/question" unique_id=184103765]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainPanel/question/QuestionBox" unique_id=1618401255]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Answers" type="VBoxContainer" parent="UI/MainPanel" unique_id=882850257]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 425.0
+offset_right = 694.0
+offset_bottom = 489.0
+
+[node name="BtnA" type="Button" parent="UI/MainPanel/Answers" unique_id=1602018777]
+layout_mode = 2
+
+[node name="BtnB" type="Button" parent="UI/MainPanel/Answers" unique_id=220354836]
+layout_mode = 2
+
+[node name="BtnC" type="Button" parent="UI/MainPanel/Answers" unique_id=1561397071]
+layout_mode = 2
+
+[node name="BtnD" type="Button" parent="UI/MainPanel/Answers" unique_id=4583246]
+layout_mode = 2
+
+[node name="AITutorPopup" type="Panel" parent="UI" unique_id=1531678919]
+offset_left = 518.0
+offset_top = 253.0
+offset_right = 676.0
+offset_bottom = 349.0
+
+[node name="ExplanationText" type="RichTextLabel" parent="UI/AITutorPopup" unique_id=1351977256]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CloseBtn" type="Button" parent="UI/AITutorPopup" unique_id=1368927845]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0

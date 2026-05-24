@@ -1,7 +1,7 @@
 extends Control
 
 # 1. KÉO THẢ CÁC NODE VÀO BIẾN (Chỉnh lại đường dẫn nếu cây Node của bạn khác)
-@onready var question_label = $UI/MainPanel/QuestionBox/Label
+@onready var question_label = $UI/MainPanel/question/QuestionBox/Label
 @onready var btn_a = $UI/MainPanel/Answers/BtnA
 @onready var btn_b = $UI/MainPanel/Answers/BtnB
 @onready var btn_c = $UI/MainPanel/Answers/BtnC
@@ -11,10 +11,15 @@ extends Control
 @onready var explanation_text = $UI/AITutorPopup/ExplanationText
 @onready var popup_close_btn = $UI/AITutorPopup/CloseBtn
 
+@onready var player_hearts_container = $UI/MainPanel/TopHUD/PlayerHearts
+@onready var monster_hearts_container = $UI/MainPanel/TopHUD/MonsterHearts
+
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
-var monster_hp: int = 3
+var monster_hp: int = 15
+var heart_red = preload("res://assets/hearts/Heart_Full.tres")
+var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 
 # 3. GLUE CODE: Chạy ngay khi Scene vừa mở lên
 func _ready():
@@ -29,9 +34,32 @@ func _ready():
 	
 	# Kết nối nút đóng Popup
 	popup_close_btn.pressed.connect(close_tutor_and_continue)
-	
+	setup_hearts()
 	# Lấy câu hỏi đầu tiên
 	load_next_question()
+func setup_hearts():
+	# Xóa tim cũ (nếu có)
+	for child in player_hearts_container.get_children():
+		child.queue_free()
+	for child in monster_hearts_container.get_children():
+		child.queue_free()
+	# Tạo tim người chơi
+	for i in range(player_hp):
+		var new_heart = TextureRect.new()
+		new_heart.texture = heart_red
+		new_heart.custom_minimum_size = Vector2(32, 32)
+		new_heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE 
+		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		player_hearts_container.add_child(new_heart)
+	# Tạo tim quái
+	for i in range(monster_hp):
+		var new_heart = TextureRect.new()
+		new_heart.texture = heart_red
+		new_heart.custom_minimum_size = Vector2(32, 32)
+		new_heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE 
+		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		monster_hearts_container.add_child(new_heart)
+
 
 # Hàm bốc câu hỏi từ AIManager và gán lên UI
 func load_next_question():
@@ -112,4 +140,19 @@ func lose_battle():
 	# TODO: Hiện màn hình thua
 	
 func update_health_ui():
-	pass # Phần này ta sẽ code để ẩn/hiện các node Trái tim sau
+	# Cập nhật cho Player
+	var p_hearts = player_hearts_container.get_children()
+	for i in range(p_hearts.size()):
+		# Nếu thứ tự của tim (i) < máu hiện tại, dùng tim đỏ. Ngược lại dùng tim đen/nâu.
+		if i < player_hp:
+			p_hearts[i].texture = heart_red
+		else:
+			p_hearts[i].texture = heart_black
+
+	# Cập nhật cho Quái
+	var m_hearts = monster_hearts_container.get_children()
+	for i in range(m_hearts.size()):
+		if i < monster_hp:
+			m_hearts[i].texture = heart_red
+		else:
+			m_hearts[i].texture = heart_black
