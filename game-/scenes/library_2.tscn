@@ -3609,6 +3609,7 @@ size = Vector2(215, 139.375)
 [node name="Library2" type="Node2D" unique_id=1683452602]
 
 [node name="QuizUI" parent="." unique_id=70507873 instance=ExtResource("8_63gu8")]
+layer = 4
 visible = false
 
 [node name="background" type="TextureRect" parent="." unique_id=1682581714]
@@ -3674,7 +3675,7 @@ color = Color(1, 1, 1, 0)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=250969677]
 libraries/ = SubResource("AnimationLibrary_0qe26")
 
-[node name="Elia" parent="." unique_id=1955424867 instance=ExtResource("7_sggt6")]
+[node name="Elaria" parent="." unique_id=1955424867 instance=ExtResource("7_sggt6")]
 position = Vector2(704, 476)
 
 [node name="InteractableObject" parent="." unique_id=1971411768 node_paths=PackedStringArray("quiz_ui_node") instance=ExtResource("5_midgi")]
