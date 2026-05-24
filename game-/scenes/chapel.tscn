@@ -862,3 +862,23 @@ grow_vertical = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=230635185]
 libraries/ = SubResource("AnimationLibrary_74dbc")
+
+[node name="TeleportGate2" parent="." unique_id=1746627368 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
+position = Vector2(538, 325)
+scale = Vector2(0.5, 0.5)
+target_scene_path = "uid://l1dhtqji1d6x"
+destination_spawn_id = ""
+use_flash = true
+flash_animation_player = NodePath("../AnimationPlayer")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate2" unique_id=1469143355]
+
+[node name="FlashRect" type="ColorRect" parent="TeleportGate2/CanvasLayer" unique_id=803701058]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_right = 6.0
+grow_horizontal = 2
+grow_vertical = 2
