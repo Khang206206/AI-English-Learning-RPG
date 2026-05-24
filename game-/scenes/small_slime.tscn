@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dg12jftifbtc"]
+
+[ext_resource type="Texture2D" uid="uid://4n5dci7bergv" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/16x16/slime.png" id="1_2yali"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4q1k4"]
+atlas = ExtResource("1_2yali")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v470m"]
+atlas = ExtResource("1_2yali")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw212"]
+atlas = ExtResource("1_2yali")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3kx0"]
+atlas = ExtResource("1_2yali")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ey3na"]
+atlas = ExtResource("1_2yali")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2yali"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4q1k4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v470m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw212")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3kx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ey3na")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yali"]
+size = Vector2(33, 24)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=579337971]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=572496282]
+texture_filter = 1
+position = Vector2(11.000001, 8)
+scale = Vector2(2.375, 2)
+sprite_frames = SubResource("SpriteFrames_2yali")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.26927066
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1047417740]
+position = Vector2(10.5, 7)
+shape = SubResource("RectangleShape2D_2yali")

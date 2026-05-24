@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bwhhjevm2e65s"]
 
-[ext_resource type="Script" uid="uid://fdyt8q0frpoe" path="res://scenes/battle_scene.gd" id="1_b278l"]
+[ext_resource type="Script" uid="uid://cfigax31w2nrd" path="res://scripts/battle_scene.gd" id="1_gkmpl"]
 [ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="2_hvnqj"]
 
 [node name="BattleScene" type="Control" unique_id=253914365]
@@ -10,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_b278l")
+script = ExtResource("1_gkmpl")
 
 [node name="BackGround" type="TextureRect" parent="." unique_id=1893131531]
 layout_mode = 0

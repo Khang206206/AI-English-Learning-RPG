@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bvlrlbv1wtv3c" path="res://scenes/door_interact.tscn" id="1_gknyc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ubwkx"]
-size = Vector2(215, 121.25)
+size = Vector2(115.8125, 71.5)
 
 [node name="InteractableObject" type="Area2D" unique_id=1971411768]
 position = Vector2(1010, 595)
