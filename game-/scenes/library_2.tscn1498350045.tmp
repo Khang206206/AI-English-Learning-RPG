@@ -3583,7 +3583,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_vc4ej"]
 resource_name = "flash_and_change"
-length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -3612,10 +3611,10 @@ size = Vector2(215, 139.375)
 visible = false
 
 [node name="background" type="TextureRect" parent="." unique_id=1682581714]
-offset_left = -18.0
-offset_top = -18.0
-offset_right = 1131.0
-offset_bottom = 623.0
+offset_left = 5.0
+offset_top = -2.0
+offset_right = 1154.0
+offset_bottom = 639.0
 texture = ExtResource("1_sey31")
 
 [node name="TileMap" type="TileMap" parent="." unique_id=710715240]
@@ -3659,14 +3658,12 @@ flash_animation_player = NodePath("../AnimationPlayer")
 [node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate2" unique_id=127186577]
 
 [node name="FlashRect" type="ColorRect" parent="TeleportGate2/CanvasLayer" unique_id=39783742]
-z_index = 4
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -15.0
-offset_top = -15.0
-offset_right = -15.0
-offset_bottom = -15.0
+offset_left = 6.0
+offset_right = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
