@@ -153,8 +153,8 @@ QUY TẮC SỐNG CÒN (NẾU VI PHẠM SẼ BỊ HỦY DIỆT):
 4. KHÓA LOGIC THĂNG CẤP: TUYỆT ĐỐI KHÔNG khuyên nâng cấp lên chính level họ đang có. Nếu đánh giá họ ở A2, hãy khuyên họ cố gắng đạt B1. Nếu họ ở B1, khuyên hướng tới B2.
 5. Trả về đúng định dạng JSON:
 {
-    "level": "A1/A2/B1/B2/C1/C2",
-    "elaria_comment": "..."
+	"level": "A1/A2/B1/B2/C1/C2",
+	"elaria_comment": "..."
 }"""
 
 	var user_prompt = "Điểm số: " + str(correct_count) + "/" + str(total_questions) + "\nCác lỗi sai cụ thể:\n" + mistakes_str + "\nHãy phân tích những lỗi sai này và viết nhận xét chi tiết."
