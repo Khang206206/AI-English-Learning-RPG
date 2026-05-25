@@ -14,16 +14,19 @@ extends Control
 @onready var player_hearts_container = $UI/MainPanel/TopHUD/PlayerHearts
 @onready var monster_hearts_container = $UI/MainPanel/TopHUD/MonsterHearts
 @onready var monster_anim = $Node2D/Monster_Anim
+@onready var player_anim = $Node2D/Player_Anim
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
 var monster_hp: int = 15
 var heart_red = preload("res://assets/hearts/Heart_Full.tres")
 var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
+var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
 
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
+	player_anim.play("idle")
 	if GameManager.current_monster:
 		# Gán SpriteFrames từ resource truyền sang
 		monster_anim.flip_h = GameManager.current_monster.flip_h
@@ -95,15 +98,17 @@ func check_answer(selected_choice: String):
 		player_hp -= 1
 		update_health_ui()
 		print("Sai rồi! Trừ 1 máu. Player còn: ", player_hp, " máu")
-		
 		explanation_text.text = current_question.get("explanation", "Rất tiếc, bạn đã chọn sai!")
 		ai_tutor_popup.show()
 		
 		if player_hp <= 0:
-			lose_battle()
+			player_anim.play("die") # Chạy animation die của Player
+			is_game_over = true
 
 func close_tutor_and_continue():
 	ai_tutor_popup.hide()
+	if is_game_over:
+		lose_battle()
 	if player_hp > 0:
 		load_next_question()
 
