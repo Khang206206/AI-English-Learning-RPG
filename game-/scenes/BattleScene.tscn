@@ -48,6 +48,8 @@
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="38_oqnmf"]
 [ext_resource type="Shader" uid="uid://cdaxnwsajoytl" path="res://scenes/BattleScene.gdshader" id="47_mj0st"]
 [ext_resource type="FontFile" uid="uid://wcn37kq5i0lh" path="res://Press_Start_2P/PressStart2P-Regular.ttf" id="48_kwf4x"]
+[ext_resource type="FontFile" uid="uid://dl4e4vafcdyc0" path="res://assets/NbPixelFontBundle_v1_0/AtariGames.ttf" id="49_tba6u"]
+[ext_resource type="Texture2D" uid="uid://dbl3ejfnlnqfr" path="res://assets/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="49_xe6ct"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
 animations = [{
@@ -218,11 +220,11 @@ animations = [{
 [sub_resource type="LabelSettings" id="LabelSettings_gkmpl"]
 font = ExtResource("4_28s16")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kwf4x"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tba6u"]
 shader = ExtResource("47_mj0st")
 shader_parameter/blur_amount = 2.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_mj0st"]
+[sub_resource type="LabelSettings" id="LabelSettings_qq8kj"]
 font = ExtResource("48_kwf4x")
 font_size = 64
 font_color = Color(1, 1, 0.8745098, 1)
@@ -448,11 +450,10 @@ theme_override_styles/normal = ExtResource("8_sgm0l")
 theme_override_styles/pressed = ExtResource("7_sdfhe")
 theme_override_styles/hover = ExtResource("8_hrc4b")
 
-[node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1733513275]
-visible = false
+[node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1617570521]
 
-[node name="BG" type="ColorRect" parent="ResultOverlay" unique_id=1689557140]
-material = SubResource("ShaderMaterial_kwf4x")
+[node name="BG" type="ColorRect" parent="ResultOverlay" unique_id=1371954151]
+material = SubResource("ShaderMaterial_tba6u")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -460,16 +461,54 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.7254902)
 
-[node name="Label" type="Label" parent="ResultOverlay" unique_id=604331161]
+[node name="Label" type="Label" parent="ResultOverlay" unique_id=925992264]
 custom_minimum_size = Vector2(2.21, 0)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -185.0
+offset_left = -172.0
 offset_top = 82.0
-offset_right = 184.0
+offset_right = 197.0
 offset_bottom = 146.0
 grow_horizontal = 2
-label_settings = SubResource("LabelSettings_mj0st")
+label_settings = SubResource("LabelSettings_qq8kj")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TryAgain" type="Button" parent="ResultOverlay" unique_id=1091811776]
+offset_left = 434.0
+offset_top = 455.0
+offset_right = 693.0
+offset_bottom = 546.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_fonts/font = ExtResource("49_tba6u")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
+text = "Try again"
+
+[node name="GoBack" type="Button" parent="ResultOverlay" unique_id=107760229]
+offset_left = 432.0
+offset_top = 280.0
+offset_right = 694.0
+offset_bottom = 364.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_fonts/font = ExtResource("49_tba6u")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
+text = "Go back"
+
+[node name="PanelBorder012" type="Sprite2D" parent="ResultOverlay" unique_id=155061859]
+texture_filter = 1
+position = Vector2(562.5, 501.50003)
+scale = Vector2(5.3958325, 1.8541669)
+texture = ExtResource("49_xe6ct")
+
+[node name="PanelBorder013" type="Sprite2D" parent="ResultOverlay" unique_id=10056887]
+texture_filter = 1
+position = Vector2(563.5, 321.49997)
+scale = Vector2(5.4374995, 1.7708325)
+texture = ExtResource("49_xe6ct")

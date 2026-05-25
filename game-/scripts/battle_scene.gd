@@ -17,6 +17,9 @@ extends Control
 @onready var player_anim = $Node2D/Player_Anim
 @onready var result_overlay = $ResultOverlay
 @onready var result_label = $ResultOverlay/Label
+@onready var try_again_btn = $ResultOverlay/TryAgain
+@onready var go_back_btn = $ResultOverlay/GoBack
+@onready var panel_border = $ResultOverlay/PanelBorder012
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
@@ -40,6 +43,9 @@ func _ready():
 	btn_b.pressed.connect(func(): check_answer("B"))
 	btn_c.pressed.connect(func(): check_answer("C"))
 	btn_d.pressed.connect(func(): check_answer("D"))
+	try_again_btn.pressed.connect(_on_try_again_pressed)
+	go_back_btn.pressed.connect(_on_go_back_pressed)
+	result_overlay.hide()
 	
 	popup_close_btn.pressed.connect(close_tutor_and_continue)
 	setup_hearts()
@@ -149,14 +155,23 @@ func show_result_overlay(is_win: bool):
 	# Reset alpha về 0 cho cả nền và chữ
 	background.modulate.a = 0 
 	result_label.modulate.a = 0
-	
+	try_again_btn.modulate.a = 0
+	go_back_btn.modulate.a = 0
+	go_back_btn.visible = true 
+	try_again_btn.visible = !is_win
+	panel_border.visible = !is_win
 	result_overlay.show()
 	
 	# Tạo Tween để làm mờ dần cả hai
 	var tween = create_tween()
 	tween.parallel().tween_property(background, "modulate:a", 1.0, 0.5)
 	tween.parallel().tween_property(result_label, "modulate:a", 1.0, 0.5)
-	
+	tween.parallel().tween_property(go_back_btn, "modulate:a", 1.0, 0.5)
+	if try_again_btn.visible:
+		tween.parallel().tween_property(try_again_btn, "modulate:a", 1.0, 0.5)
+		if panel_border.visible:
+			panel_border.modulate.a = 0
+			tween.parallel().tween_property(panel_border, "modulate:a", 1.0, 0.5)
 	if is_win:
 		result_label.text = "VICTORY!"
 		# Lưu ý: Nếu bạn muốn đổi màu chữ, hãy đổi trực tiếp trên result_label
@@ -164,3 +179,9 @@ func show_result_overlay(is_win: bool):
 		result_label.text = "GAME OVER!"
 	
 	set_buttons_disabled(true)
+	
+func _on_try_again_pressed():
+	get_tree().reload_current_scene()
+
+func _on_go_back_pressed():
+	get_tree().change_scene_to_file("res://scenes/chapter_1.tscn")
