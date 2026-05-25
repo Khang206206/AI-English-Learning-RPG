@@ -12,7 +12,9 @@ texture_filter = 1
 position = Vector2(3.5, 3)
 scale = Vector2(1.4375, 1.375)
 sprite_frames = ExtResource("1_tjgje")
-frame_progress = 0.8578398
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.5390011
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=197166227]
 texture_filter = 1
