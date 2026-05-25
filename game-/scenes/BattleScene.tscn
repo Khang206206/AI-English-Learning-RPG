@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="2_hvnqj"]
 [ext_resource type="Texture2D" uid="uid://127oaoyjr80l" path="res://assets/Dialogue box/GB free frames/GBS frames Black/Chunky white 2b.png" id="3_3mvhd"]
 [ext_resource type="FontFile" uid="uid://dcwaov2hxfnit" path="res://assets/NbPixelFontBundle_v1_0/TripleN.ttf" id="4_28s16"]
+[ext_resource type="StyleBox" uid="uid://csbn8rh8qokbg" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_normal.tres" id="5_ftvu5"]
+[ext_resource type="StyleBox" uid="uid://fb3yl7ohtygo" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_hover.tres" id="6_0yex5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gkmpl"]
 
@@ -164,15 +166,31 @@ offset_bottom = 489.0
 
 [node name="BtnA" type="Button" parent="UI/MainPanel/Answers" unique_id=1602018777]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
 
 [node name="BtnB" type="Button" parent="UI/MainPanel/Answers" unique_id=220354836]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
 
 [node name="BtnC" type="Button" parent="UI/MainPanel/Answers" unique_id=1561397071]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
 
 [node name="BtnD" type="Button" parent="UI/MainPanel/Answers" unique_id=4583246]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
 
 [node name="AITutorPopup" type="Panel" parent="UI" unique_id=1531678919]
 offset_left = 518.0

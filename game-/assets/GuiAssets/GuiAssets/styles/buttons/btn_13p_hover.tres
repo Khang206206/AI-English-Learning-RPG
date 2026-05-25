@@ -1,12 +1,11 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3]
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://fb3yl7ohtygo"]
 
-[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://GuiAssets/sprites/gdp_styles.png" id="1_xb02o"]
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="1_xb02o"]
 
 [resource]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
 texture = ExtResource("1_xb02o")
-margin_left = 10.0
-margin_top = 3.0
-margin_right = 10.0
-margin_bottom = 3.0
-region_rect = Rect2(1, 15, 13, 13)
-draw_center = false
+region_rect = Rect2(16.971804, 31.008183, 9.055767, 9.055767)
