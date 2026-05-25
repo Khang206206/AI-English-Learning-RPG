@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://cfigax31w2nrd" path="res://scripts/battle_scene.gd" id="1_gkmpl"]
 [ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="2_hvnqj"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_gkmpl"]
+
 [node name="BattleScene" type="Control" unique_id=253914365]
 layout_mode = 3
 anchors_preset = 15
@@ -23,6 +25,9 @@ texture = ExtResource("2_hvnqj")
 [node name="Player_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=1922410497]
 
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
+position = Vector2(1100, 400)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_gkmpl")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=756303721]
 
@@ -40,7 +45,7 @@ offset_bottom = 40.0
 [node name="PlayerHearts" type="FlowContainer" parent="UI/MainPanel/TopHUD" unique_id=1952722567]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 0
-offset_right = 40.0
+offset_right = 200.0
 offset_bottom = 40.0
 
 [node name="MonsterHearts" type="FlowContainer" parent="UI/MainPanel/TopHUD" unique_id=1348017975]

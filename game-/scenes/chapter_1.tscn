@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerInChapel.tscn" id="13_mqmwm"]
 [ext_resource type="PackedScene" uid="uid://beikc0kigb4xd" path="res://scenes/goblin.tscn" id="14_4mo47"]
 [ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="15_ayc5h"]
+[ext_resource type="Resource" uid="uid://nt0ixdayhdee" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/slime_data.tres" id="16_ct7bd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gjkv5"]
 texture = ExtResource("1_5rr72")
@@ -9713,6 +9714,7 @@ z_index = 4
 position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
+monster_data = ExtResource("16_ct7bd")
 
 [node name="CollisionShape2D" parent="InteractableObject" index="0" unique_id=865465090]
 position = Vector2(11, -152)

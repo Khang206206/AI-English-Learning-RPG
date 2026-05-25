@@ -13,7 +13,7 @@ extends Control
 
 @onready var player_hearts_container = $UI/MainPanel/TopHUD/PlayerHearts
 @onready var monster_hearts_container = $UI/MainPanel/TopHUD/MonsterHearts
-
+@onready var monster_anim = $Node2D/Monster_Anim
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
@@ -24,6 +24,12 @@ var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
+	if GameManager.current_monster:
+		# Gán SpriteFrames từ resource truyền sang
+		monster_anim.sprite_frames = GameManager.current_monster.idle_animation
+		monster_anim.play("idle") # Chạy animation idle
+	else:
+		push_warning("Không có dữ liệu quái!")
 	
 	btn_a.pressed.connect(func(): check_answer("A"))
 	btn_b.pressed.connect(func(): check_answer("B"))

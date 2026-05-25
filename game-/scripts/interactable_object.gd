@@ -7,6 +7,7 @@ extends Area2D
 
 @export_group("Battle Settings")
 @export_file("*.tscn") var battle_scene_path: String
+@export var monster_data: MonsterData
 
 @onready var prompt = $DoorInteract
 
@@ -44,7 +45,11 @@ func _handle_quiz_action():
 		push_error("Loi: Chua gan Quiz UI Node")
 
 func _handle_battle_action():
-	if battle_scene_path != null and battle_scene_path != "":
+	if monster_data:
+		GameManager.current_monster = monster_data
 		get_tree().change_scene_to_file(battle_scene_path)
 	else:
-		push_error("Loi: Chua gan duong dan Battle Scene")
+		if battle_scene_path != null and battle_scene_path != "":
+			get_tree().change_scene_to_file(battle_scene_path)
+		else:
+			push_error("Loi: Chua gan duong dan Battle Scene")
