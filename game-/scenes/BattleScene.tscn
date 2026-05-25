@@ -46,6 +46,8 @@
 [ext_resource type="Texture2D" uid="uid://bpxgkdvx1emh3" path="res://assets/player2/Run/Run4.png" id="36_h5qe7"]
 [ext_resource type="Texture2D" uid="uid://bi4rwgtf4lg0a" path="res://assets/player2/Run/Run5.png" id="37_fnady"]
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="38_oqnmf"]
+[ext_resource type="Shader" uid="uid://cdaxnwsajoytl" path="res://scenes/BattleScene.gdshader" id="47_mj0st"]
+[ext_resource type="FontFile" uid="uid://wcn37kq5i0lh" path="res://Press_Start_2P/PressStart2P-Regular.ttf" id="48_kwf4x"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
 animations = [{
@@ -215,6 +217,17 @@ animations = [{
 
 [sub_resource type="LabelSettings" id="LabelSettings_gkmpl"]
 font = ExtResource("4_28s16")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kwf4x"]
+shader = ExtResource("47_mj0st")
+shader_parameter/blur_amount = 2.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_mj0st"]
+font = ExtResource("48_kwf4x")
+font_size = 64
+font_color = Color(1, 1, 0.8745098, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
 
 [node name="BattleScene" type="Control" unique_id=253914365]
 layout_mode = 3
@@ -434,3 +447,29 @@ offset_bottom = 19.0
 theme_override_styles/normal = ExtResource("8_sgm0l")
 theme_override_styles/pressed = ExtResource("7_sdfhe")
 theme_override_styles/hover = ExtResource("8_hrc4b")
+
+[node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1733513275]
+visible = false
+
+[node name="BG" type="ColorRect" parent="ResultOverlay" unique_id=1689557140]
+material = SubResource("ShaderMaterial_kwf4x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7254902)
+
+[node name="Label" type="Label" parent="ResultOverlay" unique_id=604331161]
+custom_minimum_size = Vector2(2.21, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -185.0
+offset_top = 82.0
+offset_right = 184.0
+offset_bottom = 146.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_mj0st")
+horizontal_alignment = 1
+vertical_alignment = 1

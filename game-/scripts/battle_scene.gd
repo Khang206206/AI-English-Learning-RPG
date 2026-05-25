@@ -15,10 +15,12 @@ extends Control
 @onready var monster_hearts_container = $UI/MainPanel/TopHUD/MonsterHearts
 @onready var monster_anim = $Node2D/Monster_Anim
 @onready var player_anim = $Node2D/Player_Anim
+@onready var result_overlay = $ResultOverlay
+@onready var result_label = $ResultOverlay/Label
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
-var monster_hp: int = 15
+var monster_hp: int = 1
 var heart_red = preload("res://assets/hearts/Heart_Full.tres")
 var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
@@ -120,9 +122,11 @@ func set_buttons_disabled(is_disabled: bool):
 
 func win_battle():
 	print("Victory!")
+	show_result_overlay(true)
 
 func lose_battle():
 	print("Game Over!")
+	show_result_overlay(false)
 	
 func update_health_ui():
 	var p_hearts = player_hearts_container.get_children()
@@ -138,3 +142,25 @@ func update_health_ui():
 			m_hearts[i].texture = heart_red
 		else:
 			m_hearts[i].texture = heart_black
+func show_result_overlay(is_win: bool):
+	# Thay vì gọi trực tiếp trên CanvasLayer, ta gọi trên ColorRect (nền) và Label (chữ)
+	var background = $ResultOverlay/BG
+	
+	# Reset alpha về 0 cho cả nền và chữ
+	background.modulate.a = 0 
+	result_label.modulate.a = 0
+	
+	result_overlay.show()
+	
+	# Tạo Tween để làm mờ dần cả hai
+	var tween = create_tween()
+	tween.parallel().tween_property(background, "modulate:a", 1.0, 0.5)
+	tween.parallel().tween_property(result_label, "modulate:a", 1.0, 0.5)
+	
+	if is_win:
+		result_label.text = "VICTORY!"
+		# Lưu ý: Nếu bạn muốn đổi màu chữ, hãy đổi trực tiếp trên result_label
+	else:
+		result_label.text = "GAME OVER!"
+	
+	set_buttons_disabled(true)

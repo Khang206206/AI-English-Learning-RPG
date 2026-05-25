@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ksxshfxulhhd"
+path="res://.godot/imported/super victory!!.mp3-7789de13c754055169010158eb593228.mp3str"
+
+[deps]
+
+source_file="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/super victory!!.mp3"
+dest_files=["res://.godot/imported/super victory!!.mp3-7789de13c754055169010158eb593228.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
