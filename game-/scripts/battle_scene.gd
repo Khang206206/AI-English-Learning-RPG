@@ -19,7 +19,10 @@ extends Control
 @onready var result_label = $ResultOverlay/Label
 @onready var try_again_btn = $ResultOverlay/TryAgain
 @onready var go_back_btn = $ResultOverlay/GoBack
+@onready var go_back2_btn = $ResultOverlay/GoBack2
 @onready var panel_border = $ResultOverlay/PanelBorder012
+@onready var panel_border2 = $ResultOverlay/PanelBorder013
+@onready var panel_border3 = $ResultOverlay/PanelBorder014
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
@@ -45,6 +48,7 @@ func _ready():
 	btn_d.pressed.connect(func(): check_answer("D"))
 	try_again_btn.pressed.connect(_on_try_again_pressed)
 	go_back_btn.pressed.connect(_on_go_back_pressed)
+	go_back2_btn.pressed.connect(_on_go_back_pressed)
 	result_overlay.hide()
 	
 	popup_close_btn.pressed.connect(close_tutor_and_continue)
@@ -157,21 +161,40 @@ func show_result_overlay(is_win: bool):
 	result_label.modulate.a = 0
 	try_again_btn.modulate.a = 0
 	go_back_btn.modulate.a = 0
-	go_back_btn.visible = true 
-	try_again_btn.visible = !is_win
-	panel_border.visible = !is_win
+	go_back2_btn.modulate.a = 0
+	panel_border.modulate.a = 0
+	if is_win:
+		go_back_btn.visible = false
+		go_back2_btn.visible = true
+		try_again_btn.visible = false
+		panel_border.visible = false
+		panel_border2.visible = false
+		panel_border3.visible = true
+	else:
+		go_back_btn.visible = true
+		go_back2_btn.visible = false
+		try_again_btn.visible = true
+		panel_border.visible = true
+		panel_border2.visible = true
+		panel_border3.visible = false
 	result_overlay.show()
 	
 	# Tạo Tween để làm mờ dần cả hai
 	var tween = create_tween()
 	tween.parallel().tween_property(background, "modulate:a", 1.0, 0.5)
 	tween.parallel().tween_property(result_label, "modulate:a", 1.0, 0.5)
-	tween.parallel().tween_property(go_back_btn, "modulate:a", 1.0, 0.5)
+	if go_back_btn.visible:
+		tween.parallel().tween_property(go_back_btn, "modulate:a", 1.0, 0.5)
+	if go_back2_btn.visible:
+		tween.parallel().tween_property(go_back2_btn, "modulate:a", 1.0, 0.5)
 	if try_again_btn.visible:
 		tween.parallel().tween_property(try_again_btn, "modulate:a", 1.0, 0.5)
-		if panel_border.visible:
-			panel_border.modulate.a = 0
-			tween.parallel().tween_property(panel_border, "modulate:a", 1.0, 0.5)
+	if panel_border.visible:
+		tween.parallel().tween_property(panel_border, "modulate:a", 1.0, 0.5)
+	if panel_border2.visible:
+		tween.parallel().tween_property(panel_border2, "modulate:a", 1.0, 0.5)
+	if panel_border3.visible:
+		tween.parallel().tween_property(panel_border3, "modulate:a", 1.0, 0.5)
 	if is_win:
 		result_label.text = "VICTORY!"
 		# Lưu ý: Nếu bạn muốn đổi màu chữ, hãy đổi trực tiếp trên result_label

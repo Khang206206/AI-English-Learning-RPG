@@ -501,6 +501,19 @@ theme_override_styles/normal = ExtResource("5_ftvu5")
 theme_override_styles/hover = ExtResource("6_0yex5")
 text = "Go back"
 
+[node name="GoBack2" type="Button" parent="ResultOverlay" unique_id=537755865]
+offset_left = 432.0
+offset_top = 369.0
+offset_right = 694.0
+offset_bottom = 453.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_fonts/font = ExtResource("49_tba6u")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("5_ftvu5")
+theme_override_styles/hover = ExtResource("6_0yex5")
+text = "Go back"
+
 [node name="PanelBorder012" type="Sprite2D" parent="ResultOverlay" unique_id=155061859]
 texture_filter = 1
 position = Vector2(562.5, 501.50003)
@@ -510,5 +523,11 @@ texture = ExtResource("49_xe6ct")
 [node name="PanelBorder013" type="Sprite2D" parent="ResultOverlay" unique_id=10056887]
 texture_filter = 1
 position = Vector2(563.5, 321.49997)
+scale = Vector2(5.4374995, 1.7708325)
+texture = ExtResource("49_xe6ct")
+
+[node name="PanelBorder014" type="Sprite2D" parent="ResultOverlay" unique_id=823581371]
+texture_filter = 1
+position = Vector2(563.5, 410.49997)
 scale = Vector2(5.4374995, 1.7708325)
 texture = ExtResource("49_xe6ct")
