@@ -101,10 +101,6 @@ func check_answer(selected_choice: String):
 		
 		if player_hp <= 0:
 			lose_battle()
-		else:
-			await get_tree().create_timer(4.0).timeout 
-			ai_tutor_popup.hide()
-			load_next_question()
 
 func close_tutor_and_continue():
 	ai_tutor_popup.hide()

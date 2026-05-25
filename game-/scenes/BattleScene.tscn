@@ -6,6 +6,10 @@
 [ext_resource type="FontFile" uid="uid://dcwaov2hxfnit" path="res://assets/NbPixelFontBundle_v1_0/TripleN.ttf" id="4_28s16"]
 [ext_resource type="StyleBox" uid="uid://csbn8rh8qokbg" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_normal.tres" id="5_ftvu5"]
 [ext_resource type="StyleBox" uid="uid://fb3yl7ohtygo" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_hover.tres" id="6_0yex5"]
+[ext_resource type="Texture2D" uid="uid://24cq0vh5pjpl" path="res://assets/Dialogue box/GB free frames/GBS frames Black/Zig Zag wonky b.png" id="7_hrc4b"]
+[ext_resource type="StyleBox" uid="uid://db2vcqexuvahv" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_pressed.tres" id="7_sdfhe"]
+[ext_resource type="StyleBox" uid="uid://dnbnt7aydind7" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_disabled.tres" id="8_hrc4b"]
+[ext_resource type="StyleBox" uid="uid://c205g5u8xc60j" path="res://assets/GuiAssets/GuiAssets/styles/buttons/btn_13p_pressed2.tres" id="8_sgm0l"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gkmpl"]
 
@@ -158,11 +162,16 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Answers" type="VBoxContainer" parent="UI/MainPanel" unique_id=882850257]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 425.0
-offset_right = 694.0
-offset_bottom = 489.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.11
+offset_left = 464.0
+offset_top = 436.0
+offset_right = 662.0
+offset_bottom = 500.0
+grow_horizontal = 2
+alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="BtnA" type="Button" parent="UI/MainPanel/Answers" unique_id=1602018777]
 layout_mode = 2
@@ -192,20 +201,28 @@ size_flags_vertical = 5
 theme_override_styles/normal = ExtResource("5_ftvu5")
 theme_override_styles/hover = ExtResource("6_0yex5")
 
-[node name="AITutorPopup" type="Panel" parent="UI" unique_id=1531678919]
-offset_left = 518.0
-offset_top = 253.0
-offset_right = 720.0
-offset_bottom = 388.0
+[node name="AITutorPopup" type="NinePatchRect" parent="UI" unique_id=600995695]
+texture_filter = 1
+offset_left = 375.0
+offset_top = 252.0
+offset_right = 757.0
+offset_bottom = 403.0
+texture = ExtResource("7_hrc4b")
 
 [node name="ExplanationText" type="RichTextLabel" parent="UI/AITutorPopup" unique_id=1351977256]
 layout_mode = 0
-offset_right = 206.0
-offset_bottom = 134.0
+offset_left = 18.0
+offset_top = 30.0
+offset_right = 366.0
+offset_bottom = 116.0
 
 [node name="CloseBtn" type="Button" parent="UI/AITutorPopup" unique_id=1368927845]
+texture_filter = 1
 layout_mode = 0
-offset_left = 156.0
-offset_top = -15.0
-offset_right = 296.0
-offset_bottom = 88.0
+offset_left = 366.0
+offset_top = -9.0
+offset_right = 393.0
+offset_bottom = 19.0
+theme_override_styles/normal = ExtResource("8_sgm0l")
+theme_override_styles/pressed = ExtResource("7_sdfhe")
+theme_override_styles/hover = ExtResource("8_hrc4b")
