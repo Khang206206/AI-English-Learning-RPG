@@ -36,8 +36,9 @@ texture = ExtResource("2_hvnqj")
 [node name="Player_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=1922410497]
 
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
+texture_filter = 1
 position = Vector2(984, 379)
-scale = Vector2(4, 4)
+scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_gkmpl")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=756303721]

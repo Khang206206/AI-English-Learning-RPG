@@ -1,42 +1,6 @@
 [gd_scene format=3 uid="uid://beikc0kigb4xd"]
 
-[ext_resource type="Texture2D" uid="uid://fk3m10bpwhnt" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/16x16/goblin.png" id="1_tjgje"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tjgje"]
-atlas = ExtResource("1_tjgje")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4yait"]
-atlas = ExtResource("1_tjgje")
-region = Rect2(16, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q3g0h"]
-atlas = ExtResource("1_tjgje")
-region = Rect2(32, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_76chb"]
-atlas = ExtResource("1_tjgje")
-region = Rect2(0, 80, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_g1p1y"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tjgje")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4yait")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_q3g0h")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_76chb")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[ext_resource type="SpriteFrames" uid="uid://w1mncl7gbyif" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/goblin_frames.tres" id="1_tjgje"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tjgje"]
 size = Vector2(22, 22)
@@ -47,8 +11,8 @@ texture_filter = 1
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=300717623]
 position = Vector2(3.5, 3)
 scale = Vector2(1.4375, 1.375)
-sprite_frames = SubResource("SpriteFrames_g1p1y")
-frame_progress = 0.13433516
+sprite_frames = ExtResource("1_tjgje")
+frame_progress = 0.8578398
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=197166227]
 texture_filter = 1

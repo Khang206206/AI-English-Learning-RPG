@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://w1mncl7gbyif"]
+
+[ext_resource type="Texture2D" uid="uid://fk3m10bpwhnt" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/16x16/goblin.png" id="1_a0ey4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjgje"]
+atlas = ExtResource("1_a0ey4")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yait"]
+atlas = ExtResource("1_a0ey4")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3g0h"]
+atlas = ExtResource("1_a0ey4")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76chb"]
+atlas = ExtResource("1_a0ey4")
+region = Rect2(0, 80, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjgje")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yait")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3g0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76chb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3 uid="uid://cddiuafe55d0u"]
+
+[ext_resource type="Script" uid="uid://cf2ac2r4ucqxr" path="res://scripts/MonsterData.gd" id="1_4t8tj"]
+[ext_resource type="SpriteFrames" uid="uid://w1mncl7gbyif" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/goblin_frames.tres" id="1_cul11"]
+
+[resource]
+script = ExtResource("1_4t8tj")
+monster_name = "Goblin"
+idle_animation = ExtResource("1_cul11")
+metadata/_custom_type_script = "uid://cf2ac2r4ucqxr"

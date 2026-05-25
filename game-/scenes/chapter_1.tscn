@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://beikc0kigb4xd" path="res://scenes/goblin.tscn" id="14_4mo47"]
 [ext_resource type="PackedScene" uid="uid://byord2ha5stth" path="res://scenes/interactable_object.tscn" id="15_ayc5h"]
 [ext_resource type="Resource" uid="uid://nt0ixdayhdee" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/slime_data.tres" id="16_ct7bd"]
+[ext_resource type="Resource" uid="uid://cddiuafe55d0u" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/goblin_data.tres" id="17_samt2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gjkv5"]
 texture = ExtResource("1_5rr72")
@@ -9697,6 +9698,8 @@ position = Vector2(-94.577545, 341.96503)
 [node name="AnimatedSprite2D" parent="PlayerInChapel" index="0" unique_id=662991125]
 position = Vector2(8.288774, 3.0174906)
 scale = Vector2(1.9110966, 1.7521863)
+frame = 5
+frame_progress = 0.0376855
 
 [node name="CollisionShape2D" parent="PlayerInChapel" index="1" unique_id=940606629]
 position = Vector2(8.077545, 3.5349731)
@@ -9725,6 +9728,7 @@ z_index = 4
 position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
+monster_data = ExtResource("17_samt2")
 
 [node name="CollisionShape2D" parent="InteractableObject2" index="0" unique_id=865465090]
 position = Vector2(248, -306)
