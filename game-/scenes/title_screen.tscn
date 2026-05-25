@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://btg117njqy6w6"]
 
-[ext_resource type="Texture2D" uid="uid://fb5kfdhiotgq" path="res://Title Screen.jpg" id="1_ig5kc"]
-[ext_resource type="FontFile" uid="uid://wlv3qnk7mxgy" path="res://Pixelout Personal Use Only.ttf" id="2_ak2if"]
-[ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://PressStart2P.ttf" id="3_ig5kc"]
+[ext_resource type="Texture2D" uid="uid://fb5kfdhiotgq" path="res://assets/title screen/Title Screen.jpg" id="1_ig5kc"]
+[ext_resource type="FontFile" uid="uid://wlv3qnk7mxgy" path="res://Pixelout/Pixelout Personal Use Only.ttf" id="2_ak2if"]
+[ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://Press_Start_2P/PressStart2P.ttf" id="3_ig5kc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ak2if"]
 texture = ExtResource("1_ig5kc")
@@ -120,3 +120,17 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_tpml5")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_jqemp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_013yr")
 text = "OPTIONS"
+
+[node name="Button4" type="Button" parent="VBoxContainer" unique_id=1667072838]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_hover_color = Color(0.9960963, 0.8408867, 0.6466243, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_ig5kc")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hafda")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tpml5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_jqemp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_013yr")
+text = "QUIT GAME"
