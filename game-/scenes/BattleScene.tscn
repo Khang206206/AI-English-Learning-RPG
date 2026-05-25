@@ -2,8 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cfigax31w2nrd" path="res://scripts/battle_scene.gd" id="1_gkmpl"]
 [ext_resource type="Texture2D" uid="uid://ccku7kdqjaai1" path="res://assets/battle_bg/battleback1.png" id="2_hvnqj"]
+[ext_resource type="Texture2D" uid="uid://127oaoyjr80l" path="res://assets/Dialogue box/GB free frames/GBS frames Black/Chunky white 2b.png" id="3_3mvhd"]
+[ext_resource type="FontFile" uid="uid://dcwaov2hxfnit" path="res://assets/NbPixelFontBundle_v1_0/TripleN.ttf" id="4_28s16"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gkmpl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gkmpl"]
+font = ExtResource("4_28s16")
 
 [node name="BattleScene" type="Control" unique_id=253914365]
 layout_mode = 3
@@ -25,7 +30,7 @@ texture = ExtResource("2_hvnqj")
 [node name="Player_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=1922410497]
 
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
-position = Vector2(1100, 400)
+position = Vector2(984, 379)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_gkmpl")
 
@@ -57,23 +62,98 @@ offset_right = 988.0
 offset_bottom = 41.0
 alignment = 2
 
-[node name="question" type="VBoxContainer" parent="UI/MainPanel" unique_id=497264850]
+[node name="question" type="Control" parent="UI/MainPanel" unique_id=167400595]
 custom_minimum_size = Vector2(600, 200)
-layout_mode = 1
-offset_left = 275.0
-offset_top = 4.0
-offset_right = 875.0
-offset_bottom = 204.0
-alignment = 1
+anchors_preset = 0
+offset_left = 276.0
+offset_right = 876.0
+offset_bottom = 200.0
+pivot_offset = Vector2(300, 0)
 
 [node name="QuestionBox" type="PanelContainer" parent="UI/MainPanel/question" unique_id=184103765]
-layout_mode = 2
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 200.0
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=920134706]
+texture_filter = 1
+position = Vector2(-32, 33.999996)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(0, 0, 8, 8)
+
+[node name="Sprite2D2" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=1776586240]
+texture_filter = 1
+position = Vector2(300, 34)
+scale = Vector2(80, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(8, 0, 8, 8)
+
+[node name="Sprite2D3" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=323831217]
+texture_filter = 1
+position = Vector2(630, 34.999996)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(16, 0, 8, 8)
+
+[node name="Sprite2D4" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=1630259432]
+texture_filter = 1
+position = Vector2(-32.000004, 100.99999)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(0, 8, 8, 8)
+
+[node name="Sprite2D5" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=951577415]
+texture_filter = 1
+position = Vector2(307.00003, 103)
+scale = Vector2(80, 10)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(8, 8, 8, 8)
+
+[node name="Sprite2D6" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=934965975]
+texture_filter = 1
+position = Vector2(630, 101.99999)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(16, 8, 8, 8)
+
+[node name="Sprite2D7" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=799952709]
+texture_filter = 1
+position = Vector2(-32.000004, 167)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(0, 16, 8, 8)
+
+[node name="Sprite2D8" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=1505611450]
+texture_filter = 1
+position = Vector2(306.00003, 167)
+scale = Vector2(80, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(8, 16, 8, 8)
+
+[node name="Sprite2D9" type="Sprite2D" parent="UI/MainPanel/question/QuestionBox" unique_id=248177467]
+texture_filter = 1
+position = Vector2(630, 167)
+scale = Vector2(8.4, 8.4)
+texture = ExtResource("3_3mvhd")
+region_enabled = true
+region_rect = Rect2(16, 16, 8, 8)
 
 [node name="Label" type="Label" parent="UI/MainPanel/question/QuestionBox" unique_id=1618401255]
 custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
+label_settings = SubResource("LabelSettings_gkmpl")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Answers" type="VBoxContainer" parent="UI/MainPanel" unique_id=882850257]
 layout_mode = 0
@@ -102,12 +182,12 @@ offset_bottom = 388.0
 
 [node name="ExplanationText" type="RichTextLabel" parent="UI/AITutorPopup" unique_id=1351977256]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 206.0
+offset_bottom = 134.0
 
 [node name="CloseBtn" type="Button" parent="UI/AITutorPopup" unique_id=1368927845]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 16.0
-offset_right = 164.0
-offset_bottom = 119.0
+offset_left = 156.0
+offset_top = -15.0
+offset_right = 296.0
+offset_bottom = 88.0

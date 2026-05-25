@@ -26,11 +26,11 @@ func _ready():
 	ai_tutor_popup.hide()
 	if GameManager.current_monster:
 		# Gán SpriteFrames từ resource truyền sang
+		monster_anim.flip_h = GameManager.current_monster.flip_h
 		monster_anim.sprite_frames = GameManager.current_monster.idle_animation
 		monster_anim.play("idle") # Chạy animation idle
 	else:
 		push_warning("Không có dữ liệu quái!")
-	
 	btn_a.pressed.connect(func(): check_answer("A"))
 	btn_b.pressed.connect(func(): check_answer("B"))
 	btn_c.pressed.connect(func(): check_answer("C"))
