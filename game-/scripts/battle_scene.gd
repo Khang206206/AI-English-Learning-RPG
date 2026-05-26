@@ -142,10 +142,16 @@ func set_buttons_disabled(is_disabled: bool):
 
 func win_battle():
 	print("Victory!")
+	var db = get_node_or_null("/root/DatabaseManager")
+	if db:
+		db.restore_full_hp()
 	show_result_overlay(true)
 
 func lose_battle():
 	print("Game Over!")
+	var db = get_node_or_null("/root/DatabaseManager")
+	if db:
+		db.restore_full_hp()
 	show_result_overlay(false)
 	
 func update_health_ui():
@@ -214,6 +220,7 @@ func _on_try_again_pressed():
 	get_tree().reload_current_scene()
 
 func _on_go_back_pressed():
+	
 	get_tree().change_scene_to_file("res://scenes/chapter_1.tscn")
 
 # Lắng nghe signal từ DatabaseManager — đồng bộ HP runtime khi DB thay đổi
