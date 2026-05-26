@@ -7,4 +7,5 @@
 script = ExtResource("1_4t8tj")
 monster_name = "Goblin"
 idle_animation = ExtResource("1_cul11")
+tier_id = 2
 metadata/_custom_type_script = "uid://cf2ac2r4ucqxr"

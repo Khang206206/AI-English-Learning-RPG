@@ -19,8 +19,8 @@ extends Control
 @onready var result_label = $ResultOverlay/Label
 @onready var try_again_btn = $ResultOverlay/TryAgain
 @onready var go_back_btn = $ResultOverlay/GoBack
-@onready var go_back2_btn = $ResultOverlay/GoBack2
 @onready var panel_border = $ResultOverlay/PanelBorder012
+@onready var go_back2_btn = $ResultOverlay/GoBack2
 @onready var panel_border2 = $ResultOverlay/PanelBorder013
 @onready var panel_border3 = $ResultOverlay/PanelBorder014
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
@@ -42,6 +42,13 @@ func _ready():
 		monster_anim.play("idle") # Chạy animation idle
 	else:
 		push_warning("Không có dữ liệu quái!")
+
+	# Đồng bộ HP thực từ DatabaseManager thay vì dùng giá trị hardcode
+	var db = get_node_or_null("/root/DatabaseManager")
+	if db:
+		player_hp = db.player_hearts
+		db.hp_changed.connect(_on_db_hp_changed)
+
 	btn_a.pressed.connect(func(): check_answer("A"))
 	btn_b.pressed.connect(func(): check_answer("B"))
 	btn_c.pressed.connect(func(): check_answer("C"))
@@ -79,23 +86,27 @@ func setup_hearts():
 
 # --- LOAD CÂU HỎI TỨC THÌ (0.1 giây) ---
 func load_next_question():
-	# Lấy đạn từ kho ngầm AIManager
 	current_question = AIManager.get_question()
-	
-	# Gán nội dung ngay lập tức lên UI
 	question_label.text = current_question.get("question", "Lỗi hiển thị câu hỏi")
 	btn_a.text = "A. " + current_question.get("A", "")
 	btn_b.text = "B. " + current_question.get("B", "")
 	btn_c.text = "C. " + current_question.get("C", "")
 	btn_d.text = "D. " + current_question.get("D", "")
-	
 	set_buttons_disabled(false)
 
 # 4. COMBAT STATE MACHINE
 func check_answer(selected_choice: String):
 	set_buttons_disabled(true)
-	
-	if selected_choice == current_question["correct_answer"]:
+
+	var word_id: int     = current_question.get("word_id", -1)
+	var is_correct: bool = selected_choice == current_question["correct_answer"]
+
+	# Báo cáo kết quả về DatabaseManager để cập nhật mastery và HP
+	var db = get_node_or_null("/root/DatabaseManager")
+	if db:
+		db.update_after_combat(word_id, is_correct)
+
+	if is_correct:
 		monster_hp -= 1
 		update_health_ui()
 		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")
@@ -107,7 +118,6 @@ func check_answer(selected_choice: String):
 			load_next_question()
 			
 	else:
-		player_hp -= 1
 		update_health_ui()
 		print("Sai rồi! Trừ 1 máu. Player còn: ", player_hp, " máu")
 		explanation_text.text = current_question.get("explanation", "Rất tiếc, bạn đã chọn sai!")
@@ -153,54 +163,51 @@ func update_health_ui():
 		else:
 			m_hearts[i].texture = heart_black
 func show_result_overlay(is_win: bool):
-	# Thay vì gọi trực tiếp trên CanvasLayer, ta gọi trên ColorRect (nền) và Label (chữ)
 	var background = $ResultOverlay/BG
-	
-	# Reset alpha về 0 cho cả nền và chữ
-	background.modulate.a = 0 
-	result_label.modulate.a = 0
+
+	# Reset alpha về 0 cho tất cả elements trước khi tween
+	background.modulate.a    = 0
+	result_label.modulate.a  = 0
+	go_back_btn.modulate.a   = 0
+	go_back2_btn.modulate.a  = 0
 	try_again_btn.modulate.a = 0
-	go_back_btn.modulate.a = 0
-	go_back2_btn.modulate.a = 0
-	panel_border.modulate.a = 0
+	panel_border.modulate.a  = 0
+	panel_border2.modulate.a = 0
+	panel_border3.modulate.a = 0
+
 	if is_win:
-		go_back_btn.visible = false
-		go_back2_btn.visible = true
+		go_back_btn.visible   = false
+		go_back2_btn.visible  = true
 		try_again_btn.visible = false
-		panel_border.visible = false
+		panel_border.visible  = false
 		panel_border2.visible = false
 		panel_border3.visible = true
+		result_label.text     = "VICTORY!"
 	else:
-		go_back_btn.visible = true
-		go_back2_btn.visible = false
+		go_back_btn.visible   = true
+		go_back2_btn.visible  = false
 		try_again_btn.visible = true
-		panel_border.visible = true
+		panel_border.visible  = true
 		panel_border2.visible = true
 		panel_border3.visible = false
+		result_label.text     = "GAME OVER!"
+
 	result_overlay.show()
-	
-	# Tạo Tween để làm mờ dần cả hai
+
+	# Tween fade-in cho các element đang visible
 	var tween = create_tween()
-	tween.parallel().tween_property(background, "modulate:a", 1.0, 0.5)
+	tween.parallel().tween_property(background,   "modulate:a", 1.0, 0.5)
 	tween.parallel().tween_property(result_label, "modulate:a", 1.0, 0.5)
-	if go_back_btn.visible:
-		tween.parallel().tween_property(go_back_btn, "modulate:a", 1.0, 0.5)
-	if go_back2_btn.visible:
-		tween.parallel().tween_property(go_back2_btn, "modulate:a", 1.0, 0.5)
-	if try_again_btn.visible:
-		tween.parallel().tween_property(try_again_btn, "modulate:a", 1.0, 0.5)
-	if panel_border.visible:
-		tween.parallel().tween_property(panel_border, "modulate:a", 1.0, 0.5)
-	if panel_border2.visible:
-		tween.parallel().tween_property(panel_border2, "modulate:a", 1.0, 0.5)
-	if panel_border3.visible:
-		tween.parallel().tween_property(panel_border3, "modulate:a", 1.0, 0.5)
+
 	if is_win:
-		result_label.text = "VICTORY!"
-		# Lưu ý: Nếu bạn muốn đổi màu chữ, hãy đổi trực tiếp trên result_label
+		tween.parallel().tween_property(go_back2_btn,  "modulate:a", 1.0, 0.5)
+		tween.parallel().tween_property(panel_border3, "modulate:a", 1.0, 0.5)
 	else:
-		result_label.text = "GAME OVER!"
-	
+		tween.parallel().tween_property(go_back_btn,   "modulate:a", 1.0, 0.5)
+		tween.parallel().tween_property(try_again_btn, "modulate:a", 1.0, 0.5)
+		tween.parallel().tween_property(panel_border,  "modulate:a", 1.0, 0.5)
+		tween.parallel().tween_property(panel_border2, "modulate:a", 1.0, 0.5)
+
 	set_buttons_disabled(true)
 	
 func _on_try_again_pressed():
@@ -208,3 +215,7 @@ func _on_try_again_pressed():
 
 func _on_go_back_pressed():
 	get_tree().change_scene_to_file("res://scenes/chapter_1.tscn")
+
+# Lắng nghe signal từ DatabaseManager — đồng bộ HP runtime khi DB thay đổi
+func _on_db_hp_changed(new_hp: int):
+	player_hp = new_hp

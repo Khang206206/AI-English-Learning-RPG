@@ -224,17 +224,15 @@ func _seed_vocabulary_fallback() -> void:
 # ==============================================================================
 
 func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
-	# pool_size = 15: lấy 15 từ yếu nhất thay vì 5
-	# ORDER BY mastery_score ASC, RANDOM():
-	#   - Ưu tiên từ có mastery thấp (DDA vẫn hoạt động đúng)
-	#   - Khi nhiều từ cùng mastery_score (đặc biệt lúc mới chơi tất cả = 0.0),
-	#     RANDOM() làm tiebreaker → không bao giờ bị kẹt ở word_id 1-5
+	# JOIN thêm Enemy_Tier_Dict để trả về enemy_type cùng với vocab
+	# AIManager dùng enemy_type này để nhét vào prompt (Context-Aware Thematic)
 	var sql = """
 		SELECT
 			v.word_id,
 			v.word,
 			v.meaning,
 			v.tier_id,
+			e.enemy_type,
 			COALESCE(
 				CAST(m.correct_count AS REAL) / (m.encounter_count + 1),
 				0.0
@@ -245,6 +243,8 @@ func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
 		LEFT JOIN Player_Vocab_Mastery m
 			ON  v.word_id = m.word_id
 			AND m.save_id = ?
+		LEFT JOIN Enemy_Tier_Dict e
+			ON  v.tier_id = e.tier_id
 		WHERE v.tier_id = ?
 		ORDER BY mastery_score ASC, RANDOM()
 		LIMIT ?;
@@ -388,6 +388,31 @@ func restore_full_hp() -> void:
 	)
 	emit_signal("hp_changed", player_hearts)
 	print("[DatabaseManager] HP đã phục hồi đầy: %d/%d" % [player_hearts, max_hearts])
+
+## Trả về mastery trung bình (0.0 → 1.0) của toàn bộ từ trong một tier.
+## AIManager dùng giá trị này để quyết định:
+##   < 0.4  → người chơi còn yếu → sinh MCQ dễ, câu hỏi nhận diện nghĩa cơ bản
+##   0.4-0.6 → trung bình → MCQ khó hơn (đồng/trái nghĩa, điền vào chỗ trống)
+##   >= 0.6 → đã quen từ đủ → kích hoạt Reading Passage thay cho MCQ thuần túy
+func get_tier_avg_mastery(tier_id: int) -> float:
+	db.query_with_bindings("""
+		SELECT
+			AVG(
+				COALESCE(
+					CAST(m.correct_count AS REAL) / (m.encounter_count + 1),
+					0.0
+				)
+			) AS avg_mastery
+		FROM Vocabulary_Bank v
+		LEFT JOIN Player_Vocab_Mastery m
+			ON v.word_id = m.word_id AND m.save_id = ?
+		WHERE v.tier_id = ?;
+	""", [CURRENT_SAVE_SLOT, tier_id])
+
+	if db.query_result.is_empty() or db.query_result[0]["avg_mastery"] == null:
+		return 0.0
+
+	return float(db.query_result[0]["avg_mastery"])
 
 func get_mastery_summary() -> Array:
 	db.query_with_bindings(

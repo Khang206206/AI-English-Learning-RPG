@@ -47,6 +47,7 @@ func _handle_quiz_action():
 func _handle_battle_action():
 	if monster_data:
 		GameManager.current_monster = monster_data
+		AIManager.set_tier(monster_data.tier_id)
 		get_tree().change_scene_to_file(battle_scene_path)
 	else:
 		if battle_scene_path != null and battle_scene_path != "":
