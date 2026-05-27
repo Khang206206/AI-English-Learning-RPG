@@ -14,7 +14,11 @@
 \usepackage{xcolor}
 \usepackage{amssymb}
 \usepackage{float}
+\usepackage{booktabs}
 \usepackage{ragged2e}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{pifont}
 
 % Tự pha các mã màu chuẩn IDE
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -22,27 +26,33 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+% Cấu hình lề trang
+\geometry{left=1.5cm, right=1.5cm, top=2cm, bottom=2cm}
+% Định nghĩa phím tắt vẽ dấu chấm tròn màu
+\newcommand{\reddot}{\textcolor{red}{$\bullet$}\ }
+\newcommand{\yellowdot}{\textcolor{yellow}{$\bullet$}\ }
 
-% Cấu hình form hiển thị cho code
+
+% Cấu hình hiển thị code (Pseudocode/GDScript/SQL)
 \lstset{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen}\itshape,
-    keywordstyle=\color{blue}\bfseries,
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
+    backgroundcolor=\color{gray!5},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{orange},
+    frame=single,
+    keepspaces=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    showspaces=false,
     showstringspaces=false,
-    showtabs=false,                  
-    tabsize=4
+    showtabs=false,
+    tabsize=2,
+    language=Python
 }
-
 % --- CẤU HÌNH ĐƯỜNG DẪN ẢNH ---
 % Lệnh này bảo LaTeX hãy tự động tìm ảnh trong thư mục "Figure"
 \graphicspath{{Figure/}} 
@@ -57,5 +67,6 @@
 \tableofcontents
 \newpage
 \input{Main content/part1}
-
+\input{Main content/part2(section5)}
+\input{Main content/part3(section6,7)}
 \end{document})
