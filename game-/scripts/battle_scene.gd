@@ -34,6 +34,7 @@ var heart_red = preload("res://assets/hearts/Heart_Full.tres")
 var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
 
+const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
@@ -112,6 +113,23 @@ func check_answer(selected_choice: String):
 		db.update_after_combat(word_id, is_correct)
 
 	if is_correct:
+		player_anim.position.y -= 40
+		player_anim.play("attack")
+		await get_tree().create_timer(0.1).timeout
+		if SPELL_SCENE:
+			var spell = SPELL_SCENE.instantiate()
+			# Thêm vào Node2D để nó không bị dính vào UI
+			get_node("Node2D").add_child(spell) 
+			
+			# Tính toán vị trí: từ đầu gậy player đến giữa quái
+			var start_p = player_anim.global_position + Vector2(10, -5)
+			var target_p = monster_anim.global_position
+			
+			spell.shoot(start_p, target_p)
+		# Đợi animation kết thúc mới tiếp tục logic
+		await player_anim.animation_finished 
+		player_anim.position.y += 40
+		player_anim.play("idle")
 		monster_hp -= 1
 		update_health_ui()
 		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")

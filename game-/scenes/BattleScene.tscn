@@ -40,11 +40,17 @@
 [ext_resource type="Texture2D" uid="uid://ctw6g7kp54k8m" path="res://assets/player2/Rising - Jumping/Rising4.png" id="30_37dq0"]
 [ext_resource type="Texture2D" uid="uid://i8g5uq7ewau0" path="res://assets/player2/Rising - Jumping/Rising5.png" id="31_inodm"]
 [ext_resource type="Texture2D" uid="uid://dxmwuvteu6iuc" path="res://assets/player2/Rising - Jumping/Rising6.png" id="32_k2bpt"]
+[ext_resource type="Texture2D" uid="uid://bpcv3fuesjf3n" path="res://assets/player2/Attack/StaffMighty/AttackMighty1.png" id="33_chdos"]
 [ext_resource type="Texture2D" uid="uid://dlwkkwoh2mykq" path="res://assets/player2/Run/Run1.png" id="33_lyhyx"]
+[ext_resource type="Texture2D" uid="uid://2grpsyem37gn" path="res://assets/player2/Attack/StaffMighty/AttackMighty2.png" id="34_gewri"]
 [ext_resource type="Texture2D" uid="uid://pgs3vbvp6pye" path="res://assets/player2/Run/Run2.png" id="34_mtgyj"]
 [ext_resource type="Texture2D" uid="uid://dj3lemgihapjx" path="res://assets/player2/Run/Run3.png" id="35_ch463"]
+[ext_resource type="Texture2D" uid="uid://ju8g3pnu5a6e" path="res://assets/player2/Attack/StaffMighty/AttackMighty3.png" id="35_i8qvm"]
+[ext_resource type="Texture2D" uid="uid://bigxkdcdlxynk" path="res://assets/player2/Attack/StaffMighty/AttackMighty4.png" id="36_d0o6i"]
 [ext_resource type="Texture2D" uid="uid://bpxgkdvx1emh3" path="res://assets/player2/Run/Run4.png" id="36_h5qe7"]
 [ext_resource type="Texture2D" uid="uid://bi4rwgtf4lg0a" path="res://assets/player2/Run/Run5.png" id="37_fnady"]
+[ext_resource type="Texture2D" uid="uid://cch71t3xiwsjo" path="res://assets/player2/Attack/StaffMighty/AttackMighty5.png" id="37_xkywx"]
+[ext_resource type="Texture2D" uid="uid://bdtxrt83qn328" path="res://assets/player2/Attack/StaffMighty/AttackMighty6.png" id="38_03wv6"]
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="38_oqnmf"]
 [ext_resource type="Shader" uid="uid://cdaxnwsajoytl" path="res://scenes/BattleScene.gdshader" id="47_mj0st"]
 [ext_resource type="FontFile" uid="uid://wcn37kq5i0lh" path="res://Press_Start_2P/PressStart2P-Regular.ttf" id="48_kwf4x"]
@@ -56,6 +62,29 @@
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_chdos")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_gewri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_i8qvm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_d0o6i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_xkywx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_03wv6")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("3_osvr5")
@@ -257,7 +286,7 @@ texture_repeat = 2
 position = Vector2(131, 366)
 scale = Vector2(5.454, 5)
 sprite_frames = SubResource("SpriteFrames_642jd")
-animation = &"die"
+animation = &"attack"
 autoplay = "idle"
 
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
