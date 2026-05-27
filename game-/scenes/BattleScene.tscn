@@ -50,6 +50,9 @@
 [ext_resource type="FontFile" uid="uid://wcn37kq5i0lh" path="res://Press_Start_2P/PressStart2P-Regular.ttf" id="48_kwf4x"]
 [ext_resource type="FontFile" uid="uid://dl4e4vafcdyc0" path="res://assets/NbPixelFontBundle_v1_0/AtariGames.ttf" id="49_tba6u"]
 [ext_resource type="Texture2D" uid="uid://dbl3ejfnlnqfr" path="res://assets/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="49_xe6ct"]
+[ext_resource type="AudioStream" uid="uid://b7t1ca8687nc6" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/victory!.mp3" id="51_giceh"]
+[ext_resource type="AudioStream" uid="uid://qh0kggwwp4iy" path="res://assets/battleThemeA.mp3" id="51_ljqkc"]
+[ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
 animations = [{
@@ -535,3 +538,12 @@ texture_filter = 1
 position = Vector2(563.5, 410.49997)
 scale = Vector2(5.4374995, 1.7708325)
 texture = ExtResource("49_xe6ct")
+
+[node name="BGM_Player" type="AudioStreamPlayer2D" parent="." unique_id=373099646]
+stream = ExtResource("51_ljqkc")
+
+[node name="Victory_SFX" type="AudioStreamPlayer2D" parent="." unique_id=319944912]
+stream = ExtResource("51_giceh")
+
+[node name="Defeat_SFX" type="AudioStreamPlayer2D" parent="." unique_id=518581527]
+stream = ExtResource("52_ljqkc")

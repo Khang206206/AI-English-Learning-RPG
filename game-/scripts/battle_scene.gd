@@ -23,6 +23,9 @@ extends Control
 @onready var go_back2_btn = $ResultOverlay/GoBack2
 @onready var panel_border2 = $ResultOverlay/PanelBorder013
 @onready var panel_border3 = $ResultOverlay/PanelBorder014
+@onready var bgm_player = $BGM_Player
+@onready var victory_sfx = $Victory_SFX
+@onready var defeat_sfx = $Defeat_SFX
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int = 3
@@ -61,6 +64,8 @@ func _ready():
 	popup_close_btn.pressed.connect(close_tutor_and_continue)
 	setup_hearts()
 	load_next_question()
+	if bgm_player != null:
+		bgm_player.play()
 
 func setup_hearts():
 	for child in player_hearts_container.get_children():
@@ -142,6 +147,10 @@ func set_buttons_disabled(is_disabled: bool):
 
 func win_battle():
 	print("Victory!")
+	if bgm_player != null and bgm_player.playing:
+		bgm_player.stop() # Tắt nhạc nền đi
+	if victory_sfx != null:
+		victory_sfx.play() # Bật nhạc Victory
 	var db = get_node_or_null("/root/DatabaseManager")
 	if db:
 		db.restore_full_hp()
@@ -149,6 +158,10 @@ func win_battle():
 
 func lose_battle():
 	print("Game Over!")
+	if bgm_player != null and bgm_player.playing:
+		bgm_player.stop() # Tắt nhạc nền đi
+	if defeat_sfx != null:
+		defeat_sfx.play() # Bật nhạc Defeat
 	var db = get_node_or_null("/root/DatabaseManager")
 	if db:
 		db.restore_full_hp()
