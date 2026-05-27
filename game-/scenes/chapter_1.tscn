@@ -1,7 +1,9 @@
 [gd_scene format=4 uid="uid://l1dhtqji1d6x"]
 
 [ext_resource type="Texture2D" uid="uid://cpy0pphcsojae" path="res://assets/Chapter 1/Texture/TX Tileset Grass.png" id="1_5rr72"]
+[ext_resource type="Script" uid="uid://jnhm0wgiqci" path="res://scenes/chapter_1.gd" id="1_n0w3g"]
 [ext_resource type="Texture2D" uid="uid://coo28k2mvgui4" path="res://assets/Chapter 1/Texture/TX Tileset Stone Ground.png" id="2_gyffv"]
+[ext_resource type="AudioStream" uid="uid://djv0d00kag5xe" path="res://assets/forest.mp3" id="2_hvi31"]
 [ext_resource type="Texture2D" uid="uid://cqsxnulljmpu2" path="res://assets/Chapter 1/Texture/TX Tileset Wall.png" id="3_1pe0h"]
 [ext_resource type="Texture2D" uid="uid://iuavdxckhn2b" path="res://assets/Chapter 1/Scene Overview.png" id="3_27bay"]
 [ext_resource type="Texture2D" uid="uid://bvb2e2x8mb6oi" path="res://assets/Chapter 1/Texture/TX Struct.png" id="4_27bay"]
@@ -9655,6 +9657,8 @@ size = Vector2(21, 27)
 size = Vector2(115.8125, 74)
 
 [node name="Level1" type="Node2D" unique_id=570137229]
+script = ExtResource("1_n0w3g")
+chap1_music = ExtResource("2_hvi31")
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1604127040]
 y_sort_enabled = true

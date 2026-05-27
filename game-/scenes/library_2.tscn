@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://b410wmt3mjtoi"]
 
 [ext_resource type="Texture2D" uid="uid://br7xhmdr3cvdg" path="res://assets/tileset trong sách/black background.jpg" id="1_sey31"]
+[ext_resource type="Script" uid="uid://ikc2g0blih7m" path="res://scenes/library_2.gd" id="1_vc4ej"]
+[ext_resource type="AudioStream" uid="uid://djprhs44wgtcc" path="res://assets/Camille_Saint-Saens-Aquarium.ogg" id="2_0qe26"]
 [ext_resource type="Texture2D" uid="uid://cu10r8jvk6boe" path="res://assets/tileset trong sách/Full Asset 1.png" id="2_ubwkx"]
 [ext_resource type="Texture2D" uid="uid://bvidte2efet3e" path="res://assets/tileset trong sách/Full Asset 2.png" id="3_midgi"]
 [ext_resource type="PackedScene" uid="uid://sibltqkspavx" path="res://scenes/PlayerSideView.tscn" id="4_ubwkx"]
@@ -3607,6 +3609,8 @@ _data = {
 size = Vector2(215, 139.375)
 
 [node name="Library2" type="Node2D" unique_id=1683452602]
+script = ExtResource("1_vc4ej")
+lib2_music = ExtResource("2_0qe26")
 
 [node name="QuizUI" parent="." unique_id=70507873 instance=ExtResource("8_63gu8")]
 layer = 4
@@ -3649,6 +3653,7 @@ zoom = Vector2(1.05, 1.1)
 position = Vector2(21, 595)
 target_scene_path = "uid://ce8is5d4812re"
 destination_spawn_id = "SpawnFromLibrary2"
+keep_bgm = true
 
 [node name="TeleportGate2" parent="." unique_id=964040520 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("6_qdpyw")]
 position = Vector2(1017, 596)

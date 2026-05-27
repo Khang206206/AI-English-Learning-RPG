@@ -10,6 +10,9 @@ extends Area2D
 @onready var prompt = $DoorInteract
 var is_player_inside = false
 
+@export_group("Audio Settings")
+@export var keep_bgm: bool = false
+
 func _ready():
 	prompt.hide()
 	body_entered.connect(_on_body_entered)
@@ -32,6 +35,9 @@ func _input(event):
 func change_scene():
 	if target_scene_path == "":
 		return
+		
+	if BgmManager != null and not keep_bgm:
+		BgmManager.stop_music()
 
 	if GameManager != null:
 		GameManager.target_spawn_id = destination_spawn_id

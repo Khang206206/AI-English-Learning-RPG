@@ -541,6 +541,7 @@ texture = ExtResource("49_xe6ct")
 
 [node name="BGM_Player" type="AudioStreamPlayer2D" parent="." unique_id=373099646]
 stream = ExtResource("51_ljqkc")
+volume_db = -6.0
 
 [node name="Victory_SFX" type="AudioStreamPlayer2D" parent="." unique_id=319944912]
 stream = ExtResource("51_giceh")

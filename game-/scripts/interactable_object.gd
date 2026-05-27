@@ -45,6 +45,8 @@ func _handle_quiz_action():
 		push_error("Loi: Chua gan Quiz UI Node")
 
 func _handle_battle_action():
+	if BgmManager != null:
+		BgmManager.stop_music()
 	if monster_data:
 		GameManager.current_monster = monster_data
 		AIManager.set_tier(monster_data.tier_id)

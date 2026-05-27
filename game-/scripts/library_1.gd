@@ -1,6 +1,12 @@
 extends Node2D
+@export var lib1_music: AudioStream
 
 func _ready():
+	if lib1_music != null:
+		BgmManager.play_music(lib1_music)
+	else:
+		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
+		BgmManager.stop_music()
 	if GameManager.target_spawn_id != "":
 		var spawn_point = get_node_or_null(GameManager.target_spawn_id)
 		if spawn_point:

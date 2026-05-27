@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://8epd7f6pdmcb" path="res://scripts/library_1.gd" id="1_jgmht"]
 [ext_resource type="Texture2D" uid="uid://br7xhmdr3cvdg" path="res://assets/tileset trong sách/black background.jpg" id="1_n61aj"]
 [ext_resource type="Texture2D" uid="uid://cu10r8jvk6boe" path="res://assets/tileset trong sách/Full Asset 1.png" id="2_igipr"]
+[ext_resource type="AudioStream" uid="uid://djprhs44wgtcc" path="res://assets/Camille_Saint-Saens-Aquarium.ogg" id="2_jgmht"]
 [ext_resource type="Texture2D" uid="uid://bvidte2efet3e" path="res://assets/tileset trong sách/Full Asset 2.png" id="3_6frsu"]
 [ext_resource type="Texture2D" uid="uid://dauekpgt1gf6k" path="res://assets/tileset trong sách/spin off/BG 1/upstair_2.png" id="4_dr2oc"]
 [ext_resource type="Texture2D" uid="uid://b1f8dvwxu4d5a" path="res://assets/tileset trong sách/spin off/BG 1/upstair_3.png" id="5_qyo4v"]
@@ -3624,6 +3625,7 @@ sources/4 = SubResource("TileSetAtlasSource_7bqx5")
 
 [node name="Library1" type="Node2D" unique_id=1107586054]
 script = ExtResource("1_jgmht")
+lib1_music = ExtResource("2_jgmht")
 
 [node name="background" type="TextureRect" parent="." unique_id=715471225]
 offset_left = 7.0
@@ -3659,6 +3661,7 @@ zoom = Vector2(1.07, 1.2)
 position = Vector2(1000, 744)
 target_scene_path = "uid://b410wmt3mjtoi"
 destination_spawn_id = ""
+keep_bgm = true
 
 [node name="SpawnFromLibrary2" type="Marker2D" parent="." unique_id=1285694383]
 position = Vector2(1008, 629)
