@@ -3,7 +3,7 @@
 \subsection{Problem $\rightarrow$ Algorithm Mapping}
 
 \subsubsection{Bài toán 1 — Đo lường năng lực từng từ vựng của người chơi}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l|X|}
 \toprule
 \textbf{Mục} & \textbf{Nội dung} \\
 \midrule
@@ -22,7 +22,7 @@
 \vspace{0.5cm}
 
 \subsubsection{Bài toán 2 — Chọn từ vựng và điều chỉnh độ khó phù hợp với từng người chơi}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l|X|}
 \toprule
 \textbf{Mục} & \textbf{Nội dung} \\
 \midrule
@@ -46,7 +46,7 @@
 \begin{table}[h!]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l|X|}
 \toprule
 \textbf{Điều kiện} & \textbf{Chỉ thị gửi cho AI} \\
 \midrule
@@ -62,7 +62,7 @@ $\text{mastery} \ge 0.6$ & Sắc thái nghĩa (nuance), đáp án sai tinh tế 
 \newpage
 
 \subsubsection{Bài toán 3 — Sinh câu hỏi không gây trễ (latency = 0) khi vào trận}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l|X|}
 \toprule
 \textbf{Mục} & \textbf{Nội dung} \\
 \midrule
@@ -88,7 +88,7 @@ $\text{mastery} \ge 0.6$ & Sắc thái nghĩa (nuance), đáp án sai tinh tế 
 \vspace{0.5cm}
 
 \subsubsection{Bài toán 4 — Ràng buộc mô hình ngôn ngữ sinh output đúng format JSON}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l|X|}
 \toprule
 \textbf{Mục} & \textbf{Nội dung} \\
 \midrule
@@ -126,7 +126,7 @@ $\text{mastery} \ge 0.6$ & Sắc thái nghĩa (nuance), đáp án sai tinh tế 
 \begin{table}[h!]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}c l X X@{}}
+\begin{tabularx}{\textwidth}{|c|l|X|X|}
 \toprule
 \textbf{\#} & \textbf{Bài toán} & \textbf{Input} & \textbf{Output} \\
 \midrule
@@ -187,7 +187,7 @@ FUNCTION get_mastery(save_id, word_id):
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l c c X@{}}
+\begin{tabularx}{\textwidth}{|l |c |c| X|}
 \toprule
 \textbf{Thao tác} & \textbf{Time} & \textbf{Space} & \textbf{Ghi chú} \\
 \midrule
@@ -238,7 +238,7 @@ FUNCTION get_weakest_vocab(save_id, tier_id):
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l c c X@{}}
+\begin{tabularx}{\textwidth}{|l| c| c |X|}
 \toprule
 \textbf{Thao tác} & \textbf{Time} & \textbf{Space} & \textbf{Ghi chú} \\
 \midrule
@@ -303,7 +303,7 @@ FUNCTION get_tier_avg_mastery(save_id, tier_id):
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l c c X@{}}
+\begin{tabularx}{\textwidth}{|l |c |c| X|}
 \toprule
 \textbf{Thao tác} & \textbf{Time} & \textbf{Space} & \textbf{Ghi chú} \\
 \midrule
@@ -398,7 +398,7 @@ FUNCTION build_fallback_question():
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l c c X@{}}
+\begin{tabularx}{\textwidth}{|l |c| c| X|}
 \toprule
 \textbf{Thao tác} & \textbf{Time} & \textbf{Space} & \textbf{Ghi chú} \\
 \midrule
@@ -535,7 +535,7 @@ FUNCTION _on_ollama_response(response):
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l c c X@{}}
+\begin{tabularx}{\textwidth}{|l |c| c |X|}
 \toprule
 \textbf{Thao tác} & \textbf{Time} & \textbf{Space} & \textbf{Ghi chú} \\
 \midrule
@@ -560,7 +560,7 @@ Validate (\texttt{has}-check) & $O(1)$ & $O(1)$ & 2 key lookup cố định \\
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}c l c c@{}}
+\begin{tabularx}{\textwidth}{|c |l |c| c|}
 \toprule
 \textbf{\#} & \textbf{Thuật toán} & \textbf{Time} & \textbf{Space} \\
 \midrule
@@ -618,7 +618,7 @@ COALESCE(m.correct_count * 1.0 / (m.encounter_count + 1), 0.0) AS mastery_score
 \begin{table}[h!]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l |X|}
 \toprule
 \textbf{Cách tiếp cận} & \textbf{Vấn đề} \\
 \midrule
@@ -675,7 +675,7 @@ Chi phí: 1 biến boolean. Lợi ích: không bao giờ gây quá tải Ollama.
 \begin{table}[h!]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{tabularx}{\textwidth}{|l |X|}
 \toprule
 \textbf{Temperature} & \textbf{Hệ quả} \\
 \midrule
@@ -702,7 +702,7 @@ Mỗi chiến lược tối ưu hóa đều kèm theo một đánh đổi đư�
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\begin{tabularx}{\textwidth}{|l| X |X|}
 \toprule
 \textbf{Chiến lược} & \textbf{Lợi ích} & \textbf{Đánh đổi chấp nhận} \\
 \midrule
