@@ -69,3 +69,6 @@
 \contentsline {subsubsection}{\numberline {6.4.4}Phần 4 — Prompt Engineering}{45}{subsubsection.6.4.4}%
 \contentsline {paragraph}{Chiến lược áp dụng:}{45}{section*.18}%
 \contentsline {subsubsection}{\numberline {6.4.5}Tổng kết các đánh đổi (Trade-offs)}{46}{subsubsection.6.4.5}%
+\contentsline {section}{\numberline {7}IMPLEMENTATION \& SIMULATION}{46}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Tech Stack}{46}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}System Implementation}{46}{subsection.7.2}%

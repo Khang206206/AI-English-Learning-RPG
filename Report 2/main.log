@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  28 MAY 2026 00:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.21)  28 MAY 2026 09:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1003,7 +1003,7 @@ Package hyperref Info: Link coloring OFF on input line 60.
 \openout4 = `main.out'.
 
  (Main content/title.tex
-<Figure/logo-khtn.png, id=234, 363.9999pt x 285.9483pt>
+<Figure/logo-khtn.png, id=246, 363.9999pt x 285.9483pt>
 File: Figure/logo-khtn.png Graphic file (type png)
 <use Figure/logo-khtn.png>
 Package pdftex.def Info: Figure/logo-khtn.png  used on input line 29.
@@ -1140,7 +1140,7 @@ Underfull \hbox (badness 1990) in paragraph at lines 199--199
  []
 
 [11] [12] [13] [14] [15]) (Main content/part2(section5).tex
-<Figure/mohinhc4.png, id=392, 453.19313pt x 252.945pt>
+<Figure/mohinhc4.png, id=407, 453.19313pt x 252.945pt>
 File: Figure/mohinhc4.png Graphic file (type png)
 <use Figure/mohinhc4.png>
 Package pdftex.def Info: Figure/mohinhc4.png  used on input line 8.
@@ -1150,19 +1150,19 @@ Overfull \hbox (1.92159pt too wide) in paragraph at lines 70--70
 []|\T5/cmr/bx/n/10.95 Decomposition  
  []
 
-<Figure/df1.png, id=409, 304.13625pt x 650.43pt>
+<Figure/df1.png, id=424, 304.13625pt x 650.43pt>
 File: Figure/df1.png Graphic file (type png)
 <use Figure/df1.png>
 Package pdftex.def Info: Figure/df1.png  used on input line 77.
 (pdftex.def)             Requested size: 304.1355pt x 650.4284pt.
 [18]
-<Figure/df2.png, id=416, 453.19313pt x 565.36218pt>
+<Figure/df2.png, id=431, 453.19313pt x 565.36218pt>
 File: Figure/df2.png Graphic file (type png)
 <use Figure/df2.png>
 Package pdftex.def Info: Figure/df2.png  used on input line 83.
 (pdftex.def)             Requested size: 453.19202pt x 565.3608pt.
  [19 <./Figure/df1.png>] [20 <./Figure/df2.png>] [21] [22]
-<Figure/SD.png, id=455, 417.05812pt x 167.87718pt>
+<Figure/SD.png, id=470, 417.05812pt x 167.87718pt>
 File: Figure/SD.png Graphic file (type png)
 <use Figure/SD.png>
 Package pdftex.def Info: Figure/SD.png  used on input line 193.
@@ -1172,62 +1172,62 @@ Overfull \hbox (9.17174pt too wide) in paragraph at lines 193--195
  [][] 
  []
 
-<Figure/erd.png, id=456, 453.19313pt x 380.17032pt>
+<Figure/erd.png, id=471, 453.19313pt x 380.17032pt>
 File: Figure/erd.png Graphic file (type png)
 <use Figure/erd.png>
 Package pdftex.def Info: Figure/erd.png  used on input line 201.
 (pdftex.def)             Requested size: 453.19202pt x 380.16939pt.
 [23 <./Figure/SD.png>]
-<Figure/titlescreen.png, id=467, 416.30531pt x 234.1247pt>
+<Figure/titlescreen.png, id=482, 416.30531pt x 234.1247pt>
 File: Figure/titlescreen.png Graphic file (type png)
 <use Figure/titlescreen.png>
 Package pdftex.def Info: Figure/titlescreen.png  used on input line 213.
 (pdftex.def)             Requested size: 291.41173pt x 163.88615pt.
  [24 <./Figure/erd.png>]
-<Figure/mainscreen.png, id=474, 452.4403pt x 255.20343pt>
+<Figure/mainscreen.png, id=489, 452.4403pt x 255.20343pt>
 File: Figure/mainscreen.png Graphic file (type png)
 <use Figure/mainscreen.png>
 Package pdftex.def Info: Figure/mainscreen.png  used on input line 222.
 (pdftex.def)             Requested size: 316.70605pt x 178.64117pt.
-<Figure/library.png, id=475, 453.94594pt x 256.70906pt>
+<Figure/library.png, id=490, 453.94594pt x 256.70906pt>
 File: Figure/library.png Graphic file (type png)
 <use Figure/library.png>
 Package pdftex.def Info: Figure/library.png  used on input line 228.
 (pdftex.def)             Requested size: 317.75998pt x 179.6951pt.
-<Figure/interact.png, id=476, 453.94594pt x 252.945pt>
+<Figure/interact.png, id=491, 453.94594pt x 252.945pt>
 File: Figure/interact.png Graphic file (type png)
 <use Figure/interact.png>
 Package pdftex.def Info: Figure/interact.png  used on input line 234.
 (pdftex.def)             Requested size: 317.75998pt x 177.06029pt.
  [25 <./Figure/titlescreen.png> <./Figure/mainscreen.png> <./Figure/library.png
 >]
-<Figure/ques.png, id=484, 453.19313pt x 253.69781pt>
+<Figure/ques.png, id=499, 453.19313pt x 253.69781pt>
 File: Figure/ques.png Graphic file (type png)
 <use Figure/ques.png>
 Package pdftex.def Info: Figure/ques.png  used on input line 242.
 (pdftex.def)             Requested size: 317.23302pt x 177.58725pt.
-<Figure/tier.png, id=485, 453.19313pt x 255.20343pt>
+<Figure/tier.png, id=500, 453.19313pt x 255.20343pt>
 File: Figure/tier.png Graphic file (type png)
 <use Figure/tier.png>
 Package pdftex.def Info: Figure/tier.png  used on input line 248.
 (pdftex.def)             Requested size: 317.23302pt x 178.64117pt.
-<Figure/combat1.png, id=486, 453.19313pt x 253.69781pt>
+<Figure/combat1.png, id=501, 453.19313pt x 253.69781pt>
 File: Figure/combat1.png Graphic file (type png)
 <use Figure/combat1.png>
 Package pdftex.def Info: Figure/combat1.png  used on input line 255.
 (pdftex.def)             Requested size: 317.23302pt x 177.58725pt.
  [26 <./Figure/interact.png> <./Figure/ques.png> <./Figure/tier.png>]
-<Figure/combat2.png, id=494, 453.19313pt x 258.21469pt>
+<Figure/combat2.png, id=509, 453.19313pt x 258.21469pt>
 File: Figure/combat2.png Graphic file (type png)
 <use Figure/combat2.png>
 Package pdftex.def Info: Figure/combat2.png  used on input line 261.
 (pdftex.def)             Requested size: 317.23302pt x 180.74904pt.
-<Figure/gameover.png, id=495, 453.19313pt x 255.95625pt>
+<Figure/gameover.png, id=510, 453.19313pt x 255.95625pt>
 File: Figure/gameover.png Graphic file (type png)
 <use Figure/gameover.png>
 Package pdftex.def Info: Figure/gameover.png  used on input line 268.
 (pdftex.def)             Requested size: 317.23302pt x 179.16814pt.
-<Figure/victory.png, id=496, 452.4403pt x 258.9675pt>
+<Figure/victory.png, id=511, 452.4403pt x 258.9675pt>
 File: Figure/victory.png Graphic file (type png)
 <use Figure/victory.png>
 Package pdftex.def Info: Figure/victory.png  used on input line 274.
@@ -1316,33 +1316,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 139--139
  []
 
 [32]
-<Figure/algorithm1.png, id=572, 453.94594pt x 349.305pt>
+<Figure/algorithm1.png, id=587, 453.94594pt x 349.305pt>
 File: Figure/algorithm1.png Graphic file (type png)
 <use Figure/algorithm1.png>
 Package pdftex.def Info: Figure/algorithm1.png  used on input line 204.
 (pdftex.def)             Requested size: 453.94482pt x 349.30414pt.
  [33 <./Figure/algorithm1.png>]
-<Figure/algorithm2.png, id=584, 352.31625pt x 482.55281pt>
+<Figure/algorithm2.png, id=599, 352.31625pt x 482.55281pt>
 File: Figure/algorithm2.png Graphic file (type png)
 <use Figure/algorithm2.png>
 Package pdftex.def Info: Figure/algorithm2.png  used on input line 256.
 (pdftex.def)             Requested size: 352.31538pt x 482.55162pt.
  [34] [35 <./Figure/algorithm2.png>]
 [36]
-<Figure/algorithm3.png, id=659, 452.4403pt x 240.9pt>
+<Figure/algorithm3.png, id=674, 452.4403pt x 240.9pt>
 File: Figure/algorithm3.png Graphic file (type png)
 <use Figure/algorithm3.png>
 Package pdftex.def Info: Figure/algorithm3.png  used on input line 320.
 (pdftex.def)             Requested size: 452.43921pt x 240.8994pt.
  [37 <./Figure/algorithm3.png>] [38]
-<Figure/algorithm4.png, id=735, 417.81094pt x 327.47343pt>
+<Figure/algorithm4.png, id=750, 417.81094pt x 327.47343pt>
 File: Figure/algorithm4.png Graphic file (type png)
 <use Figure/algorithm4.png>
 Package pdftex.def Info: Figure/algorithm4.png  used on input line 417.
 (pdftex.def)             Requested size: 417.80992pt x 327.47264pt.
  [39 <./Figure/algorithm4.png>]
 [40]
-<Figure/algorithm5.png, id=808, 453.19313pt x 568.37344pt>
+<Figure/algorithm5.png, id=823, 453.19313pt x 568.37344pt>
 File: Figure/algorithm5.png Graphic file (type png)
 <use Figure/algorithm5.png>
 Package pdftex.def Info: Figure/algorithm5.png  used on input line 554.
@@ -1378,22 +1378,22 @@ Overfull \hbox (34.05354pt too wide) in paragraph at lines 664--665
 /n/12 check_and_fill_all_queues()
  []
 
-) [45] [46] (main.aux)
+) (Main content/part4.tex [45] [46]) [47] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D8001AB39A1AB5BEC9C14BD9F478EAA8;14518.
+(rerunfilecheck)             Checksum: 7FE89B03C3BC76CFA6BC25EE0FDE7E00;14983.
  ) 
 Here is how much of TeX's memory you used:
- 25068 strings out of 467871
- 447417 string characters out of 5418376
- 1493783 words of memory out of 5000000
- 53067 multiletter control sequences out of 15000+600000
+ 25087 strings out of 467871
+ 447881 string characters out of 5418376
+ 1493788 words of memory out of 5000000
+ 53075 multiletter control sequences out of 15000+600000
  660581 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,16n,104p,738b,2110s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,16n,104p,852b,2110s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\phuct\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><C:/Users/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmbx10.pfb><C:/Users/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/publ
@@ -1415,9 +1415,9 @@ rs/phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnr8.pfb><C:/Users
 /phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnti12.pfb><C:/Users
 /phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt10.pfb><C:/Users
 /phuct/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (47 pages, 3869799 bytes).
+Output written on main.pdf (48 pages, 3878449 bytes).
 PDF statistics:
- 1077 PDF objects out of 1200 (max. 8388607)
- 452 named destinations out of 1000 (max. 500000)
- 574 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1101 PDF objects out of 1200 (max. 8388607)
+ 460 named destinations out of 1000 (max. 500000)
+ 598 words of extra memory for PDF output out of 10000 (max. 10000000)
 
