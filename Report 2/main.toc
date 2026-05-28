@@ -21,10 +21,10 @@
 \contentsline {section}{\numberline {4}COMPUTATIONAL THINKING FRAMEWORK}{14}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Decomposition (Phân rã bài toán)}{14}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Pattern Recognition (Nhận diện mẫu)}{15}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Abstraction (Trừu tượng hóa)}{16}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.3}Abstraction (Trừu tượng hóa)}{15}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Algorithm Design (Thiết kế thuật toán)}{16}{subsection.4.4}%
 \contentsline {section}{\numberline {5}SYSTEM DESIGN (Engineering Thinking)}{16}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Overall Architecture (Kiến trúc tổng thể)}{17}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.1}Overall Architecture (Kiến trúc tổng thể)}{16}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Module Design}{17}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}CT System Mapping (Traceability)}{18}{subsection.5.3}%
 \contentsline {subsection}{\numberline {5.4}Data Flow (Luồng dữ liệu)}{18}{subsection.5.4}%
@@ -32,7 +32,7 @@
 \contentsline {subsubsection}{\numberline {5.5.1}Use Cases}{20}{subsubsection.5.5.1}%
 \contentsline {subsubsection}{\numberline {5.5.2}Sequence Diagram}{23}{subsubsection.5.5.2}%
 \contentsline {subsection}{\numberline {5.6}Data Design \& Modeling (Thiết kế Dữ liệu - Table Schema)}{23}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}UI/UX Design \& Interactive Prototype (Figma) DTP}{24}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.7}UI/UX Design \& Interactive Prototype (Figma)}{24}{subsection.5.7}%
 \contentsline {subsubsection}{\numberline {5.7.1}Design Concept \& Style Guide}{24}{subsubsection.5.7.1}%
 \contentsline {subsubsection}{\numberline {5.7.2}High-Fidelity Mockups}{24}{subsubsection.5.7.2}%
 \contentsline {subsubsection}{\numberline {5.7.3}Sơ đồ Figma}{28}{subsubsection.5.7.3}%

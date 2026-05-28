@@ -200,33 +200,21 @@ Dưới đây là bảng tổng hợp phân tích các rủi ro kỹ thuật, ki
 \end{table}
 
 \subsection{Các Core Feature}
-Từ các ý vụn:
-\begin{enumerate}
-	\item Hệ thống phản hồi AI tức thời (Real-time AI Feedback
-Engine)
-	\item Tạo câu hỏi dựa trên trình độ người chơi
-	\item Chấm điểm, giải thích và sửa lỗi
-	\item Tăng giảm độ khó
-	\item Xác định điểm yếu từ vựng/ ngữ pháp
-	\item Hệ thống tổng hợp từ vựng ôn tập cho người chơi
-	\item Phát hiện từ mới/ từ làm sai
-\end{enumerate}
 
-Ta suy ra được các Core Feature dưới đây:
 
 \begin{enumerate}
-	\item \textbf{Feature 1: Hệ thống Sinh nội dung Thích ứng (Adaptive Content Generation \& DDA)} (Gồm ý 2 và 4)
+	\item \textbf{Feature 1: Hệ thống Sinh nội dung Thích ứng (Adaptive Content Generation \& DDA)} 
 	
 	\begin{itemize}
 		\item \textbf{Mô tả:} Thay vì sử dụng ngân hàng câu hỏi tĩnh tĩnh, hệ thống tích hợp thuật toán \textit{Điều chỉnh độ khó động (Dynamic Difficulty Adjustment - DDA)} kết hợp với AI Prompting. Dựa trên mức độ thành thạo hiện tại của người chơi, Godot sẽ điều chỉnh prompt gửi tới Ollama để sinh ra các câu hỏi trắc nghiệm hoàn toàn phù hợp với trình độ người chơi theo thời gian thực.
 		\item \textbf{Giải quyết Pain Point:} Xóa bỏ sự nhàm chán của việc lặp lại câu hỏi cố định; giữ người chơi ở trạng thái "Flow" (không quá dễ gây chán, không quá khó gây nản).
 	\end{itemize}
-	\item  \textbf{Feature 2: Hệ thống Đánh giá \& Phản hồi AI Tức thời (Real-time Evaluation \& Explainable AI)} (Gồm ý 1 và 3)
+	\item  \textbf{Feature 2: Hệ thống Đánh giá \& Phản hồi AI Tức thời (Real-time Evaluation \& Explainable AI)}
 	\begin{itemize}
 		\item \textbf{Mô tả:} Ngay sau mỗi lượt tương tác/chiến đấu, thay vì chỉ trả về kết quả Đúng/Sai (Binary evaluation), hệ thống sử dụng năng lực của LLM để thực hiện \textit{Phản hồi có thể giải thích (Explainable AI Feedback)}. Cụ thể, AI sẽ chấm điểm, chỉ ra lỗi sai cốt lõi và cung cấp lời giải thích ngắn gọn, dễ hiểu, đặt chuẩn xác vào bối cảnh của câu hỏi vừa làm.
 		\item \textbf{Giải quyết Pain Point:} Giúp người học hiểu sâu bản chất vấn đề thay vì học vẹt (nhớ đáp án A, B, C). Cung cấp trải nghiệm như có một "\textit{Gia sư 1-1}" đồng hành ngay trong trận chiến.
 	\end{itemize}
-	\item \textbf{Feature 3: Hệ thống Theo dõi Kiến thức \& Cá nhân hóa Ôn tập (Knowledge Tracing)} (Gồm ý 5, 6 và 7)
+	\item \textbf{Feature 3: Hệ thống Theo dõi Kiến thức \& Cá nhân hóa Ôn tập (Knowledge Tracing)} 
 	\begin{itemize}
 		\item \textbf{Mô tả:} Mô tả: Mọi tương tác của người chơi được phân tích và lưu trữ vào SQLite để tạo thành một "Hồ sơ năng lực" (Player Mastery Profile). Hệ thống áp dụng mô hình \textit{Theo dõi kiến thức (Knowledge Tracing)} để tự động nhận diện các từ vựng mới, định lượng điểm yếu từ vựng (dựa trên tần suất trả lời sai) và  tổng hợp để người chơi tự ôn tập.
 		\item \textbf{Giải quyết Pain Point:} Khắc phục triệt để "đường cong quên lãng" (Ebbinghaus forgetting curve). Tối ưu hóa thời gian học bằng cách cá nhân hóa 100\% lộ trình: chỉ học những gì mình chưa biết hoặc hay làm sai.
