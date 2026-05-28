@@ -13,7 +13,7 @@ $$\rightarrow \text{Tạo nhiệm vụ phù hợp (Generate quest)} \rightarrow 
 Sản phẩm mang lại 4 giá trị giáo dục cốt lõi cho người dùng:
 \begin{itemize}
     \item \textbf{Tăng vốn từ vựng theo ngữ cảnh:} Từ vựng gắn liền với cốt truyện và tình huống trong game giúp ghi nhớ sâu.
-    \item \textbf{Cải thiện ngữ pháp thực tế:} Học cách áp dụng cấu trúc câu thông qua giao tiếp thực tế với các nhân vật.
+    \item \textbf{Cải thiện từ vựng thực tế:} Học cách áp dụng từ vựng thông qua các bối cảnh cụ thể của các câu hỏi.
     \item \textbf{Tập phản xạ hội thoại:} Xây dựng tư duy phản xạ tiếng Anh tự nhiên.
     \item \textbf{Cá nhân hóa:} Hệ thống tự động nhận diện và tập trung cải thiện các điểm yếu riêng của từng người học.
 \end{itemize}
@@ -22,8 +22,8 @@ Sản phẩm mang lại 4 giá trị giáo dục cốt lõi cho người dùng:
 Để hiện thực hóa trải nghiệm nhập vai thông minh, hệ thống loại bỏ các tính năng như sửa lỗi câu trực tiếp, nhận diện giọng nói (Speech-to-text) hay thuật toán phát âm để tập trung tối ưu hóa vào các công nghệ AI chạy cục bộ (Local) và hệ thống dữ liệu nhúng sau:
 \begin{itemize}
     \item \textbf{Trí tuệ nhân tạo (Generative AI \& LLM):} Sử dụng cổng API của Ollama để vận hành mô hình ngôn ngữ lớn mã nguồn mở Qwen 2.5 (3B) trực tiếp trên thiết bị, giúp sinh lời thoại tự động cho NPC (\textit{LLM dialogue generation}) và tự động thiết kế các nhiệm vụ học tập dựa trên khuôn mẫu có sẵn (\textit{Quest generator LLM + template}).
-    \item \textbf{Thuật toán cá nhân hóa:} Ứng dụng thuật toán lặp lại ngắt quãng (\textit{Spaced repetition algorithm}) để ôn tập từ vựng, hệ thống phân tích hồ sơ lỗi của người chơi (\textit{Player error profiling}) nhằm xác định điểm yếu, và bộ quy tắc điều chỉnh độ khó thích ứng (\textit{Adaptive difficulty rules}) để tự động tăng/giảm thử thách trong game.
-    \item \textbf{Nền tảng phát triển \& Lưu trữ cục bộ:} Sử dụng Godot Engine (GDScript) làm nền tảng điều phối logic cốt lõi của game và tích hợp cơ sở dữ liệu nhúng SQLite ngay trên máy để lưu trữ tiến độ chơi, bộ sổ tay từ vựng (\textit{notebook}) cùng nhật ký lỗi ngữ pháp của người dùng một cách bảo mật, độc lập và tối ưu hiệu năng.
+    \item \textbf{Thuật toán cá nhân hóa:} Ứng dụng hệ thống phân tích hồ sơ lỗi của người chơi (\textit{Player error profiling})qua độ thành thạo các từ vựng nhằm xác định điểm yếu, và bộ quy tắc điều chỉnh độ khó thích ứng (\textit{Adaptive difficulty rules}) để tự động tăng/giảm thử thách trong game và cá nhân hóa trải nghiệm ôn tập từ vựng.
+    \item \textbf{Nền tảng phát triển \& Lưu trữ cục bộ:} Sử dụng Godot Engine (GDScript) làm nền tảng điều phối logic cốt lõi của game và tích hợp cơ sở dữ liệu nhúng SQLite ngay trên máy để lưu trữ tiến độ chơi, bộ sổ tay từ vựng (\textit{notebook}) cùng nhật ký lỗi từ vựng của người dùng một cách bảo mật, độc lập và tối ưu hiệu năng.
 \end{itemize}
 
 \subsection{Kết quả kỳ vọng}
@@ -33,7 +33,7 @@ AI English Learning RPG kỳ vọng sẽ tạo ra một bước đột phá tron
 \section{PROJECT OVERVIEW}
 
 \subsection{Bối cảnh dự án (Project Background)}
-Việc duy trì động lực khi học một ngôn ngữ mới luôn là một thách thức lớn đối với hầu hết người học. Các phương pháp học truyền thống hoặc các ứng dụng hiện tại thường đi theo lối mòn: làm bài tập ngữ pháp điền vào chỗ trống, học từ vựng qua thẻ ghi nhớ (flashcard) một cách rời rạc, thiếu đi tính ngữ cảnh và môi trường thực hành.
+Việc duy trì động lực khi học một ngôn ngữ mới luôn là một thách thức lớn đối với hầu hết người học. Các phương pháp học truyền thống hoặc các ứng dụng hiện tại thường đi theo lối mòn:học từ vựng qua thẻ ghi nhớ (flashcard) một cách rời rạc, thiếu đi tính ngữ cảnh và môi trường thực hành.
 
 Dự án \textbf{AI English Learning RPG} được phát triển nhằm xóa bỏ rào cản đó. Bằng cách lồng ghép việc học vào một trò chơi nhập vai di động (Mobile RPG), dự án biến tiếng Anh từ một "môn học áp lực" thành một "công cụ sinh tồn và khám phá". Người chơi buộc phải sử dụng ngôn ngữ để tương tác với thế giới trong game, từ đó hình thành phản xạ tự nhiên và duy trì được hứng thú học tập lâu dài.
 
@@ -42,7 +42,7 @@ Dự án \textbf{AI English Learning RPG} được phát triển nhằm xóa b�
 \noindent \textbf{Về khía cạnh Học tập (Learning Objectives)}
 \begin{itemize}
     \item \textbf{Tối ưu hóa từ vựng theo ngữ cảnh:} Giúp người học tiếp thu và ghi nhớ từ vựng thông qua cốt truyện, bối cảnh cốt truyện và các tình huống giao tiếp cụ thể trong game.
-    \item \textbf{Ứng dụng ngữ pháp thực tế:} Tạo môi trường để người học vận dụng từ vựng khi tương tác, thay vì học vẹt lý thuyết.
+    \item \textbf{Ứng dụng từ vựng thực tế:} Tạo môi trường để người học vận dụng từ vựng khi tương tác, thay vì học vẹt lý thuyết.
     \item \textbf{Cá nhân hóa lộ trình:} Tự động nhận diện, phân tích và tập trung cải thiện các lỗ hổng kiến thức riêng biệt của từng người chơi.
 \end{itemize}
 
@@ -59,13 +59,13 @@ Dự án \textbf{AI English Learning RPG} được phát triển nhằm xóa b�
 \vspace{0.2cm}
 \noindent \textbf{Các tính năng nằm TRONG phạm vi phát triển (In-Scope)}
 \begin{itemize}
-    \item \textbf{LLM Dialogue Generation:} Hệ thống AI tạo lời thoại và phản hồi động cho các NPC dựa trên ngữ cảnh game và hành vi của người chơi.
+    \item \textbf{LLM Quest Generation:} Hệ thống AI tạo câu hỏi và  phản hồi câu trả lời dựa trên ngữ cảnh game và hành vi của người chơi.
     \item \textbf{Quest Generator (LLM + Template):} Tự động tạo các nhiệm vụ học thuật trong game bằng cách kết hợp sức mạnh của LLM và các khuôn mẫu định sẵn.
     \item \textbf{Player Error Profiling:} Trình phân tích ghi nhận và thiết lập hồ sơ các lỗi sai (từ vựng) mà người chơi gặp phải.
     \item \textbf{Adaptive Difficulty Rules:} Bộ quy tắc tự động điều chỉnh, tăng hoặc giảm độ khó của game dựa trên hồ sơ năng lực của người chơi.
-    \item \textbf{Vocabulary Extraction \& Spaced Repetition:} Hệ thống tự động trích xuất từ mới từ hội thoại và áp dụng thuật toán lặp lại ngắt quãng để hỗ trợ người chơi ôn tập.
+    \item \textbf{Vocabulary Extraction} Hệ thống trích xuất từ có độ thành thạo thấp từ những lần chơi và tổng hợp lại để hỗ trợ người chơi ôn tập.
     \item \textbf{Game Logic \& Client Controller (Godot Engine / GDScript):} Xây dựng các module xử lý logic cốt lõi của trò chơi và điều phối luồng dữ liệu.
-    \item \textbf{Local Database Management (SQLite):} Lưu trữ cục bộ và quản lý toàn vẹn tiến độ chơi, sổ tay từ vựng (notebook) và danh sách các lỗi ngữ pháp đã phạm phải.
+    \item \textbf{Local Database Management (SQLite):} Lưu trữ cục bộ và quản lý toàn vẹn tiến độ chơi, sổ tay từ vựng (notebook) cần ôn tập.
 \end{itemize}
 
 \noindent \textbf{Các tính năng nằm NGOÀI phạm vi phát triển (Out-of-Scope)}
@@ -96,16 +96,16 @@ Dự án \textbf{AI English Learning RPG} được phát triển nhằm xóa b�
 \section{PHÂN TÍCH VẤN ĐỀ (PROBLEM ANALYSIS)}
 
 \subsection{Problem Statement (chuẩn hóa bài toán)}
-Sinh viên thường mất động lực học tiếng Anh do ngữ pháp khô khan và từ vựng khó nhớ. Bài toán đặt ra là xây dựng một hệ thống RPG tích hợp AI để biến quá trình học thành trò chơi giải trí, tăng hứng thú và khả năng ghi nhớ thông qua tương tác cốt truyện.
+Sinh viên thường mất động lực học tiếng Anh do từ vựng khó nhớ và bối cảnh khô khan. Bài toán đặt ra là xây dựng một hệ thống RPG tích hợp AI để biến quá trình học thành trò chơi giải trí, tăng hứng thú và khả năng ghi nhớ thông qua tương tác cốt truyện.
 \begin{enumerate}
 	\item \textbf{Đầu vào (Input):} 
 	\begin{itemize}
-		\item Thông số ngữ cảnh hiện tại từ Game Engine truyền xuống: Cấp độ người chơi (Level bao gồm các mức độ: A1, A2, B1, B2)
+		\item Thông số ngữ cảnh hiện tại từ Game Engine truyền xuống: Độ thành thạo từ vựng của người chơi hiện tại.
 		\item Hệ khuôn mẫu câu lệnh (System Prompt Template) được thiết lập sẵn để định hình cấu trúc dữ liệu đầu ra cho AI.
 	\end{itemize}
 	\item \textbf{Đầu ra (Output):} 
 	\begin{itemize}
-		\item Một chuỗi dữ liệu văn bản đã được định dạng cấu trúc (JSON Object) chứa chính xác các trường thông tin: "question" (nội dung câu hỏi), "correct\_answer" (đáp án đúng), và "distractors" (mảng gồm 3 đáp án gây nhiễu).
+		\item Một chuỗi dữ liệu văn bản đã được định dạng cấu trúc (JSON Object) chứa chính xác các trường thông tin: "question" (nội dung câu hỏi), "correct\_answer" (đáp án đúng), và "distractors" (mảng gồm 3 đáp án gây nhiễu) cũng như là "explaination" (phần giải thích) nếu người chơi trả lời sai.
 	\end{itemize}
 		\item \textbf{Ràng buộc (Constraints):}
 	\begin{itemize}
@@ -121,8 +121,8 @@ Sinh viên thường mất động lực học tiếng Anh do ngữ pháp khô k
 \begin{tabularx}{\textwidth}{|l|l|X|c|c|}
 \hline
 \textbf{Stakeholder} & \textbf{Vai trò} & \textbf{Nhu cầu/mong đợi} & \begin{tabular}[c]{@{}c@{}}\textbf{Ảnh}\\ \textbf{hưởng}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Mức}\\ \textbf{độ}\\ \textbf{quan}\\ \textbf{trọng}\end{tabular} \\ \hline
-Sinh viên & \begin{tabular}[c]{@{}l@{}}Người\\ dùng cuối\end{tabular} & Game mượt, từ vựng sát thực tế, cảm giác "lên trình" tiếng Anh qua các chỉ số (level, rank). & Cao & Cao \\ \hline
-Nhóm phát triển & \begin{tabular}[c]{@{}l@{}}Đội ngũ\\ thực thi\end{tabular} & Quy trình code rõ ràng, tài liệu đầy đủ, không bị chồng chéo nhiệm vụ. & Cao & Cao \\ \hline
+Sinh viên & \begin{tabular}[c]{@{}l@{}}Người\\ dùng cuối\end{tabular} & Game mượt, từ vựng sát thực tế, cảm giác "lên trình" tiếng Anh qua việc học với ngữ cảnh cụ thể và thú vị. & Cao & Cao \\ \hline
+Nhóm phát triển & \begin{tabular}[c]{@{}l@{}}Đội ngũ\\ thực thi\end{tabular} & Quy trình giải quyết vấn đề rõ ràng, tài liệu đầy đủ, không bị chồng chéo nhiệm vụ. & Cao & Cao \\ \hline
 Giảng viên hướng dẫn & \begin{tabular}[c]{@{}l@{}}Người\\ đánh giá\end{tabular} & Áp dụng đúng đắn các quy tắc, công thức tư duy của môn học, báo cáo đúng tiến độ công việc. & \begin{tabular}[c]{@{}c@{}}Trung\\ bình\end{tabular} & Cao \\ \hline
 Nhà cung cấp AI & \begin{tabular}[c]{@{}l@{}}Đối tác hạ\\ tầng\end{tabular} & API ổn định, chi phí thấp (hoặc miễn phí), phản hồi nhanh. & Thấp & \begin{tabular}[c]{@{}c@{}}Trung\\ bình\end{tabular} \\ \hline
 Người yêu thích game/RPG & \begin{tabular}[c]{@{}l@{}}Người dùng\\ mở rộng\end{tabular} & Cốt truyện hấp dẫn, cơ chế chơi độc đáo, tương tác với NPC thú vị. & Thấp & Thấp \\ \hline
@@ -139,7 +139,7 @@ Người yêu thích game/RPG & \begin{tabular}[c]{@{}l@{}}Người dùng\\ mở
 \begin{tabularx}{\textwidth}{|c|X|X|c|c|c|}
 \hline
 \textbf{STT} & \begin{tabular}[c]{@{}c@{}}\textbf{Pain point}\\ \textbf{từ khảo sát}\end{tabular} & \textbf{Mô tả chi tiết} & \begin{tabular}[c]{@{}c@{}}\textbf{Mức độ}\\ \textbf{nghiêm}\\ \textbf{trọng}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{\% Người}\\ \textbf{gặp phải}\end{tabular} & \textbf{Tần suất} \\ \hline
-1 & \reddot Thiếu người sửa lỗi và giải thích cặn kẽ. & Người dùng không hài lòng khi các công cụ (Grammarly, Study4, sách ngữ pháp) "chỉ hiện dấu tích xanh/đỏ hoặc cung cấp đáp án đúng chứ không giải thích lý do đằng sau". Việc tự mày mò nguyên nhân tốn nhiều thời gian, ngại hỏi bạn bè nên lỗi sai dần trở thành thói quen không sửa được. & 5 & 56,5\% & Hằng ngày \\ \hline
+1 & \reddot Thiếu người sửa lỗi và giải thích cặn kẽ. & Người dùng không hài lòng khi các công cụ (Grammarly, Study4) "chỉ hiện dấu tích xanh/đỏ hoặc cung cấp đáp án đúng chứ không giải thích lý do đằng sau". Việc tự mày mò nguyên nhân tốn nhiều thời gian, ngại hỏi bạn bè nên lỗi sai dần trở thành thói quen không sửa được. & 5 & 56,5\% & Hằng ngày \\ \hline
 2 & \reddot Áp lực đánh giá, "bí từ" khi ghép câu. & Có ý tưởng bằng tiếng Việt nhưng khi cần tự viết câu (nhắn tin, viết email, tham gia seminar Zoom) thì lúng túng, e ngại cách diễn đạt không đúng chuẩn dẫn đến việc tốn thời gian vô ích. & 4 & 47,8\% & Hằng tuần \\ \hline
 3 & \reddot Học thụ động, thiếu môi trường thực hành. & Việc ghi chép flashcard (Anki, sổ tay) hay học app (Duingo) bị đánh giá là thụ động và rời rạc. Người được khảo sát cảm thấy các ví dụ quá máy móc, không có ngữ cảnh thực tế. Vì học chay và không có môi trường thực hành dẫn đến việc phản ứng chậm trong các tình huống thực tế. & 4 & 43,5\% & Hằng ngày \\ \hline
 4 & \yellowdot Phương pháp học nhàm chán, rập khuôn. & Việc học bằng flashcard hay chọn đáp án A, B, C, D có sẵn trên app bị lặp đi lặp lại mà không có sự sáng tạo mới mẻ, gây ra chán nản và làm cho người học dễ bỏ cuộc. Người học cần một thế giới tương tác, có mục tiêu rõ ràng, sử dụng tiếng Anh làm công cụ để vượt qua thử thách. & 3 & 39,1\% & Hằng ngày \\ \hline
@@ -166,7 +166,9 @@ Người yêu thích game/RPG & \begin{tabular}[c]{@{}l@{}}Người dùng\\ mở
 Đây là các giới hạn bắt buộc nhóm phát triển phải tuân thủ, không thể thay đổi do đặc thù của công nghệ và đề tài:
 \begin{itemize}
     \item \textbf{Ràng buộc Phần cứng \& Tài nguyên (Hardware Constraints):} Hệ thống bắt buộc phải vận hành mượt mà trên các máy trạm cá nhân (PC) cấu hình phổ thông. Dung lượng bộ nhớ RAM phân bổ tối đa cho mô hình AI chạy cục bộ (Local LLM) phải thỏa mãn điều kiện $\le \text{8GB}$.
-    \item \textbf{Ràng buộc Kết nối (Connectivity Constraints):} Ứng dụng phải hoạt động theo mô hình ngoại tuyến. Hệ thống phụ thuộc vào kết nối Internet hoặc gọi đến các API điện toán đám mây từ bên ngoài.
+    \item \textbf{Ràng buộc Kết nối AI:} Game tuyệt đối không gọi các API từ bên thứ 3 như OpenAI (ChatGPT), Anthropic (Claude) hay Gemini. Thay vào đó, Engine game (Godot) chỉ kết nối và giao tiếp với AI thông qua cổng mạng nội bộ (Localhost) tới service Ollama đang chạy ngầm trên cùng một máy tính của người chơi. Vì không kết nối cloud, hệ thống bị ràng buộc bởi sức mạnh phần cứng của máy tính người chơi (CPU/GPU và RAM) để chạy mô hình \textbf{Qwen2.5-3B-Instruct}.
+    \item \textbf{Ràng buộc về Cơ sở dữ liệu:} Godot kết nối trực tiếp với file data.db (SQLite) được đặt cùng cấp trong thư mục game. Mọi thao tác truy vấn (Query), đọc/ghi tiến trình học tập, trạng thái lưu game đều diễn ra trên ổ cứng cục bộ.
+    \item{Ràng buộc về Tài khoản và Người dùng:} Người chơi không cần đăng nhập, đăng ký bằng email hay mạng xã hội. Dữ liệu (Player Profile) được lưu ở file \texttt{data.db} ngay trên máy đó. Do đó, người chơi chơi trên máy nào thì dữ liệu lưu trên máy đó. Nếu muốn chuyển sang máy khác, người dùng phải copy file \texttt{data.db} mang theo.
     \item \textbf{Ràng buộc về Phạm vi Tính năng (Scope Constraints):} Loại bỏ hoàn toàn các tính năng phức tạp bao gồm sửa lỗi câu trực tiếp từ LLM trong đoạn hội thoại (Grammar Correction), nhận diện giọng nói (Speech-to-text), và thuật toán đánh giá phát âm (Pronunciation Heuristic) để tập trung tài nguyên tối ưu cho trải nghiệm nhập vai dựa trên văn bản (Text-based RPG).
     \item \textbf{Ràng buộc về Định dạng Đầu ra (Output Formatting Constraints):} Phản hồi từ mô hình ngôn ngữ lớn chạy local phải trả về chính xác định dạng cấu trúc dữ liệu chuỗi văn bản đối tượng JSON (JSON Object) với các trường quy định rõ ràng bao gồm: \texttt{"question"}, \texttt{"correct\_answer"}, và \texttt{"distractors"} để cấu phần Game Engine có thể bóc tách dữ liệu thành công.
 \end{itemize}
@@ -194,7 +196,7 @@ Dưới đây là bảng tổng hợp phân tích các rủi ro kỹ thuật, ki
 \textbf{STT} & \textbf{Rủi ro (Risk)} & \textbf{Mô tả chi tiết} & \textbf{Mức độ} & \textbf{Biện pháp giảm thiểu (Mitigation)} \\ \hline
 1 & \textbf{Độ trễ phản hồi AI cao} & Mô hình LLM chạy local trên phần cứng yếu có thể mất từ 3--10 giây để sinh xong câu hỏi, gây ngắt quãng trải nghiệm chơi. & \textbf{Cao} & Ứng dụng mô hình \textbf{Cỗ máy Sinh nội dung Bất đồng bộ (Asynchronous Pre-generation Engine)}. Sử dụng luồng ngầm (Background Thread) để gọi Ollama sinh sẵn câu hỏi và nạp vào hàng đợi (Queue/Cache) ngay khi người chơi đang di chuyển trên bản đồ. \\ \hline
 2 & \textbf{Lỗi định dạng cấu trúc JSON} & Local LLM đôi khi sinh ra chuỗi văn bản tự do hoặc sai cấu trúc định dạng quy định, khiến Game Engine không thể phân tách (parse) và gây lỗi hệ thống. & \textbf{Cao} & Thiết lập hệ thống kiểm tra và nhận diện mẫu cấu trúc chuẩn bằng biểu thức chính quy \textbf{Regex kết hợp cơ chế Try-Catch}. Chỉ nạp vào Cache các chuỗi khớp 100\% cấu trúc khuôn mẫu; nếu lỗi sẽ hủy và gửi lại request ngầm. \\ \hline
-3 & \textbf{Hiện tượng ảo tưởng nội dung} & AI sinh ra câu hỏi sai kiến thức ngữ pháp, từ vựng không thực tế hoặc các phương án gây nhiễu (\textit{distractors}) vô tình trùng với đáp án đúng. & \textbf{Trung bình} & Chuẩn hóa cấu trúc \textbf{Hệ khuôn mẫu câu lệnh (System Prompt Template)} nghiêm ngặt. Áp dụng kỹ thuật cung cấp ngữ cảnh giới hạn phạm vi trích xuất dữ liệu từ vựng lấy từ SQLite tương ứng chặt chẽ với từng phân cấp Tier quái vật. \\ \hline
+3 & \textbf{Hiện tượng ảo tưởng nội dung} & AI sinh ra câu hỏi từ vựng không thực tế hoặc các phương án gây nhiễu (\textit{distractors}) vô tình trùng với đáp án đúng. & \textbf{Trung bình} & Chuẩn hóa cấu trúc \textbf{Hệ khuôn mẫu câu lệnh (System Prompt Template)} nghiêm ngặt. Áp dụng kỹ thuật cung cấp ngữ cảnh giới hạn phạm vi trích xuất dữ liệu từ vựng lấy từ SQLite tương ứng chặt chẽ với từng phân cấp Tier quái vật. \\ \hline
 4 & \textbf{Tràn bộ nhớ RAM hệ thống} & Máy trạm của người dùng không đủ tài nguyên phần cứng hoặc tiến trình Ollama chiếm dụng vượt mức cho phép dẫn đến đứng máy, giật lag. & \textbf{Trung bình} & Lựa chọn sử dụng phiên bản mô hình ngôn ngữ tối ưu đã qua lượng tử hóa (Quantized) là \textbf{Qwen 2.5 (3B)} nhằm giảm thiểu dung lượng phần cứng. \\ \hline
 5 & \textbf{Mất mát/sai lệch dữ liệu học tập} & SQLite gặp lỗi đồng bộ ghi dữ liệu khi người chơi tắt ứng dụng đột ngột, dẫn đến tính toán sai lệch điểm thông thạo (\textit{Mastery Score}) ở các vòng lặp sau. & \textbf{Thấp} & Thiết kế module quản lý cơ sở dữ liệu tuân thủ cơ chế \textbf{Transaction (Commit/Rollback)} của SQLite. Thiết lập tiến trình tự động lưu dữ liệu (Auto-save) ngay sau khi hoàn thành phân giải kết quả mỗi lượt đánh (Combat Resolution). \\ \hline
 \end{tabularx}
@@ -212,7 +214,7 @@ Dưới đây là bảng tổng hợp phân tích các rủi ro kỹ thuật, ki
 	\end{itemize}
 	\item  \textbf{Feature 2: Hệ thống Đánh giá \& Phản hồi AI Tức thời (Real-time Evaluation \& Explainable AI)}
 	\begin{itemize}
-		\item \textbf{Mô tả:} Ngay sau mỗi lượt tương tác/chiến đấu, thay vì chỉ trả về kết quả Đúng/Sai (Binary evaluation), hệ thống sử dụng năng lực của LLM để thực hiện \textit{Phản hồi có thể giải thích (Explainable AI Feedback)}. Cụ thể, AI sẽ chấm điểm, chỉ ra lỗi sai cốt lõi và cung cấp lời giải thích ngắn gọn, dễ hiểu, đặt chuẩn xác vào bối cảnh của câu hỏi vừa làm.
+		\item \textbf{Mô tả:} Ngay sau mỗi lượt tương tác/chiến đấu, thay vì chỉ trả về kết quả Đúng/Sai (Binary evaluation), hệ thống sử dụng năng lực của LLM để thực hiện \textit{Phản hồi có thể giải thích (Explainable AI Feedback)}. Cụ thể, AI sẽ chỉ ra lỗi sai cốt lõi và cung cấp lời giải thích ngắn gọn, dễ hiểu, đặt chuẩn xác vào bối cảnh của câu hỏi vừa làm.
 		\item \textbf{Giải quyết Pain Point:} Giúp người học hiểu sâu bản chất vấn đề thay vì học vẹt (nhớ đáp án A, B, C). Cung cấp trải nghiệm như có một "\textit{Gia sư 1-1}" đồng hành ngay trong trận chiến.
 	\end{itemize}
 	\item \textbf{Feature 3: Hệ thống Theo dõi Kiến thức \& Cá nhân hóa Ôn tập (Knowledge Tracing)} 
@@ -222,8 +224,8 @@ Dưới đây là bảng tổng hợp phân tích các rủi ro kỹ thuật, ki
 	\end{itemize}
 	\item \textbf{Feature 4: Hệ thống Sinh nội dung Theo ngữ cảnh Game (Context-Aware Thematic Prompting)}
 	\begin{itemize}
-		\item \textbf{Mô tả:} Thay vì sinh các câu hỏi trắc nghiệm ngữ pháp/từ vựng với nội dung ngẫu nhiên, hệ thống sẽ chèn thông số về môi trường (Biome) hoặc loại quái vật (Enemy Type) hiện tại của người chơi vào \textit{AI Prompt}. Ví dụ: Nếu người chơi đang ở "Khu rừng Lửa" (Fire Cave) và cần học từ "Vulnerable", AI (Ollama) sẽ sinh ra một câu hỏi trắc nghiệm có nội dung về hiệp sĩ, ngọn lửa, rồng hoặc sự sinh tồn.
-		\item \textbf{Giải quyết Pain Point:} Người học thường cảm thấy chán nản vì phải làm các câu hỏi ngữ pháp/từ vựng khô khan, rời rạc, không liên quan đến nhau. Tính năng này giúp gắn kết chặt chẽ (Immersive) trải nghiệm học tập vào cốt truyện và bối cảnh game, tăng sự hứng thú.
+		\item \textbf{Mô tả:} Thay vì sinh các câu hỏi trắc nghiệm từ vựng với nội dung ngẫu nhiên, hệ thống sẽ chèn thông số về môi trường (Biome) hoặc loại quái vật (Enemy Type) hiện tại của người chơi vào \textit{AI Prompt}. Ví dụ: Nếu người chơi đang ở "Khu rừng Lửa" (Fire Cave) và cần học từ "Vulnerable", AI (Ollama) sẽ sinh ra một câu hỏi trắc nghiệm có nội dung về hiệp sĩ, ngọn lửa, rồng hoặc sự sinh tồn.
+		\item \textbf{Giải quyết Pain Point:} Người học thường cảm thấy chán nản vì phải làm các câu hỏi từ vựng khô khan, rời rạc, không liên quan đến nhau. Tính năng này giúp gắn kết chặt chẽ (Immersive) trải nghiệm học tập vào cốt truyện và bối cảnh game, tăng sự hứng thú.
 	\end{itemize}
 	
 	\item \textbf{Feature 5: Hệ thống Phân cấp Năng lực theo Tuyến Quái vật (Enemy-bound Hierarchical Competency Gating)}
@@ -235,7 +237,7 @@ Dưới đây là bảng tổng hợp phân tích các rủi ro kỹ thuật, ki
 			\item \textbf{Boss Encounter (Bài kiểm tra tổng hợp):} Trận đánh Boss cuối map sẽ đóng vai trò như bài test tổng hợp (Summative Assessment), trộn lẫn toàn bộ kiến thức người chơi đã học từ các loại quái trước đó.
 		\end{itemize}
 		\item \textbf{Giải quyết Pain Point:} Người học tiếng Anh thường bị "ngợp" trước danh sách từ vựng khổng lồ, thiếu một lộ trình học có cấu trúc đi từ nền tảng đến nâng cao. Đồng thời, trong các game học tập, người chơi có xu hướng né tránh các bài tập khó nếu hệ thống cho phép chọn tự do. 
-		\item \textbf{Giải pháp:} Biến lộ trình học tập (Learning Path) thành lộ trình khám phá bản đồ game. Cơ chế chặn cấp (Gating) bằng sức mạnh quái vật ép người chơi phải thành thạo kiến thức cơ bản thì mới có cơ hội "sống sót" để đi sâu hơn vào bản đồ. Nó tạo ra cảm giác tiến bộ rõ rệt (Sense of Progression) mà không cần phải chuyển đổi qua lại giữa các màn chơi khác nhau.
+
 	\end{itemize}
 	\item \textbf{Feature 6 (Tính năng Kỹ thuật): Cỗ máy Sinh nội dung Bất đồng bộ (Asynchronous Pre-generation Engine)}
 	\begin{itemize}
@@ -275,7 +277,7 @@ Dữ liệu được chia nhỏ (\textit{Data Partitioning}) để tối ưu tru
 \subsection{Pattern Recognition (Nhận diện mẫu)}
 Hệ thống sử dụng khả năng Nhận diện mẫu trên hai khía cạnh quản lý dữ liệu:
 \begin{itemize}
-    \item \textbf{Nhận diện mẫu lỗi học tập (Knowledge Tracing Pattern):} Dựa vào lịch sử chọn đáp án trắc nghiệm lưu trong SQLite, thuật toán quét và nhận diện các "Mẫu điểm yếu" (\textit{Pattern of weaknesses}). Những từ vựng/ngữ pháp có tỷ lệ chọn sai lặp lại liên tục sẽ tạo thành một pattern kích hoạt cơ chế Lặp lại ngắt quãng (\textit{Spaced Repetition}), ép AI ưu tiên đưa các từ này vào Prompt sinh đề cho các trận chiến tiếp theo.
+    \item \textbf{Nhận diện mẫu lỗi học tập (Knowledge Tracing Pattern):} Dựa vào lịch sử chọn đáp án trắc nghiệm lưu trong SQLite, thuật toán quét và nhận diện các "Mẫu điểm yếu" (\textit{Pattern of weaknesses}). Những từ vựng có tỷ lệ chọn sai sẽ ép cho AI chọn làm chủ đề cho những câu hỏi tiếp theo.
     \item \textbf{Nhận diện mẫu Cấu trúc Dữ liệu AI (JSON Parsing Pattern):} Vì Local LLM đôi khi sinh ra các văn bản có định dạng bất thường, hệ thống Godot sử dụng Regex và cơ chế Try-Catch để nhận diện "Mẫu cấu trúc chuẩn". Chỉ khi phản hồi của AI khớp chính xác với mẫu \texttt{\{ "question": "", "options": [], "correct": "", "explain": "" \}} thì hệ thống mới chấp nhận nạp vào Cache, nếu không sẽ loại bỏ để tránh crash game.
 \end{itemize}
 

@@ -11,30 +11,21 @@ Vì game chạy 100\% local, kiến trúc hệ thống sẽ là một ứng dụ
 \end{figure}
 
 \subsection{Module Design}
-Hệ thống được chia thành 4 module chính:
+Hệ thống được phân rã thành 4 module chính, mỗi module đảm nhiệm một nhóm trách nhiệm riêng biệt và giao tiếp với nhau theo luồng dữ liệu một chiều.
 \begin{enumerate}
-	\item \textbf{UI/UX Module (Godot):}
-	\begin{itemize}
-		\item \textit{Scene Manager:} Quản lý luồng hiển thị giữa Bản đồ thế giới và Màn hình chiến đấu. 
-		\item \textit{Real-time Evaluation UI:} Hiển thị câu hỏi, nút đáp án và giao diện xuất hiện của NPC AI kèm lời giải thích.
-	\end{itemize}
-	\item \textbf{Core Game Logic (Godot):}
-	\begin{itemize}
-		\item \textit{Asynchronous Pre-generation Engine:} Chạy ngầm (background thread). Âm thầm truy vấn SQLite và gọi API Ollama khi người chơi đang di chuyển trên bản đồ, lưu kết quả vào Cache để loại bỏ hoàn toàn độ trễ khi vào trận đấu.
-		\item \textit{Hierarchical Competency Gating:} Giám sát tiến độ tiêu diệt quái vật để mở khóa các phân vùng từ vựng khó hơn (Tier 1, Tier 2).
-	\end{itemize}
+	\item \textbf{Module 1 — Giao diện người dùng (UI/UX):} chịu trách nhiệm toàn bộ phần người chơi nhìn thấy và tương tác. Gồm hai thành phần: Scene Manager điều phối việc chuyển đổi giữa màn hình bản đồ và màn hình chiến đấu; Evaluation UI hiển thị câu hỏi, 4 nút đáp án, thanh HP, và bảng giải thích của AI-tutor khi người chơi trả lời sai.
 	
-	\item \textbf{AI Integration Module (Godot + Ollama):}
-	\begin{itemize}
-		\item \textit{Context-Aware Prompt Builder:} Dựa vào thông số loại quái vật và môi trường xung quanh (Biome) để chèn vào System Prompt, gửi tới AI để sinh đề bài khớp ngữ cảnh.
-		\item \textit{JSON Parser:} Bóc tách dữ liệu phản hồi từ AI lấy cấu trúc câu hỏi, đáp án, và phần giải thích (Explainable AI).
-	\end{itemize}
-	
-	\item \textbf{Data Tracking Module (SQLite):}
-	\begin{itemize}
-		\item \textit{Knowledge Tracing System:} Lưu trữ tỷ lệ trả lời đúng/sai của người chơi trên từng từ vựng cụ thể. 
-	\end{itemize}
+	\item \textbf{Module 2 — Logic game cốt lõi (Godot)} xử lý hai cơ chế vận hành nền tảng. Async Pre-generation Engine chạy ngầm trong lúc người chơi đi bộ trên bản đồ — truy vấn từ yếu nhất rồi gọi Ollama để tạo câu hỏi sẵn vào hàng đợi, đảm bảo khi vào trận không có độ trễ chờ AI. Hierarchical Gating kiểm soát điều kiện mở khóa tier tiếp theo: đếm số lượt tiêu diệt quái vật, chặn người chơi tiếp cận khu vực khó hơn khi chưa đủ điều kiện.
+	\item \textbf{Module 3 — Tích hợp AI (Ollama)} là cầu nối giữa logic game và Ollama. Prompt Builder lắp ráp nội dung câu hỏi từ ba nguồn: từ vựng mục tiêu, chỉ thị độ khó từ DDA, và thông tin ngữ cảnh (loại quái, biome). JSON Parser nhận phản hồi thô từ Ollama, bóc tách qua hai lớp JSON lồng nhau, kiểm tra tính hợp lệ rồi mới đưa vào hàng đợi — câu hỏi lỗi bị loại bỏ ngầm, không ảnh hưởng đến gameplay.
+	\item \textbf{Module 4 — Theo dõi dữ liệu học tập} là nơi toàn bộ trạng thái học tập được lưu trữ. Knowledge Tracing cập nhật điểm mastery sau mỗi lượt chiến đấu thông qua UPSERT vào SQLite, đồng thời cung cấp dữ liệu cho DDA và màn hình sổ tay từ vựng. \texttt{Player Profile} lưu HP, vị trí bản đồ và tiến trình tiêu diệt quái vật để hỗ trợ tính năng Continue game.
+
 \end{enumerate}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{Figure/module_design_structure.png}
+	\label{fig:module_design}
+	\caption{Sơ đồ thiết kế module}
+\end{figure}
 
 \subsection{CT System Mapping (Traceability)}
 Bảng ánh xạ dưới đây thể hiện cách các trụ cột của Tư duy tính toán định hình nên kiến trúc hệ thống: 
@@ -72,18 +63,23 @@ Feature 1, 2 \& 6 \\ \hline
 
 \subsection{Data Flow (Luồng dữ liệu)}
 \textbf{Sơ đồ luồng dữ liệu (Data Flow Diagram - DFD) dạng khối hình học (Flowchart diagram):}
+\begin{enumerate}
+\item \textbf{Luồng dữ liệu 1: Người chơi di chuyển trên map}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{Figure/df1.png}
+	\caption{Sơ đồ luồng dữ liệu 1}
 	\label{fig:df1}
 \end{figure}
+\item \textbf{Luồng dữ liệu 2: Người chơi chiến đấu với quái vật}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{Figure/df2.png}
+	\caption{Sơ đồ luồng dữ liệu 2}
 	\label{fig:df2}
 \end{figure}
-
+\end{enumerate}
 \subsection{Use Case / Sequence Diagram}
 \subsubsection{Use Cases}
 
@@ -136,7 +132,7 @@ Feature 1, 2 \& 6 \\ \hline
         \item[Hậu điều kiện:] Màn hình chuyển sang giao diện chiến đấu, hoặc người chơi được yêu cầu luyện tập thêm với quái cấp thấp hơn.
         \item[Các bước thực hiện:] \hfill
         \begin{enumerate}
-            \item Người chơi di chuyển nhân vật đến gần và chạm vào quái vật.
+            \item Người chơi di chuyển nhân vật đến gần và ấn nút tương tác (nút F) vào quái vật.
             \item Hệ thống đọc cấp độ (tier) của quái vật --- ví dụ: Slime thuộc Tier 1, Goblin thuộc Tier 2.
             \item Hệ thống kiểm tra tiến trình của người chơi xem đã đáp ứng điều kiện mở khóa quái vật này chưa.
             \item Nếu đủ điều kiện, màn hình chuyển cảnh sang giao diện chiến đấu.
@@ -191,17 +187,28 @@ Feature 1, 2 \& 6 \\ \hline
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.25]{Figure/SD.png}
+	\caption{Biểu đồ tuần tự}
 	\label{fig:sd}
 \end{figure}
 
-\subsection{Data Design \& Modeling (Thiết kế Dữ liệu - Table Schema)}
-\textbf{Table schema/ERD:}
+\subsection{Data Design \& Modeling (Thiết kế Dữ liệu - Table Schema)}te
+\begin{enumerate}
+
+\item \textbf{Biểu đồ Entity-Relationship (ERD):}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{Figure/erd.png}
+	\caption{Biểu đồ Entity-Relationship}
 	\label{fig:erd}
 \end{figure}
-
+\item \textbf{Lược đồ bảng (Table schema):}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{Figure/ts.png}
+	\caption{Biểu đồ Entity-Relationship}
+	\label{fig:erd}
+\end{figure}
+\end{enumerate}
 \subsection{UI/UX Design \& Interactive Prototype (Figma)}
 \subsubsection{Design Concept \& Style Guide}
 \subsubsection{High-Fidelity Mockups}

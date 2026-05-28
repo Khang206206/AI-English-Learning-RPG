@@ -2,7 +2,7 @@
 \subsection{Tech Stack}
 Game sử dụng những công cụ sau:
 \begin{itemize}
-	\item \textbf{Game Engine:} Godot Engine (Version 4.6.2) sử dụng ngôn ngữ lập trinhg GDScript.
+	\item \textbf{Game Engine:} Godot Engine (Version 4.6.2) sử dụng ngôn ngữ lập trình GDScript.
 	\item \textbf{Artificial Intelligence:} Mô hình ngôn ngữ lớn (LLM) Qwen2.5:3b, vận hành cục bộ thông qua nền tảng Ollama.
 	\item \textbf{Database:} Hệ quản trị cơ sở dữ liệu quan hệ SQLite (tích hợp qua plugin Godot-SQLite).
 	\item \textbf{Design \& Version Control:} Figma (Thiết kế UI/UX) và GitHub (Quản lý mã nguồn, đồng bộ làm việc nhóm).
@@ -19,7 +19,7 @@ Toàn bộ luồng giao diện được thiết kế sơ đồ hóa trên Figma 
 \end{itemize}
 
 \subsubsection*{c. Backend (Hệ thống AI \& Thuật toán - \texttt{AIManager.gd})}
-Backend của game đóng vai trò là "Bộ não", xử lý logic học tập cá nhân hóa thông qua 3 kỹ thuật cốt lõi:
+Backend của game đóng vai trò là bộ não xử lý logic học tập cá nhân hóa thông qua 3 kỹ thuật cốt lõi:
 \begin{itemize}
     \item \textbf{Kiến trúc Nạp ngầm Bất đồng bộ (Asynchronous Pre-fetching):} Khắc phục nhược điểm tốc độ xử lý của Local LLM bằng cách thiết lập các hàng đợi đa tầng (Multi-tier Queues). Bằng các lệnh gọi API (\texttt{HTTPRequest}) liên tục qua cổng mạng 11434 của Ollama, hệ thống âm thầm chuẩn bị sẵn 5 câu hỏi cho mỗi khu vực (Biome) ngay khi người chơi đang di chuyển, đưa độ trễ tải câu hỏi trong trận chiến về mức 0 giây.
     \item \textbf{Dynamic Difficulty Adjustment (DDA - Thích nghi Độ khó):} Thuật toán DDA tính toán chỉ số thông thạo (\textit{mastery\_score}) của người chơi đối với từng từ vựng riêng biệt. Dựa trên chỉ số này, Backend tự động phân loại và chỉ thị AI sinh ra các dạng câu hỏi khác nhau (Nhận diện nghĩa cơ bản cho từ mới gặp; Điền vào chỗ trống cho từ hay sai; Phân biệt sắc thái đồng/trái nghĩa cho từ đã thành thạo).
