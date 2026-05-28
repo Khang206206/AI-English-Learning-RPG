@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://btg117njqy6w6"]
 
 [ext_resource type="Texture2D" uid="uid://fb5kfdhiotgq" path="res://assets/title screen/Title Screen.jpg" id="1_ig5kc"]
+[ext_resource type="Script" uid="uid://cbmaxyb7j30eh" path="res://scripts/title_screen.gd" id="1_mgrm8"]
 [ext_resource type="FontFile" uid="uid://wlv3qnk7mxgy" path="res://Pixelout/Pixelout Personal Use Only.ttf" id="2_ak2if"]
 [ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://Press_Start_2P/PressStart2P.ttf" id="3_ig5kc"]
 
@@ -30,6 +31,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_mgrm8")
 
 [node name="Panel" type="Panel" parent="." unique_id=685661806]
 layout_mode = 1
