@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bmyfr0fy8m08r"]
 
-[ext_resource type="Script" uid="uid://82nrl8axq5mt" path="res://scenes/spell.gd" id="1_g6grp"]
+[ext_resource type="Script" uid="uid://82nrl8axq5mt" path="res://scripts/spell.gd" id="1_g6grp"]
 [ext_resource type="Texture2D" uid="uid://w8mprhynmfbd" path="res://assets/asset phép chưởng/4.png" id="2_jquvt"]
 [ext_resource type="Texture2D" uid="uid://bptvmh24tr7qi" path="res://assets/Thunder Effect 01/Thunder Effect 01/Thunder Projectile 1/Thunder projectile1 w blur.png" id="3_jquvt"]
 [ext_resource type="Texture2D" uid="uid://cw3q37jhxbhru" path="res://assets/Ice Effect 01/Ice Effect 01/Ice VFX 1/IceVFX 1 Repeatable.png" id="4_2t7pn"]

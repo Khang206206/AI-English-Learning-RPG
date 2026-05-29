@@ -1,7 +1,13 @@
 extends Control
 
+@export var title_music: AudioStream
 
 func _ready():
+	if title_music != null:
+		BgmManager.play_music(title_music)
+	else:
+		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
+		BgmManager.stop_music()
 
 	$VBoxContainer/Button.pressed.connect(_on_start_pressed)
 

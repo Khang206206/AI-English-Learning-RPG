@@ -28,8 +28,8 @@ extends Control
 @onready var defeat_sfx = $Defeat_SFX
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
-var player_hp: int = 3
-var monster_hp: int = 1
+var player_hp: int
+var monster_hp: int = 5
 var heart_red = preload("res://assets/hearts/Heart_Full.tres")
 var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa

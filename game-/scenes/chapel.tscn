@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bsemj1t7vqb73"]
 
-[ext_resource type="Script" uid="uid://ge66hvc87w36" path="res://scenes/chapel.gd" id="1_74dbc"]
+[ext_resource type="Script" uid="uid://ge66hvc87w36" path="res://scripts/chapel.gd" id="1_74dbc"]
 [ext_resource type="Texture2D" uid="uid://br7xhmdr3cvdg" path="res://assets/tileset trong sách/black background.jpg" id="1_d8fn6"]
 [ext_resource type="Texture2D" uid="uid://cfg0yqbuugje0" path="res://assets/tileset nơi nhận sách/Walls_Interior.png" id="1_fteks"]
 [ext_resource type="AudioStream" uid="uid://b4kwa6slww77a" path="res://assets/blood-stained-glass-v0-8_y3tW5vUl.mp3" id="2_74dbc"]
