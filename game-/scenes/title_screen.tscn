@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://wlv3qnk7mxgy" path="res://Pixelout/Pixelout Personal Use Only.ttf" id="2_ak2if"]
 [ext_resource type="AudioStream" uid="uid://dyqap7f2cldy1" path="res://assets/TownTheme.mp3" id="2_dc4i4"]
 [ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://Press_Start_2P/PressStart2P.ttf" id="3_ig5kc"]
+[ext_resource type="PackedScene" uid="uid://ceb8m7lfaxn6n" path="res://scenes/SettingsPanel.tscn" id="6_e54dn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ak2if"]
 texture = ExtResource("1_ig5kc")
@@ -123,7 +124,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_hafda")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_tpml5")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_jqemp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_013yr")
-text = "OPTIONS"
+text = "SETTINGS"
 
 [node name="Button4" type="Button" parent="VBoxContainer" unique_id=1667072838]
 layout_mode = 2
@@ -138,3 +139,12 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_tpml5")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_jqemp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_013yr")
 text = "QUIT GAME"
+
+[node name="SettingsPanel" parent="." unique_id=215623673 instance=ExtResource("6_e54dn")]
+layout_mode = 1
+anchor_left = -0.163
+anchor_top = 0.24300002
+offset_left = 484.776
+offset_top = 205.536
+offset_right = -1094.6161
+offset_bottom = -114.57602

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dv1abu8r2w1hu"]
+
+[ext_resource type="Script" uid="uid://et1t2amjfbnw" path="res://scripts/global_brightness.gd" id="1_ihyov"]
+
+[node name="GlobalBrightness" type="CanvasModulate" unique_id=1813651799]
+script = ExtResource("1_ihyov")

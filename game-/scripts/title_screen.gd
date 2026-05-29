@@ -13,11 +13,11 @@ func _ready():
 
 	$VBoxContainer/Button2.pressed.connect(_on_continue_pressed)
 
-	$VBoxContainer/Button3.pressed.connect(_on_options_pressed)
+	$VBoxContainer/Button3.pressed.connect(_on_settings_pressed)
 
 	$VBoxContainer/Button4.pressed.connect(_on_quit_pressed)
 
-
+	$SettingsPanel.back_pressed.connect(_on_settings_back)
 
 func _on_start_pressed():
 
@@ -33,11 +33,16 @@ func _on_continue_pressed():
 
 
 
-func _on_options_pressed():
+func _on_settings_pressed():
 
-	print("Options")
+	$VBoxContainer.visible = false
+	$SettingsPanel.setup_mode(false)
+	$SettingsPanel.visible = true
 
-
+func _on_settings_back():
+	
+	$VBoxContainer.visible = true
+	$SettingsPanel.visible = false
 
 func _on_quit_pressed():
 
