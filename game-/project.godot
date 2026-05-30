@@ -23,6 +23,7 @@ AIManager="*uid://67pgysvkved1"
 BgmManager="*uid://c4tfkvrapvtot"
 GlobalBrightness="*uid://dv1abu8r2w1hu"
 GlobalPause="*uid://bhuqd7o1b50tf"
+DialogueSystem="*uid://bdgt361iepsmn"
 
 [display]
 

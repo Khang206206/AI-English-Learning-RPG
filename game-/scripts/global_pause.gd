@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+signal game_paused
+signal game_resumed
+
 func _ready():
 	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS # Để nó chạy được cả khi game đang Pause

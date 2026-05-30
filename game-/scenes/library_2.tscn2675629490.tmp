@@ -3685,7 +3685,7 @@ position = Vector2(704, 476)
 
 [node name="InteractableObject" parent="." unique_id=1971411768 node_paths=PackedStringArray("quiz_ui_node") instance=ExtResource("5_midgi")]
 position = Vector2(704, 598)
-object_type = "NPC_Dialogue"
+object_type = null
 quiz_ui_node = NodePath("../QuizUI")
 battle_scene_path = null
 
