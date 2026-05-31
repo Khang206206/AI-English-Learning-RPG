@@ -26,6 +26,8 @@ extends Control
 @onready var bgm_player = $BGM_Player
 @onready var victory_sfx = $Victory_SFX
 @onready var defeat_sfx = $Defeat_SFX
+
+@onready var magic_timer = $MagicTimer
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int
@@ -67,6 +69,8 @@ func _ready():
 	load_next_question()
 	if bgm_player != null:
 		bgm_player.play()
+	if magic_timer:
+		magic_timer.timeout.connect(_on_timer_timeout)
 
 func setup_hearts():
 	for child in player_hearts_container.get_children():
@@ -99,10 +103,15 @@ func load_next_question():
 	btn_c.text = "C. " + current_question.get("C", "")
 	btn_d.text = "D. " + current_question.get("D", "")
 	set_buttons_disabled(false)
+	if magic_timer:
+		magic_timer.show()
+		magic_timer.start_timer()
 
 # 4. COMBAT STATE MACHINE
 func check_answer(selected_choice: String):
 	set_buttons_disabled(true)
+	if magic_timer:
+		magic_timer.stop_timer()
 
 	var word_id: int     = current_question.get("word_id", -1)
 	var is_correct: bool = selected_choice == current_question["correct_answer"]
@@ -164,6 +173,7 @@ func set_buttons_disabled(is_disabled: bool):
 	btn_d.disabled = is_disabled
 
 func win_battle():
+	if magic_timer: magic_timer.hide()
 	print("Victory!")
 	if bgm_player != null and bgm_player.playing:
 		bgm_player.stop() # Tắt nhạc nền đi
@@ -175,6 +185,7 @@ func win_battle():
 	show_result_overlay(true)
 
 func lose_battle():
+	if magic_timer: magic_timer.hide()
 	print("Game Over!")
 	if bgm_player != null and bgm_player.playing:
 		bgm_player.stop() # Tắt nhạc nền đi
@@ -257,3 +268,17 @@ func _on_go_back_pressed():
 # Lắng nghe signal từ DatabaseManager — đồng bộ HP runtime khi DB thay đổi
 func _on_db_hp_changed(new_hp: int):
 	player_hp = new_hp
+	
+func _on_timer_timeout():
+	set_buttons_disabled(true)
+	player_hp -= 1
+	var word_id: int = current_question.get("word_id", -1)
+	var db = get_node_or_null("/root/DatabaseManager")
+	if db:
+		db.update_after_combat(word_id, false)
+	update_health_ui()
+	explanation_text.text = "Đã hết thời gian suy nghĩ! " + current_question.get("explanation", "")
+	ai_tutor_popup.show()
+	if player_hp <= 0:
+		player_anim.play("die")
+		is_game_over = true

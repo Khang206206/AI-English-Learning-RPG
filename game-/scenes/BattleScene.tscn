@@ -59,6 +59,7 @@
 [ext_resource type="AudioStream" uid="uid://b7t1ca8687nc6" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/victory!.mp3" id="51_giceh"]
 [ext_resource type="AudioStream" uid="uid://qh0kggwwp4iy" path="res://assets/battleThemeA.mp3" id="51_ljqkc"]
 [ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
+[ext_resource type="PackedScene" uid="uid://behvdv4rxcbpg" path="res://scenes/Timer.tscn" id="60_gewri"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
 animations = [{
@@ -483,6 +484,7 @@ theme_override_styles/pressed = ExtResource("7_sdfhe")
 theme_override_styles/hover = ExtResource("8_hrc4b")
 
 [node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1617570521]
+visible = false
 
 [node name="BG" type="ColorRect" parent="ResultOverlay" unique_id=1371954151]
 material = SubResource("ShaderMaterial_tba6u")
@@ -577,3 +579,9 @@ stream = ExtResource("51_giceh")
 
 [node name="Defeat_SFX" type="AudioStreamPlayer2D" parent="." unique_id=518581527]
 stream = ExtResource("52_ljqkc")
+
+[node name="MagicTimer" parent="." unique_id=1302128451 instance=ExtResource("60_gewri")]
+z_index = 1
+texture_filter = 1
+position = Vector2(576, 331)
+scale = Vector2(0.5, 0.5)
