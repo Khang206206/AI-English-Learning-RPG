@@ -6,6 +6,10 @@ extends Control
 @onready var btn_b = $UI/MainPanel/Answers/BtnB
 @onready var btn_c = $UI/MainPanel/Answers/BtnC
 @onready var btn_d = $UI/MainPanel/Answers/BtnD
+@onready var answers_abcd_panel = $UI/MainPanel/Answers
+@onready var text_input_panel = $UI/MainPanel/TextInputPanel
+@onready var word_input = $UI/MainPanel/TextInputPanel/WordInput
+@onready var submit_btn = $UI/MainPanel/TextInputPanel/SubmitBtn
 
 @onready var ai_tutor_popup = $UI/AITutorPopup
 @onready var explanation_text = $UI/AITutorPopup/ExplanationText
@@ -64,6 +68,9 @@ func _ready():
 	btn_b.pressed.connect(func(): check_answer("B"))
 	btn_c.pressed.connect(func(): check_answer("C"))
 	btn_d.pressed.connect(func(): check_answer("D"))
+	submit_btn.pressed.connect(func(): check_answer(word_input.text.strip_edges()))
+	word_input.text_submitted.connect(func(new_text): check_answer(new_text.strip_edges()))
+	
 	try_again_btn.pressed.connect(_on_try_again_pressed)
 	go_back_btn.pressed.connect(_on_go_back_pressed)
 	go_back2_btn.pressed.connect(_on_go_back_pressed)
@@ -124,10 +131,21 @@ func setup_hearts():
 func load_next_question():
 	current_question = AIManager.get_question()
 	question_label.text = current_question.get("question", "Lỗi hiển thị câu hỏi")
-	btn_a.text = "A. " + current_question.get("A", "")
-	btn_b.text = "B. " + current_question.get("B", "")
-	btn_c.text = "C. " + current_question.get("C", "")
-	btn_d.text = "D. " + current_question.get("D", "")
+	word_input.text = "" # Xóa chữ hiệp cũ
+	set_buttons_disabled(false)
+	var ui_mode = current_question.get("ui_mode", "mcq")
+	if ui_mode == "mcq": 
+		answers_abcd_panel.show()
+		text_input_panel.hide()
+		# Nạp chữ ABCD như cũ của bồ
+		btn_a.text = "A. " + current_question.get("A", "")
+		btn_b.text = "B. " + current_question.get("B", "")
+		btn_c.text = "C. " + current_question.get("C", "")
+		btn_d.text = "D. " + current_question.get("D", "")
+	else:
+		answers_abcd_panel.hide() 
+		text_input_panel.show()
+		word_input.grab_focus()
 	set_buttons_disabled(false)
 	if magic_timer:
 		magic_timer.show()
@@ -140,7 +158,16 @@ func check_answer(selected_choice: String):
 		magic_timer.stop_timer()
 
 	var word_id: int     = current_question.get("word_id", -1)
-	var is_correct: bool = selected_choice == current_question["correct_answer"]
+	var ui_mode = current_question.get("ui_mode", "mcq")
+	var is_correct: bool = false
+
+	if ui_mode == "mcq":
+		is_correct = selected_choice == current_question["correct_answer"]
+	else:
+		var answer_input = selected_choice.to_lower().strip_edges()
+		var correct_ans = str(current_question.get("correct_answer", "")).to_lower().strip_edges()
+		var alternatives = current_question.get("accept_alternatives", [])
+		is_correct = (answer_input == correct_ans) or (answer_input in alternatives)
 
 	if is_correct:
 		player_anim.position.y -= 40
@@ -218,6 +245,9 @@ func set_buttons_disabled(is_disabled: bool):
 	btn_electric.disabled = is_disabled
 	btn_ice.disabled = is_disabled
 	btn_wood.disabled = is_disabled
+	
+	word_input.editable = !is_disabled
+	submit_btn.disabled = is_disabled
 	
 	# Bỏ dòng "if is_disabled:" cũ đi, luôn luôn ép cập nhật màu sắc mỗi khi trạng thái thay đổi
 	_update_button_visuals(btn_fire, btn_fire.button_pressed)

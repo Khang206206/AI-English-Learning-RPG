@@ -64,6 +64,7 @@
 [ext_resource type="AudioStream" uid="uid://b7t1ca8687nc6" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/victory!.mp3" id="51_giceh"]
 [ext_resource type="AudioStream" uid="uid://qh0kggwwp4iy" path="res://assets/battleThemeA.mp3" id="51_ljqkc"]
 [ext_resource type="Texture2D" uid="uid://bpihk1bmyelpj" path="res://assets/ElementUI-Icons/Ice-Icon.png" id="51_ofjeq"]
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="52_d1qpi"]
 [ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
 [ext_resource type="Texture2D" uid="uid://42japmndwxs0" path="res://assets/ElementUI-Icons/Life-Icon.png" id="52_r4kuy"]
 [ext_resource type="PackedScene" uid="uid://behvdv4rxcbpg" path="res://scenes/Timer.tscn" id="60_gewri"]
@@ -274,6 +275,18 @@ animations = [{
 [sub_resource type="LabelSettings" id="LabelSettings_gkmpl"]
 font = ExtResource("4_28s16")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_72s1w"]
+texture = ExtResource("52_d1qpi")
+region_rect = Rect2(0.969, 223.942, 7, 7)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gpdlj"]
+texture = ExtResource("52_d1qpi")
+region_rect = Rect2(0.914, 231.978, 7, 7)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g7y7t"]
+texture = ExtResource("52_d1qpi")
+region_rect = Rect2(0.914, 231.978, 7, 7)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tba6u"]
 shader = ExtResource("47_mj0st")
 shader_parameter/blur_amount = 2.0
@@ -479,6 +492,32 @@ size_flags_vertical = 5
 theme_override_styles/normal = ExtResource("5_ftvu5")
 theme_override_styles/hover = ExtResource("6_0yex5")
 
+[node name="TextInputPanel" type="Control" parent="UI/MainPanel" unique_id=633126933]
+anchors_preset = 0
+offset_left = 374.0
+offset_top = 431.0
+offset_right = 758.0
+offset_bottom = 541.0
+
+[node name="WordInput" type="LineEdit" parent="UI/MainPanel/TextInputPanel" unique_id=305340828]
+layout_mode = 0
+offset_right = 384.0
+offset_bottom = 105.0
+placeholder_text = "\"Type your answer here...\""
+alignment = 1
+
+[node name="SubmitBtn" type="Button" parent="UI/MainPanel/TextInputPanel" unique_id=1345386775]
+texture_filter = 1
+layout_mode = 0
+offset_left = 357.0
+offset_top = 76.0
+offset_right = 366.0
+offset_bottom = 85.0
+scale = Vector2(3, 3)
+theme_override_styles/normal = SubResource("StyleBoxTexture_72s1w")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_gpdlj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_g7y7t")
+
 [node name="MagicBullets" type="HBoxContainer" parent="UI/MainPanel" unique_id=298678062]
 layout_mode = 0
 offset_top = 577.35
@@ -533,16 +572,14 @@ theme_override_styles/pressed = ExtResource("7_sdfhe")
 theme_override_styles/hover = ExtResource("8_hrc4b")
 
 [node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1617570521]
-visible = false
 
 [node name="BG" type="ColorRect" parent="ResultOverlay" unique_id=1371954151]
 material = SubResource("ShaderMaterial_tba6u")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 2.0
 offset_top = -2.0
-offset_right = 27.0
+offset_right = 25.0
 offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
