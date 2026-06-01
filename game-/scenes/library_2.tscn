@@ -3690,7 +3690,7 @@ quiz_ui_node = NodePath("../QuizUI")
 battle_scene_path = null
 
 [node name="CollisionShape2D" parent="InteractableObject" index="0" unique_id=865465090]
-position = Vector2(11, -139.6875)
+position = Vector2(13, -138)
 shape = SubResource("RectangleShape2D_63gu8")
 
 [editable path="InteractableObject"]
