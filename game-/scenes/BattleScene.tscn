@@ -54,11 +54,15 @@
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="38_oqnmf"]
 [ext_resource type="Shader" uid="uid://cdaxnwsajoytl" path="res://scenes/BattleScene.gdshader" id="47_mj0st"]
 [ext_resource type="FontFile" uid="uid://wcn37kq5i0lh" path="res://Press_Start_2P/PressStart2P-Regular.ttf" id="48_kwf4x"]
+[ext_resource type="Texture2D" uid="uid://bfhfr1y5ou7nh" path="res://assets/ElementUI-Icons/Fire-Icon.png" id="49_03wv6"]
 [ext_resource type="FontFile" uid="uid://dl4e4vafcdyc0" path="res://assets/NbPixelFontBundle_v1_0/AtariGames.ttf" id="49_tba6u"]
 [ext_resource type="Texture2D" uid="uid://dbl3ejfnlnqfr" path="res://assets/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="49_xe6ct"]
+[ext_resource type="Texture2D" uid="uid://y264bi5octwx" path="res://assets/ElementUI-Icons/Electric-Icon.png" id="50_l32qo"]
 [ext_resource type="AudioStream" uid="uid://b7t1ca8687nc6" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/victory!.mp3" id="51_giceh"]
 [ext_resource type="AudioStream" uid="uid://qh0kggwwp4iy" path="res://assets/battleThemeA.mp3" id="51_ljqkc"]
+[ext_resource type="Texture2D" uid="uid://bpihk1bmyelpj" path="res://assets/ElementUI-Icons/Ice-Icon.png" id="51_ofjeq"]
 [ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
+[ext_resource type="Texture2D" uid="uid://42japmndwxs0" path="res://assets/ElementUI-Icons/Life-Icon.png" id="52_r4kuy"]
 [ext_resource type="PackedScene" uid="uid://behvdv4rxcbpg" path="res://scenes/Timer.tscn" id="60_gewri"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
@@ -420,7 +424,8 @@ autowrap_mode = 2
 [node name="Answers" type="VBoxContainer" parent="UI/MainPanel" unique_id=882850257]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.11
+anchor_left = -0.95
+anchor_right = 1.4
 offset_left = 464.0
 offset_top = 436.0
 offset_right = 662.0
@@ -456,6 +461,33 @@ size_flags_horizontal = 5
 size_flags_vertical = 5
 theme_override_styles/normal = ExtResource("5_ftvu5")
 theme_override_styles/hover = ExtResource("6_0yex5")
+
+[node name="MagicBullets" type="HBoxContainer" parent="UI/MainPanel" unique_id=298678062]
+layout_mode = 0
+offset_top = 577.35
+offset_right = 1340.0
+offset_bottom = 930.35
+scale = Vector2(0.2, 0.2)
+
+[node name="BtnFire" type="TextureButton" parent="UI/MainPanel/MagicBullets" unique_id=347573745]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("49_03wv6")
+
+[node name="BtnElectric" type="TextureButton" parent="UI/MainPanel/MagicBullets" unique_id=1605064956]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("50_l32qo")
+
+[node name="BtnIce" type="TextureButton" parent="UI/MainPanel/MagicBullets" unique_id=1001051513]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("51_ofjeq")
+
+[node name="BtnWood" type="TextureButton" parent="UI/MainPanel/MagicBullets" unique_id=1215382295]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("52_r4kuy")
 
 [node name="AITutorPopup" type="NinePatchRect" parent="UI" unique_id=600995695]
 texture_filter = 1

@@ -5,25 +5,47 @@ extends Node2D
 func shoot(start_pos: Vector2, target_pos: Vector2):
 	global_position = start_pos
 	
-	# 1. TẠO TỪ ĐIỂN CHỨA TÊN PHÉP VÀ KÍCH THƯỚC (SCALE) TƯƠNG ỨNG
-	var spell_data = {
-		"spell1": Vector2(6.0, 6.0), 
-		"spell2": Vector2(3, 3), 
-		"spell3": Vector2(3, 3),
-		"spell4": Vector2(3, 3)
-		
-	}
+	# 1. TỰ ĐỘNG ĐI TÌM BATTLE SCENE ĐỂ XEM ĐANG CHỌN ĐẠN GÌ
+	var current_bullet = "normal"
 	
-	# 2. LẤY NGẪU NHIÊN VÀ ÁP DỤNG
-	var spell_list = spell_data.keys() # Lấy ra danh sách ["spell1", "spell2"]
-	var random_spell = spell_list.pick_random()
+	# Tìm kiếm xuyên suốt cây node để lôi bằng được node có tên "BattleScene" ra
+	var battle_scene = get_tree().current_scene.find_child("BattleScene", true, false)
 	
-	if anim.sprite_frames.has_animation(random_spell):
-		anim.play(random_spell)
-		# Ép kích thước (scale) của cục phép bằng đúng thông số đã cài ở trên
-		scale = spell_data[random_spell] 
+	# Dự phòng nếu BattleScene chính là node gốc ngoài cùng
+	if not battle_scene and get_tree().current_scene.name == "BattleScene":
+		battle_scene = get_tree().current_scene
+
+	if battle_scene and "current_bullet" in battle_scene:
+		current_bullet = battle_scene.current_bullet # Lấy chuẩn hệ đạn!
+
+	# 2. ĐỊNH NGHĨA ANIMATION VÀ KÍCH THƯỚC THEO TỪNG HỆ ĐẠN ĐÃ CHỌN
+	var anim_name: String = "spell1" 
+	var target_scale: Vector2 = Vector2(3.0, 3.0) 
 	
-	# 3. LOGIC BAY NHƯ CŨ
+	match current_bullet:
+		"fire":
+			anim_name = "fire1" # Mai mốt sửa chữ "spell1" thành "fire" nha Phú
+			target_scale = Vector2(6.0, 6.0)
+		"electric":
+			anim_name = "electric1" # Sửa thành "electric" sau
+			target_scale = Vector2(3.0, 3.0)
+		"ice":
+			anim_name = "ice1" # Sửa thành "ice" sau
+			target_scale = Vector2(3.0, 3.0)
+		"wood":
+			anim_name = "wood1" # Sửa thành "wood" sau
+			target_scale = Vector2(3.0, 3.0)
+		"normal":
+			anim_name = "normal" # Đạn thường mặc định bay bốc ngẫu nhiên hoặc mặc định là spell1
+			target_scale = Vector2(3.0, 3.0)
+
+	# 3. CHẠY ANIMATION VÀ ÉP KÍCH THƯỚC
+	if anim.sprite_frames.has_animation(anim_name):
+		anim.play(anim_name)
+		scale = target_scale
+	if start_pos.x > target_pos.x:
+		scale.x = -abs(scale.x)
+	# 4. LOGIC BAY GIỮ NGUYÊN
 	var tween = create_tween()
 	var fly_destination = target_pos 
 	

@@ -28,6 +28,11 @@ extends Control
 @onready var defeat_sfx = $Defeat_SFX
 
 @onready var magic_timer = $MagicTimer
+@onready var btn_fire = $UI/MainPanel/MagicBullets/BtnFire
+@onready var btn_electric = $UI/MainPanel/MagicBullets/BtnElectric
+@onready var btn_ice = $UI/MainPanel/MagicBullets/BtnIce
+@onready var btn_wood = $UI/MainPanel/MagicBullets/BtnWood
+var current_bullet: String = "normal"
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int
@@ -71,6 +76,27 @@ func _ready():
 		bgm_player.play()
 	if magic_timer:
 		magic_timer.timeout.connect(_on_timer_timeout)
+	
+	# --- KẾT NỐI TÍN HIỆU CHO 4 NÚT ĐẠN NGUYÊN TỐ ---
+	btn_fire.toggled.connect(_on_btn_fire_toggled)
+	btn_electric.toggled.connect(_on_btn_electric_toggled)
+	btn_ice.toggled.connect(_on_btn_ice_toggled)
+	btn_wood.toggled.connect(_on_btn_wood_toggled)
+	
+	# Tự động cấu hình hiệu ứng Hover phát sáng nhẹ khi di chuột qua
+	for button in $UI/MainPanel/MagicBullets.get_children():
+		if button is TextureButton:
+			button.mouse_entered.connect(func():
+				# Chỉ làm sáng nhẹ nếu nút ĐANG KHÔNG ĐƯỢC CHỌN và KHÔNG BỊ KHÓA
+				if not button.disabled and not button.button_pressed:
+					button.modulate = Color(1.3, 1.3, 1.3, 1.0)
+			)
+			button.mouse_exited.connect(func():
+				# Khi chuột đi ra, gọi hàm cập nhật chuẩn để giữ màu sáng rực nếu nút đang được bấm
+				_update_button_visuals(button, button.button_pressed)
+			)
+			# Đặt màu mặc định ban đầu cho nút
+			_update_button_visuals(button, button.button_pressed)
 
 func setup_hearts():
 	for child in player_hearts_container.get_children():
@@ -127,13 +153,15 @@ func check_answer(selected_choice: String):
 		await get_tree().create_timer(0.1).timeout
 		if SPELL_SCENE:
 			var spell = SPELL_SCENE.instantiate()
-			# Thêm vào Node2D để nó không bị dính vào UI
+			
+			# 1. PHẢI ĐƯA VIÊN ĐẠN VÀO CÂY NODE TRƯỚC ĐỂ NÓ CÓ CHA TỔ TIÊN
 			get_node("Node2D").add_child(spell) 
 			
-			# Tính toán vị trí: từ đầu gậy player đến giữa quái
+			# Tính toán vị trí (Giữ nguyên)
 			var start_p = player_anim.global_position + Vector2(10, -5)
 			var target_p = monster_anim.global_position
 			
+			# 2. RỒI MỚI GỌI LỆNH BẮN BAY ĐI
 			spell.shoot(start_p, target_p)
 		# Đợi animation kết thúc mới tiếp tục logic
 		await player_anim.animation_finished 
@@ -150,6 +178,15 @@ func check_answer(selected_choice: String):
 			load_next_question()
 			
 	else:
+		if SPELL_SCENE:
+			var spell = SPELL_SCENE.instantiate()
+			get_node("Node2D").add_child(spell)
+			# Điểm xuất phát: Từ giữa quái | Điểm đích: Vị trí của Player
+			var start_p = monster_anim.global_position
+			var target_p = player_anim.global_position + Vector2(10, -5)
+			await spell.shoot(start_p, target_p)
+		# -------------------------------------------------------------------
+
 		update_health_ui()
 		print("Sai rồi! Trừ 1 máu. Player còn: ", player_hp, " máu")
 		explanation_text.text = current_question.get("explanation", "Rất tiếc, bạn đã chọn sai!")
@@ -171,6 +208,17 @@ func set_buttons_disabled(is_disabled: bool):
 	btn_b.disabled = is_disabled
 	btn_c.disabled = is_disabled
 	btn_d.disabled = is_disabled
+	
+	btn_fire.disabled = is_disabled
+	btn_electric.disabled = is_disabled
+	btn_ice.disabled = is_disabled
+	btn_wood.disabled = is_disabled
+	
+	# Bỏ dòng "if is_disabled:" cũ đi, luôn luôn ép cập nhật màu sắc mỗi khi trạng thái thay đổi
+	_update_button_visuals(btn_fire, btn_fire.button_pressed)
+	_update_button_visuals(btn_electric, btn_electric.button_pressed)
+	_update_button_visuals(btn_ice, btn_ice.button_pressed)
+	_update_button_visuals(btn_wood, btn_wood.button_pressed)
 
 func win_battle():
 	if magic_timer: magic_timer.hide()
@@ -183,6 +231,7 @@ func win_battle():
 	if db:
 		db.restore_full_hp()
 	show_result_overlay(true)
+	set_buttons_disabled(true)
 
 func lose_battle():
 	if magic_timer: magic_timer.hide()
@@ -195,6 +244,7 @@ func lose_battle():
 	if db:
 		db.restore_full_hp()
 	show_result_overlay(false)
+	set_buttons_disabled(true)
 	
 func update_health_ui():
 	var p_hearts = player_hearts_container.get_children()
@@ -276,9 +326,69 @@ func _on_timer_timeout():
 	var db = get_node_or_null("/root/DatabaseManager")
 	if db:
 		db.update_after_combat(word_id, false)
+	if SPELL_SCENE:
+		var spell = SPELL_SCENE.instantiate()
+		get_node("Node2D").add_child(spell)
+		
+		# Điểm xuất phát từ quái sang người chơi
+		var start_p = monster_anim.global_position
+		var target_p = player_anim.global_position + Vector2(10, -5)
+		
+		# Đợi đạn bay cắm vào người Player xong xuôi đã
+		await spell.shoot(start_p, target_p)
 	update_health_ui()
 	explanation_text.text = "Đã hết thời gian suy nghĩ! " + current_question.get("explanation", "")
 	ai_tutor_popup.show()
 	if player_hp <= 0:
 		player_anim.play("die")
 		is_game_over = true
+# Hàm đổi màu nút theo trạng thái (Bình thường / Chọn sáng rực / Khóa mờ)
+func _update_button_visuals(button: TextureButton, is_pressed: bool):
+	if button.disabled:
+		button.modulate = Color(0.2, 0.2, 0.2, 0.6) # Khóa mờ tịt
+	elif is_pressed:
+		button.modulate = Color(1.8, 1.8, 1.8, 1.0) # Chọn sáng rực HDR
+	else:
+		button.modulate = Color.WHITE # Trở về màu gốc
+
+# Logic xử lý Toggle: Nhấp nút này tự nhả 3 nút kia ra, nhấp lại lần nữa về đạn thường
+func _on_btn_fire_toggled(toggled_on: bool):
+	_update_button_visuals(btn_fire, toggled_on)
+	if toggled_on:
+		current_bullet = "fire"
+		btn_electric.button_pressed = false
+		btn_ice.button_pressed = false
+		btn_wood.button_pressed = false
+	elif current_bullet == "fire":
+		current_bullet = "normal"
+
+func _on_btn_electric_toggled(toggled_on: bool):
+	_update_button_visuals(btn_electric, toggled_on)
+	if toggled_on:
+		current_bullet = "electric"
+		btn_fire.button_pressed = false
+		btn_ice.button_pressed = false
+		btn_wood.button_pressed = false
+	elif current_bullet == "electric":
+		current_bullet = "normal"
+
+func _on_btn_ice_toggled(toggled_on: bool):
+	_update_button_visuals(btn_ice, toggled_on)
+	if toggled_on:
+		current_bullet = "ice"
+		btn_fire.button_pressed = false
+		btn_electric.button_pressed = false
+		btn_wood.button_pressed = false
+	elif current_bullet == "ice":
+		current_bullet = "normal"
+
+func _on_btn_wood_toggled(toggled_on: bool):
+	_update_button_visuals(btn_wood, toggled_on)
+	if toggled_on:
+		current_bullet = "wood"
+		btn_fire.button_pressed = false
+		btn_electric.button_pressed = false
+		btn_ice.button_pressed = false
+	elif current_bullet == "wood":
+		current_bullet = "normal"
+		
