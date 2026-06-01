@@ -1,13 +1,19 @@
 extends Node
 
+# ==============================================================================
+# AIManager.gd — AutoLoad Singleton
+# Trách nhiệm: Quản lý queue câu hỏi, giao tiếp HTTP với Ollama,
+#              chọn loại câu hỏi (DDA), build prompt, parse JSON
+# Phụ thuộc: ProgressManager (vocab + mastery), DatabaseManager (gián tiếp)
+# ==============================================================================
+
 const OLLAMA_URL: String   = "http://127.0.0.1:11434/api/chat"
 const OLLAMA_MODEL: String = "qwen3.5:4b"
 
 # Queue riêng cho từng tier — key là tier_id (int), value là Array câu hỏi
 var question_queues: Dictionary = {}
 
-# [FIX 1] Dùng per-tier generating flag thay vì 1 flag global duy nhất.
-# Flag global khiến toàn bộ hệ thống bị kẹt nếu 1 request đang chạy.
+# Per-tier generating flag — tránh race condition khi nhiều tier cùng nạp
 var _tier_generating: Dictionary = {}   # tier_id → bool
 
 const MAX_QUEUE_SIZE: int = 5
@@ -15,13 +21,19 @@ const MANAGED_TIERS: Array = [1, 2]
 
 var current_tier_id: int = 1
 
-const THRESHOLD_HARD: float = 0.4
+# ── Question type constants ──
+const QTYPE_MCQ:  String = "mcq"
+const QTYPE_TEXT: String = "text_input"
+
+
+# ── Signal cho NPC hint ──
+signal hint_ready(hint_text: String)
 
 
 func _ready() -> void:
 	for tier in MANAGED_TIERS:
-		question_queues[tier]    = []
-		_tier_generating[tier]   = false
+		question_queues[tier]  = []
+		_tier_generating[tier] = false
 
 	print("[AIManager] Khởi động — nạp queue cho %d tier..." % MANAGED_TIERS.size())
 	check_and_fill_all_queues()
@@ -50,15 +62,15 @@ func check_and_fill_all_queues() -> void:
 func _generate_for_tier(tier_id: int) -> void:
 	_tier_generating[tier_id] = true
 
-	var db = get_node_or_null("/root/DatabaseManager")
-	if db == null:
-		push_error("[AIManager] Không tìm thấy DatabaseManager!")
+	var progress = get_node_or_null("/root/ProgressManager")
+	if progress == null:
+		push_error("[AIManager] Không tìm thấy ProgressManager!")
 		_tier_generating[tier_id] = false
 		return
 
-	var vocab: Dictionary = db.get_weakest_vocab(tier_id)
+	var vocab: Dictionary = progress.get_weakest_vocab(tier_id)
 	if vocab.is_empty():
-		push_warning("[AIManager] DB rỗng cho tier %d." % tier_id)
+		push_warning("[AIManager] ProgressManager trả về rỗng cho tier %d." % tier_id)
 		_tier_generating[tier_id] = false
 		return
 
@@ -66,15 +78,15 @@ func _generate_for_tier(tier_id: int) -> void:
 	var meaning: String       = vocab.get("meaning",        "")
 	var word_id: int          = vocab.get("word_id",        -1)
 	var mastery_score: float  = vocab.get("mastery_score",  0.0)
-	var encounter_count: int  = vocab.get("encounter_count",0)
-	var avg_mastery: float    = db.get_tier_avg_mastery(tier_id)
+	var encounter_count: int  = vocab.get("encounter_count", 0)
+	var avg_mastery: float    = progress.get_tier_avg_mastery(tier_id)
 
 	print("[AIManager] Nạp tier %d | word='%s' (id=%d) | mastery=%.2f" \
 		% [tier_id, word, word_id, mastery_score])
 
-	var difficulty: String = _resolve_difficulty(mastery_score, encounter_count, avg_mastery)
-	var system_prompt: String = _build_prompt(word, meaning, difficulty)
-	var user_msg: String = "Tạo câu hỏi MCQ cho từ: \"%s\"." % word
+	var config: Dictionary    = _resolve_question_config(mastery_score, encounter_count, avg_mastery, tier_id)
+	var system_prompt: String = _build_prompt(word, meaning, config)
+	var user_msg: String      = "Tạo câu hỏi cho từ: \"%s\"." % word
 
 	var payload: Dictionary = {
 		"model": OLLAMA_MODEL,
@@ -82,8 +94,7 @@ func _generate_for_tier(tier_id: int) -> void:
 			{ "role": "system", "content": system_prompt },
 			{ "role": "user",   "content": user_msg }
 		],
-		# [FIX 3] Tắt "thinking mode" của qwen3 — nếu bật, model sinh
-		# <think>...</think> trước JSON khiến parser fail hoàn toàn
+		# Tắt "thinking mode" của qwen3 — tránh <think>...</think> làm parser fail
 		"think":   false,
 		"format":  "json",
 		"stream":  false,
@@ -93,15 +104,14 @@ func _generate_for_tier(tier_id: int) -> void:
 		}
 	}
 
-	# [FIX 1] Mỗi request tạo HTTPRequest riêng → không dùng chung node,
-	# không có race condition, không có deadlock is_generating.
+	# Mỗi request tạo HTTPRequest riêng → không race condition
 	var http := HTTPRequest.new()
 	add_child(http)
 
-	# Truyền context vào lambda để coroutine tự xử lý hoàn toàn
+	# Truyền config vào lambda để _handle_response có đủ metadata
 	http.request_completed.connect(
 		func(result, code, _headers, body):
-			await _handle_response(result, code, body, word_id, word, meaning, tier_id)
+			await _handle_response(result, code, body, word_id, word, meaning, tier_id, config)
 			http.queue_free()
 	)
 
@@ -116,19 +126,22 @@ func _generate_for_tier(tier_id: int) -> void:
 		push_error("[AIManager] Gửi request thất bại (err=%d). Tier %d." % [err, tier_id])
 		http.queue_free()
 		_tier_generating[tier_id] = false
-		# Thử lại sau 3 giây mà không block
 		_retry_after(tier_id, 3.0)
 
 
 # ==============================================================================
-# XỬ LÝ RESPONSE — chạy trong coroutine riêng của từng request
+# XỬ LÝ RESPONSE
 # ==============================================================================
 
 func _handle_response(
 	_result, response_code: int, body: PackedByteArray,
-	word_id: int, word: String, meaning: String, tier_id: int
+	word_id: int, word: String, meaning: String, tier_id: int,
+	config: Dictionary
 ) -> void:
-	var raw: String = body.get_string_from_utf8()
+	var raw: String    = body.get_string_from_utf8()
+	var ui_mode: String = config.get("ui_mode", QTYPE_MCQ)
+	var q_type: String  = config.get("q_type",  "vocab_meaning")
+
 	print("[AIManager] [DEBUG] Tier %d HTTP %d | %d chars | preview: %s" \
 		% [tier_id, response_code, raw.length(), raw.left(300)])
 
@@ -139,8 +152,6 @@ func _handle_response(
 		if outer.parse(raw) == OK:
 			var outer_data: Variant = outer.get_data()
 			if outer_data is Dictionary and outer_data.has("message"):
-				# [FIX 3] Ưu tiên lấy từ key "content",
-				# nhưng qwen3 đôi khi đặt JSON thực ở key "thinking" hoặc lẫn lộn
 				var content: String = outer_data["message"].get("content", "").strip_edges()
 				print("[AIManager] [DEBUG] content: %s" % content.left(300))
 
@@ -150,12 +161,20 @@ func _handle_response(
 					if inner.parse(json_str) == OK:
 						var q: Variant = inner.get_data()
 						if q is Dictionary and q.has("question") and q.has("correct_answer"):
-							# Chuẩn hoá: hỗ trợ cả format options[] lẫn A/B/C/D rời
-							q = _normalize_question(q)
-							q["word_id"] = word_id
+							q["word_id"]       = word_id
+							q["question_type"] = q_type
+							q["ui_mode"]       = ui_mode
+
+							if ui_mode == QTYPE_MCQ:
+								q = _normalize_question(q)
+							else:
+								q["correct_answer"] = str(q["correct_answer"]).strip_edges().to_lower()
+								if not q.has("accept_alternatives") or not (q["accept_alternatives"] is Array):
+									q["accept_alternatives"] = []
+
 							question_queues[tier_id].append(q)
-							print("[AIManager] ✓ Tier %d '%s' | Queue: %d/%d" \
-								% [tier_id, word, question_queues[tier_id].size(), MAX_QUEUE_SIZE])
+							print("[AIManager] ✓ Tier %d '%s' [%s] | Queue: %d/%d"
+								% [tier_id, word, q_type, question_queues[tier_id].size(), MAX_QUEUE_SIZE])
 							pushed = true
 						else:
 							push_warning("[AIManager] JSON thiếu key. Keys: %s" % str(q.keys() if q is Dictionary else []))
@@ -172,11 +191,120 @@ func _handle_response(
 		push_warning("[AIManager] Dùng fallback cho tier %d '%s'." % [tier_id, word])
 		_push_fallback(word_id, word, meaning, tier_id)
 
-	# [FIX 1] Reset flag SAU KHI xử lý xong — không bao giờ bị kẹt
+	# Reset flag SAU KHI xử lý xong
 	_tier_generating[tier_id] = false
-
-	# Tiếp tục nạp nếu còn thiếu
 	check_and_fill_all_queues()
+
+
+# ==============================================================================
+# DDA — CHỌN LOẠI CÂU HỎI THEO MASTERY
+# ==============================================================================
+
+func _resolve_question_config(
+	mastery: float, encounters: int, avg_mastery: float, tier_id: int
+) -> Dictionary:
+
+	if encounters == 0:
+		return {
+			"difficulty": "LẦN ĐẦU gặp từ. Tạo câu NHẬN DIỆN NGHĨA trực tiếp bằng tiếng Việt. 3 đáp án sai rõ ràng sai.",
+			"q_type": "vocab_meaning", "ui_mode": QTYPE_MCQ,
+		}
+
+	if mastery < 0.3:
+		if encounters % 2 == 0:
+			return {
+				"difficulty": "Gặp %d lần, vẫn hay sai. Tạo câu ĐIỀN TỪ: câu tiếng Anh ngắn (5-8 từ) có chỗ trống ___ = từ mục tiêu." % encounters,
+				"q_type": "fill_in_blank", "ui_mode": QTYPE_TEXT,
+			}
+		return {
+			"difficulty": "Gặp %d lần, vẫn hay sai. Tạo câu NHẬN DIỆN NGHĨA đơn giản. Đáp án sai cùng chủ đề nhưng nghĩa khác hẳn." % encounters,
+			"q_type": "vocab_meaning", "ui_mode": QTYPE_MCQ,
+		}
+
+	if mastery < 0.6:
+		var roll: int = randi() % 3
+		if roll == 0:
+			return {
+				"difficulty": "Đã gặp %d lần, đang tiến bộ. Tạo câu ĐỒNG/TRÁI NGHĨA: 'Which word is a synonym/antonym of X?'. 4 đáp án tiếng Anh." % encounters,
+				"q_type": "synonym_antonym", "ui_mode": QTYPE_MCQ,
+			}
+		elif roll == 1:
+			return {
+				"difficulty": "Đã gặp %d lần, đang tiến bộ. Tạo câu ĐIỀN TỪ: câu tiếng Anh có ngữ cảnh phong phú, ___ = từ mục tiêu." % encounters,
+				"q_type": "fill_in_blank", "ui_mode": QTYPE_TEXT,
+			}
+		return {
+			"difficulty": "Đã gặp %d lần, đang tiến bộ. Tạo câu XÁC ĐỊNH LỖI SAI: cho 4 câu tiếng Anh dùng từ mục tiêu, 3 câu sai ngữ pháp/ngữ nghĩa, 1 câu đúng." % encounters,
+			"q_type": "error_identification", "ui_mode": QTYPE_MCQ,
+		}
+
+	# mastery >= 0.6
+	var roll: int = randi() % 3
+	if roll == 0:
+		return {
+			"difficulty": "Đã thành thạo (%d lần). Tạo câu ĐIỀN TỪ nâng cao: câu dài, ngữ cảnh phức tạp." % encounters,
+			"q_type": "fill_in_blank", "ui_mode": QTYPE_TEXT,
+		}
+	elif roll == 1:
+		return {
+			"difficulty": "Đã thành thạo (%d lần). Tạo câu PHÂN BIỆT TỪ ĐỒNG NGHĨA GẦN NHAU." % encounters,
+			"q_type": "synonym_antonym", "ui_mode": QTYPE_MCQ,
+		}
+
+	# roll == 2: grammar
+	var progress = get_node_or_null("/root/ProgressManager")
+	var grammar: Dictionary = progress.get_random_grammar(tier_id) if progress else {}
+	var topic: String = grammar.get("topic_name", "Present Simple")
+	return {
+		"difficulty": "Đã thành thạo (%d lần). Tạo câu NGỮ PHÁP: chia động từ/danh từ theo '%s'." % [encounters, topic],
+		"q_type": "grammar_mcq", "ui_mode": QTYPE_MCQ,
+		"grammar_topic": topic,
+	}
+
+
+# ==============================================================================
+# PROMPT BUILDER
+# ==============================================================================
+
+func _build_prompt(word: String, meaning: String, config: Dictionary) -> String:
+	var q_type: String     = config.get("q_type",    "vocab_meaning")
+	var difficulty: String = config.get("difficulty", "")
+	var ui_mode: String    = config.get("ui_mode",    QTYPE_MCQ)
+
+	var json_template: String
+	if ui_mode == QTYPE_TEXT:
+		json_template = """{
+    "question_type": "%s",
+    "question": "Câu có chỗ trống ___",
+    "correct_answer": "từ cần điền viết thường",
+    "accept_alternatives": ["dạng khác nếu có"],
+    "explanation": "Giải thích bằng tiếng Việt."
+}""" % q_type
+	else:
+		json_template = """{
+    "question_type": "%s",
+    "question": "Nội dung câu hỏi?",
+    "A": "Lựa chọn 1", "B": "Lựa chọn 2",
+    "C": "Lựa chọn 3", "D": "Lựa chọn 4",
+    "correct_answer": "A",
+    "explanation": "Giải thích bằng tiếng Việt."
+}""" % q_type
+
+	return """Bạn là Elaria, hệ thống tạo câu hỏi tiếng Anh cho game RPG.
+
+TỪ BẮT BUỘC: "%s" (nghĩa: %s)
+
+CHỈ THỊ (BẮT BUỘC):
+%s
+
+QUY TẮC:
+1. Câu hỏi PHẢI liên quan đến từ "%s".
+2. KHÔNG để lộ nghĩa tiếng Việt trong câu hỏi.
+3. Điền từ: dùng ___ đánh dấu chỗ trống, correct_answer viết thường.
+4. MCQ: 3 đáp án sai hợp lý, cùng từ loại.
+5. Trả về ĐÚNG JSON sau, KHÔNG thêm văn bản:
+%s
+KHÔNG sinh gì ngoài JSON.""" % [word, meaning, difficulty, word, json_template]
 
 
 # ==============================================================================
@@ -188,12 +316,11 @@ func _handle_response(
 func _extract_json(text: String) -> String:
 	var s: String = text.strip_edges()
 
-	# [FIX 3] Strip toàn bộ block <think>...</think> của qwen3
+	# Strip toàn bộ block <think>...</think> của qwen3
 	while "<think>" in s:
 		var t_start: int = s.find("<think>")
 		var t_end: int   = s.find("</think>")
 		if t_end == -1:
-			# Tag chưa đóng — xóa từ <think> đến hết
 			s = s.substr(0, t_start).strip_edges()
 			break
 		s = (s.substr(0, t_start) + s.substr(t_end + 8)).strip_edges()
@@ -221,7 +348,6 @@ func _extract_json(text: String) -> String:
 func _normalize_question(q: Dictionary) -> Dictionary:
 	# Nếu đã có A/B/C/D đầy đủ → giữ nguyên
 	if q.has("A") and q.has("B") and q.has("C") and q.has("D"):
-		# Đảm bảo correct_answer là chữ cái A/B/C/D (không phải nội dung)
 		return q
 
 	# Nếu có options[] → chuyển sang A/B/C/D
@@ -233,12 +359,10 @@ func _normalize_question(q: Dictionary) -> Dictionary:
 		for i in range(4):
 			q[labels[i]] = _strip_prefix(str(opts[i]))
 
-		# correct_answer có thể là nội dung hoặc chữ cái → chuẩn hoá về chữ cái
 		var ca: String = str(q.get("correct_answer", "")).strip_edges()
 		if ca.length() == 1 and ca.to_upper() in ["A","B","C","D"]:
 			q["correct_answer"] = ca.to_upper()
 		else:
-			# Tìm option nào khớp nội dung
 			for i in range(4):
 				if _strip_prefix(str(opts[i])) == _strip_prefix(ca):
 					q["correct_answer"] = labels[i]
@@ -274,9 +398,11 @@ func _push_fallback(word_id: int, word: String, meaning: String, tier_id: int) -
 	var labels: Array = ["A","B","C","D"]
 	var correct_label: String = "A"
 	var q: Dictionary = {
-		"word_id":     word_id,
-		"question":    "Từ \"%s\" trong tiếng Anh có nghĩa là gì?" % word,
-		"explanation": "\"%s\" có nghĩa là \"%s\"." % [word, meaning]
+		"word_id":       word_id,
+		"question_type": "vocab_meaning",
+		"ui_mode":       QTYPE_MCQ,
+		"question":      "Từ \"%s\" trong tiếng Anh có nghĩa là gì?" % word,
+		"explanation":   "\"%s\" có nghĩa là \"%s\"." % [word, meaning]
 	}
 	for i in range(4):
 		q[labels[i]] = all_opts[i]
@@ -309,56 +435,38 @@ func _retry_after(tier_id: int, delay: float) -> void:
 
 
 # ==============================================================================
-# DDA — ĐỘ KHÓ ĐỘNG
+# NPC HINT — Elaria gợi ý mẹo nhớ từ
 # ==============================================================================
 
-func _resolve_difficulty(mastery: float, encounters: int, avg_mastery: float) -> String:
-	var advanced: bool = avg_mastery >= THRESHOLD_HARD
+## Gửi request đến Ollama để sinh mẹo nhớ từ cho NPC.
+## Kết quả phát về qua signal hint_ready(hint_text: String).
+func request_npc_hint(word: String, meaning: String) -> void:
+	var prompt: String = """Tạo 1 mẹo nhớ từ "%s" (nghĩa: %s) ngắn 1-2 câu, tiếng Việt,
+liên tưởng âm thanh hoặc hình ảnh. JSON: {"hint": "..."}""" % [word, meaning]
 
-	if encounters == 0:
-		return "Đây là LẦN ĐẦU người chơi gặp từ này. Tạo câu NHẬN DIỆN NGHĨA trực tiếp. Đáp án sai phải rõ ràng sai hơn."
-	elif mastery < 0.3:
-		if advanced:
-			return "Người chơi gặp từ này %d lần nhưng vẫn hay sai dù tier đã khá. Tạo câu ĐIỀN VÀO CHỖ TRỐNG đơn giản." % encounters
-		return "Người chơi gặp từ này %d lần nhưng vẫn hay sai. Tạo câu CỦNG CỐ: hỏi nghĩa hoặc nhận diện từ trong câu đơn giản." % encounters
-	elif mastery < 0.6:
-		if advanced:
-			return "Người chơi đang tiến bộ (%d lần gặp), tier đã khá. Tạo câu ĐỒNG/TRÁI NGHĨA hoặc ĐIỀN VÀO CHỖ TRỐNG ngữ cảnh phong phú." % encounters
-		return "Người chơi đã gặp %d lần và đang tiến bộ. Tạo câu MỨC TRUNG BÌNH: đồng nghĩa, trái nghĩa hoặc điền vào chỗ trống." % encounters
-	else:
-		return "Người chơi đã thành thạo từ này (%d lần gặp). Tạo câu NÂNG CAO: ngữ cảnh phức tạp, sắc thái nghĩa, phân biệt từ đồng nghĩa gần nhau." % encounters
-
-
-# ==============================================================================
-# PROMPT BUILDER
-# ==============================================================================
-
-func _build_prompt(word: String, meaning: String, difficulty: String) -> String:
-	return """Bạn là Elaria, hệ thống tạo câu hỏi trắc nghiệm tiếng Anh cho game RPG.
-Nhiệm vụ: Tạo 1 câu MCQ kiểm tra từ vựng tiếng Anh.
-
-TỪ BẮT BUỘC: "%s" (nghĩa tiếng Việt: %s)
-
-CHỈ THỊ ĐỘ KHÓ (BẮT BUỘC TUÂN THEO):
-%s
-
-QUY TẮC:
-1. Câu hỏi PHẢI xoay quanh từ được chỉ định.
-2. 3 đáp án sai cùng từ loại với đáp án đúng, nghe có lý, không quá dễ loại trừ.
-3. KHÔNG để lộ nghĩa tiếng Việt trong nội dung câu hỏi.
-4. Trả về ĐÚNG cấu trúc JSON sau, KHÔNG thêm bất kỳ văn bản nào khác:
-{
-    "question": "Nội dung câu hỏi?",
-    "A": "Lựa chọn 1",
-    "B": "Lựa chọn 2",
-    "C": "Lựa chọn 3",
-    "D": "Lựa chọn 4",
-    "correct_answer": "A",
-    "explanation": "Giải thích ngắn gọn bằng tiếng Việt."
-}
-"correct_answer" CHỈ ĐƯỢC chứa đúng 1 chữ cái in hoa (A, B, C, hoặc D).
-KHÔNG sinh thêm bất kỳ văn bản nào ngoài JSON.""" \
-	% [word, meaning, difficulty]
+	var payload: Dictionary = {
+		"model": OLLAMA_MODEL,
+		"messages": [
+			{"role": "system", "content": "Bạn là Elaria, NPC phù thủy trong game RPG."},
+			{"role": "user",   "content": prompt}
+		],
+		"think": false, "format": "json", "stream": false,
+		"options": {"temperature": 0.7, "num_predict": 150}
+	}
+	var http := HTTPRequest.new()
+	add_child(http)
+	http.request_completed.connect(func(_r, code, _h, body):
+		var hint: String = "Elaria đang suy nghĩ..."
+		if code == 200:
+			var js: String = _extract_json(body.get_string_from_utf8())
+			var p := JSON.new()
+			if p.parse(js) == OK and p.get_data() is Dictionary:
+				hint = p.get_data().get("hint", hint)
+		emit_signal("hint_ready", hint)
+		http.queue_free()
+	)
+	http.request(OLLAMA_URL, ["Content-Type: application/json"],
+				 HTTPClient.METHOD_POST, JSON.stringify(payload))
 
 
 # ==============================================================================
@@ -376,8 +484,8 @@ func get_question() -> Dictionary:
 		return q
 
 	push_warning("[AIManager] Queue rỗng! Dùng emergency fallback.")
-	var db = get_node_or_null("/root/DatabaseManager")
-	var vocab: Dictionary = db.get_weakest_vocab(current_tier_id) if db else {}
+	var progress = get_node_or_null("/root/ProgressManager")
+	var vocab: Dictionary = progress.get_weakest_vocab(current_tier_id) if progress else {}
 	if not vocab.is_empty():
 		_push_fallback(vocab.get("word_id",-1), vocab.get("word","Forest"),
 					   vocab.get("meaning","Khu rừng"), current_tier_id)
@@ -388,7 +496,9 @@ func get_question() -> Dictionary:
 		"A": "Desert", "B": "Ocean", "C": "Forest", "D": "Mountain",
 		"correct_answer": "C",
 		"explanation": "Câu dự phòng. 'Forest' có nghĩa là khu rừng.",
-		"word_id": -1
+		"word_id": -1,
+		"question_type": "vocab_meaning",
+		"ui_mode": QTYPE_MCQ,
 	}
 
 
