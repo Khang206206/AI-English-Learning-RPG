@@ -35,7 +35,10 @@
 [ext_resource type="Texture2D" uid="uid://b0xc2jlay18hj" path="res://assets/player2/Idle/Idle5.png" id="25_d1qpi"]
 [ext_resource type="Texture2D" uid="uid://d18qasljb5dc1" path="res://assets/player2/Idle/Idle6.png" id="26_72s1w"]
 [ext_resource type="Texture2D" uid="uid://bpiduslse5xoc" path="res://assets/player2/Rising - Jumping/Rising1.png" id="27_gpdlj"]
+[ext_resource type="Texture2D" uid="uid://cxf6ug0l3vuc4" path="res://assets/player2/Hit/Hit1.png" id="27_r4kuy"]
+[ext_resource type="Texture2D" uid="uid://r10ply87vmf8" path="res://assets/player2/Hit/Hit2.png" id="28_d1qpi"]
 [ext_resource type="Texture2D" uid="uid://brvt2h4mbhl28" path="res://assets/player2/Rising - Jumping/Rising2.png" id="28_g7y7t"]
+[ext_resource type="Texture2D" uid="uid://dfkilwajobqj7" path="res://assets/player2/Hit/Hit3.png" id="29_72s1w"]
 [ext_resource type="Texture2D" uid="uid://jkq7bpbsbiho" path="res://assets/player2/Rising - Jumping/Rising3.png" id="29_oyjdy"]
 [ext_resource type="Texture2D" uid="uid://ctw6g7kp54k8m" path="res://assets/player2/Rising - Jumping/Rising4.png" id="30_37dq0"]
 [ext_resource type="Texture2D" uid="uid://i8g5uq7ewau0" path="res://assets/player2/Rising - Jumping/Rising5.png" id="31_inodm"]
@@ -157,6 +160,20 @@ animations = [{
 }],
 "loop": true,
 "name": &"fail",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_r4kuy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_d1qpi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_72s1w")
+}],
+"loop": false,
+"name": &"hit",
 "speed": 5.0
 }, {
 "frames": [{
@@ -291,7 +308,7 @@ texture_repeat = 2
 position = Vector2(131, 366)
 scale = Vector2(5.454, 5)
 sprite_frames = SubResource("SpriteFrames_642jd")
-animation = &"attack"
+animation = &"hit"
 autoplay = "idle"
 
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]

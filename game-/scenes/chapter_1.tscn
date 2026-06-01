@@ -9702,8 +9702,7 @@ position = Vector2(-94.577545, 341.96503)
 [node name="AnimatedSprite2D" parent="PlayerInChapel" index="0" unique_id=662991125]
 position = Vector2(8.288774, 3.0174906)
 scale = Vector2(1.9110966, 1.7521863)
-frame = 5
-frame_progress = 0.0376855
+animation = &"crouch"
 
 [node name="CollisionShape2D" parent="PlayerInChapel" index="1" unique_id=940606629]
 position = Vector2(8.077545, 3.5349731)

@@ -142,11 +142,6 @@ func check_answer(selected_choice: String):
 	var word_id: int     = current_question.get("word_id", -1)
 	var is_correct: bool = selected_choice == current_question["correct_answer"]
 
-	# Báo cáo kết quả về DatabaseManager để cập nhật mastery và HP
-	var db = get_node_or_null("/root/DatabaseManager")
-	if db:
-		db.update_after_combat(word_id, is_correct)
-
 	if is_correct:
 		player_anim.position.y -= 40
 		player_anim.play("attack")
@@ -169,6 +164,7 @@ func check_answer(selected_choice: String):
 		player_anim.play("idle")
 		monster_hp -= 1
 		update_health_ui()
+		ProgressManager.update_after_answer(word_id, true)
 		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")
 		
 		if monster_hp <= 0:
@@ -184,11 +180,20 @@ func check_answer(selected_choice: String):
 			# Điểm xuất phát: Từ giữa quái | Điểm đích: Vị trí của Player
 			var start_p = monster_anim.global_position
 			var target_p = player_anim.global_position + Vector2(10, -5)
-			await spell.shoot(start_p, target_p)
+			spell.shoot(start_p, target_p)
+			await get_tree().create_timer(1.1).timeout
+			if player_hp > 1: # Nếu trúng phát này mà chưa chết thì mới giật hit
+				player_anim.play("hit")
+				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
+				await get_tree().create_timer(0.3).timeout 
+				player_anim.play("idle")
 		# -------------------------------------------------------------------
 
+		# Gọi ProgressManager xử lý trừ tim trong hệ thống và lưu SQLite
+		ProgressManager.update_after_answer(word_id, false)
+		# Cập nhật lại biến player_hp local từ DatabaseManager để UI vẽ tim cho đúng
+		player_hp = DatabaseManager.player_hearts
 		update_health_ui()
-		print("Sai rồi! Trừ 1 máu. Player còn: ", player_hp, " máu")
 		explanation_text.text = current_question.get("explanation", "Rất tiếc, bạn đã chọn sai!")
 		ai_tutor_popup.show()
 		
@@ -321,11 +326,7 @@ func _on_db_hp_changed(new_hp: int):
 	
 func _on_timer_timeout():
 	set_buttons_disabled(true)
-	player_hp -= 1
 	var word_id: int = current_question.get("word_id", -1)
-	var db = get_node_or_null("/root/DatabaseManager")
-	if db:
-		db.update_after_combat(word_id, false)
 	if SPELL_SCENE:
 		var spell = SPELL_SCENE.instantiate()
 		get_node("Node2D").add_child(spell)
@@ -335,7 +336,15 @@ func _on_timer_timeout():
 		var target_p = player_anim.global_position + Vector2(10, -5)
 		
 		# Đợi đạn bay cắm vào người Player xong xuôi đã
-		await spell.shoot(start_p, target_p)
+		spell.shoot(start_p, target_p)
+		await get_tree().create_timer(1.1).timeout
+		if player_hp > 1: # Nếu trúng phát này mà chưa chết thì mới giật hit
+				player_anim.play("hit")
+				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
+				await get_tree().create_timer(0.3).timeout 
+				player_anim.play("idle")
+	ProgressManager.update_after_answer(word_id, false)
+	player_hp = DatabaseManager.player_hearts
 	update_health_ui()
 	explanation_text.text = "Đã hết thời gian suy nghĩ! " + current_question.get("explanation", "")
 	ai_tutor_popup.show()
