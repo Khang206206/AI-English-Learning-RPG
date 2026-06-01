@@ -2,8 +2,8 @@ extends Node
 
 # ==============================================================================
 # DatabaseManager.gd — AutoLoad Singleton
-# Mô tả: Single Source of Truth — toàn bộ dữ liệu game đi qua file data.db
-# Kho từ vựng được nạp từ vocabulary.csv đặt cùng cấp với data.db
+# Trách nhiệm: Data Layer — Schema, CRUD, Save/Load, HP state
+# KHÔNG chứa learning logic (xem ProgressManager.gd)
 # ==============================================================================
 
 signal hp_changed(new_hp: int)
@@ -57,11 +57,13 @@ func init_database() -> void:
 	seed_initial_data()
 
 func _create_tables() -> void:
+	# ── Player_Profile (thêm cột gold) ──
 	db.query("""
 		CREATE TABLE IF NOT EXISTS Player_Profile (
 			save_id             INTEGER PRIMARY KEY,
 			last_played         TEXT,
 			hp                  INTEGER DEFAULT 5,
+			gold                INTEGER DEFAULT 0,
 			current_biome       TEXT    DEFAULT 'Beginner Forest',
 			pos_x               REAL    DEFAULT 0.0,
 			pos_y               REAL    DEFAULT 0.0,
@@ -74,6 +76,7 @@ func _create_tables() -> void:
 		[CURRENT_SAVE_SLOT, max_hearts, current_biome]
 	)
 
+	# ── Enemy_Tier_Dict (giữ nguyên) ──
 	db.query("""
 		CREATE TABLE IF NOT EXISTS Enemy_Tier_Dict (
 			tier_id         INTEGER PRIMARY KEY,
@@ -82,8 +85,8 @@ func _create_tables() -> void:
 		);
 	""")
 
+	# ── Vocabulary_Bank (giữ nguyên) ──
 	# UNIQUE trên cột word: đảm bảo INSERT OR IGNORE hoạt động đúng
-	# khi seed_initial_data() bị gọi nhiều lần — không bao giờ bị từ trùng
 	db.query("""
 		CREATE TABLE IF NOT EXISTS Vocabulary_Bank (
 			word_id     INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -94,19 +97,61 @@ func _create_tables() -> void:
 		);
 	""")
 
+	# ── Player_Vocab_Mastery (NÂNG CẤP: thêm cột SRS) ──
 	db.query("""
 		CREATE TABLE IF NOT EXISTS Player_Vocab_Mastery (
-			save_id         INTEGER NOT NULL,
-			word_id         INTEGER NOT NULL,
-			encounter_count INTEGER DEFAULT 0,
-			correct_count   INTEGER DEFAULT 0,
+			save_id             INTEGER NOT NULL,
+			word_id             INTEGER NOT NULL,
+			encounter_count     INTEGER DEFAULT 0,
+			correct_count       INTEGER DEFAULT 0,
+			streak              INTEGER DEFAULT 0,
+			ease_factor         REAL    DEFAULT 2.5,
+			interval_days       INTEGER DEFAULT 1,
+			next_review_date    TEXT    DEFAULT '',
+			last_reviewed_date  TEXT    DEFAULT '',
 			PRIMARY KEY (save_id, word_id),
-			FOREIGN KEY (save_id)  REFERENCES Player_Profile(save_id),
-			FOREIGN KEY (word_id)  REFERENCES Vocabulary_Bank(word_id)
+			FOREIGN KEY (save_id) REFERENCES Player_Profile(save_id),
+			FOREIGN KEY (word_id) REFERENCES Vocabulary_Bank(word_id)
 		);
 	""")
 
-	print("[DatabaseManager] Cấu trúc 4 bảng đã sẵn sàng.")
+	# ── Grammar_Bank (MỚI) ──
+	db.query("""
+		CREATE TABLE IF NOT EXISTS Grammar_Bank (
+			grammar_id      INTEGER PRIMARY KEY AUTOINCREMENT,
+			topic_name      TEXT    NOT NULL UNIQUE,
+			formula         TEXT    NOT NULL,
+			explanation_vi  TEXT    NOT NULL,
+			example_en      TEXT    DEFAULT '',
+			tier_id         INTEGER DEFAULT 1,
+			FOREIGN KEY (tier_id) REFERENCES Enemy_Tier_Dict(tier_id)
+		);
+	""")
+
+	# ── Item_Dict (MỚI) ──
+	db.query("""
+		CREATE TABLE IF NOT EXISTS Item_Dict (
+			item_id         INTEGER PRIMARY KEY,
+			name            TEXT    NOT NULL,
+			description     TEXT    DEFAULT '',
+			item_type       TEXT    NOT NULL,
+			effect_value    REAL    DEFAULT 1.0
+		);
+	""")
+
+	# ── Player_Inventory (MỚI) ──
+	db.query("""
+		CREATE TABLE IF NOT EXISTS Player_Inventory (
+			save_id         INTEGER NOT NULL,
+			item_id         INTEGER NOT NULL,
+			quantity        INTEGER DEFAULT 0,
+			PRIMARY KEY (save_id, item_id),
+			FOREIGN KEY (save_id) REFERENCES Player_Profile(save_id),
+			FOREIGN KEY (item_id) REFERENCES Item_Dict(item_id)
+		);
+	""")
+
+	print("[DatabaseManager] Cấu trúc 7 bảng đã sẵn sàng.")
 
 # ==============================================================================
 # 2. SEED DỮ LIỆU BAN ĐẦU
@@ -116,6 +161,8 @@ func seed_initial_data() -> void:
 	_seed_enemies()
 	_seed_from_csv()
 	_seed_vocabulary_fallback()
+	_seed_grammar()
+	_seed_items()
 
 func _seed_enemies() -> void:
 	db.query("SELECT COUNT(*) as total FROM Enemy_Tier_Dict;")
@@ -178,7 +225,7 @@ func _seed_from_csv() -> void:
 			continue
 
 		var word     = parts[0].strip_edges()
-		# Ghép lại các phần giữa để xử lý meaning có dấu phẩy (vd: "Gỗ rừng / Cây lấy gỗ")
+		# Ghép lại các phần giữa để xử lý meaning có dấu phẩy
 		var meaning  = ",".join(parts.slice(1, parts.size() - 1)).strip_edges()
 		var tier_str = parts[parts.size() - 1].strip_edges()
 
@@ -219,103 +266,48 @@ func _seed_vocabulary_fallback() -> void:
 		)
 	print("[DatabaseManager] Đã nạp %d từ dự phòng." % fallback.size())
 
-# ==============================================================================
-# 4. THUẬT TOÁN DDA — LẤY TỪ VỰNG YẾU NHẤT
-# ==============================================================================
-
-func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
-	# JOIN thêm Enemy_Tier_Dict để trả về enemy_type cùng với vocab
-	# AIManager dùng enemy_type này để nhét vào prompt (Context-Aware Thematic)
-	var sql = """
-		SELECT
-			v.word_id,
-			v.word,
-			v.meaning,
-			v.tier_id,
-			e.enemy_type,
-			COALESCE(
-				CAST(m.correct_count AS REAL) / (m.encounter_count + 1),
-				0.0
-			) AS mastery_score,
-			COALESCE(m.encounter_count, 0) AS encounter_count,
-			COALESCE(m.correct_count,   0) AS correct_count
-		FROM Vocabulary_Bank v
-		LEFT JOIN Player_Vocab_Mastery m
-			ON  v.word_id = m.word_id
-			AND m.save_id = ?
-		LEFT JOIN Enemy_Tier_Dict e
-			ON  v.tier_id = e.tier_id
-		WHERE v.tier_id = ?
-		ORDER BY mastery_score ASC, RANDOM()
-		LIMIT ?;
-	"""
-	db.query_with_bindings(sql, [CURRENT_SAVE_SLOT, tier_id, pool_size])
-
-	if db.query_result.is_empty():
-		push_warning("[DatabaseManager] Không tìm thấy từ vựng cho tier_id = %d" % tier_id)
-		return {}
-
-	var weak_pool: Array = db.query_result.duplicate()
-	var chosen: Dictionary = weak_pool[randi() % weak_pool.size()]
-
-	print("[DatabaseManager] Pool %d từ (tier %d) → Chọn: '%s' (mastery: %.2f)" \
-		% [weak_pool.size(), tier_id, chosen["word"], chosen["mastery_score"]])
-
-	return chosen
-
-# ==============================================================================
-# 5. CẬP NHẬT SAU COMBAT
-# ==============================================================================
-
-func update_after_combat(word_id: int, is_correct: bool) -> void:
-	if word_id == -1:
-		if not is_correct:
-			player_hearts = max(0, player_hearts - 1)
-			emit_signal("hp_changed", player_hearts)
-			if player_hearts <= 0:
-				emit_signal("game_over_triggered")
+func _seed_grammar() -> void:
+	db.query("SELECT COUNT(*) as total FROM Grammar_Bank;")
+	if not db.query_result.is_empty() and db.query_result[0]["total"] > 0:
 		return
-
-	if not is_correct:
-		player_hearts = max(0, player_hearts - 1)
-		print("[DatabaseManager] Sai rồi! HP còn lại: %d/%d" % [player_hearts, max_hearts])
-
-	emit_signal("hp_changed", player_hearts)
-
-	db.query_with_bindings(
-		"SELECT encounter_count FROM Player_Vocab_Mastery WHERE save_id = ? AND word_id = ?;",
-		[CURRENT_SAVE_SLOT, word_id]
-	)
-
-	var correct_delta: int = 1 if is_correct else 0
-
-	if db.query_result.is_empty():
+	print("[DatabaseManager] Nạp ngữ pháp ban đầu...")
+	var data = [
+		["Present Simple",       "S + V(s/es)",                   "Thì hiện tại đơn: thói quen, sự thật.",          "The slime attacks every night.",         1],
+		["Singular & Plural",    "N + s/es/ies",                  "Danh từ số ít/nhiều.",                            "One fern → Many ferns.",                 1],
+		["Articles a/an/the",    "a + phụ âm | an + nguyên âm",  "Mạo từ không xác định và xác định.",             "A slime appeared. The slime was green.", 1],
+		["Past Simple",          "S + V-ed/V2",                   "Thì quá khứ đơn: đã xảy ra và kết thúc.",        "The goblin ambushed the traveler.",      2],
+		["Prepositions of Place","in/on/at/under/behind",         "Giới từ chỉ nơi chốn.",                           "The treasure is behind the waterfall.",  2],
+		["Present Continuous",   "S + am/is/are + V-ing",         "Thì hiện tại tiếp diễn: đang xảy ra.",            "The predator is lurking.",               2],
+		["Present Perfect",      "S + have/has + V3",             "Thì hiện tại hoàn thành.",                        "The dragon has destroyed the village.",  3],
+		["Passive Voice",        "S + be + V3",                   "Câu bị động: nhấn mạnh đối tượng chịu tác động.","The forest was burned by the dragon.",   3],
+	]
+	for g in data:
 		db.query_with_bindings(
-			"""INSERT INTO Player_Vocab_Mastery
-				(save_id, word_id, encounter_count, correct_count)
-			VALUES (?, ?, 1, ?);""",
-			[CURRENT_SAVE_SLOT, word_id, correct_delta]
-		)
-	else:
+			"INSERT OR IGNORE INTO Grammar_Bank (topic_name, formula, explanation_vi, example_en, tier_id) VALUES (?, ?, ?, ?, ?);", g)
+	print("[DatabaseManager] Đã nạp %d chủ điểm ngữ pháp." % data.size())
+
+func _seed_items() -> void:
+	db.query("SELECT COUNT(*) as total FROM Item_Dict;")
+	if not db.query_result.is_empty() and db.query_result[0]["total"] > 0:
+		return
+	print("[DatabaseManager] Nạp vật phẩm ban đầu...")
+	var items = [
+		[1, "Bình Máu",     "Hồi phục 1 HP.",              "potion",      1.0],
+		[2, "Phép 50/50",   "Loại bỏ 2 đáp án sai.",       "fifty_fifty", 2.0],
+		[3, "Gợi ý từ NPC", "Elaria gợi ý mẹo nhớ từ.",   "hint",        1.0],
+		[4, "Bỏ qua câu",   "Bỏ qua câu, không mất máu.", "skip",        1.0],
+	]
+	for it in items:
 		db.query_with_bindings(
-			"""UPDATE Player_Vocab_Mastery
-			SET encounter_count = encounter_count + 1,
-			    correct_count   = correct_count   + ?
-			WHERE save_id = ? AND word_id = ?;""",
-			[correct_delta, CURRENT_SAVE_SLOT, word_id]
-		)
-
-	db.query_with_bindings(
-		"UPDATE Player_Profile SET hp = ? WHERE save_id = ?;",
-		[player_hearts, CURRENT_SAVE_SLOT]
-	)
-
-	if player_hearts <= 0:
-		print("[DatabaseManager] *** GAME OVER *** Người chơi đã hết mạng!")
-		emit_signal("game_over_triggered")
+			"INSERT OR IGNORE INTO Item_Dict VALUES (?, ?, ?, ?, ?);", it)
+	for item_id in [1, 2, 3, 4]:
+		db.query_with_bindings(
+			"INSERT OR IGNORE INTO Player_Inventory (save_id, item_id, quantity) VALUES (?, ?, 3);",
+			[CURRENT_SAVE_SLOT, item_id])
+	print("[DatabaseManager] Đã nạp %d vật phẩm + starter kit." % items.size())
 
 # ==============================================================================
-# 6. SAVE / LOAD TIẾN TRÌNH
+# 4. SAVE / LOAD TIẾN TRÌNH
 # ==============================================================================
 
 func save_game(pos_x: float, pos_y: float) -> void:
@@ -370,7 +362,7 @@ func load_game(save_slot: int) -> void:
 		emit_signal("hp_changed", player_hearts)
 
 # ==============================================================================
-# 7. TIỆN ÍCH BỔ SUNG
+# 5. TIỆN ÍCH BỔ SUNG
 # ==============================================================================
 
 func mark_enemy_dead(enemy_id: int) -> void:
@@ -388,46 +380,3 @@ func restore_full_hp() -> void:
 	)
 	emit_signal("hp_changed", player_hearts)
 	print("[DatabaseManager] HP đã phục hồi đầy: %d/%d" % [player_hearts, max_hearts])
-
-## Trả về mastery trung bình (0.0 → 1.0) của toàn bộ từ trong một tier.
-## AIManager dùng giá trị này để quyết định:
-##   < 0.4  → người chơi còn yếu → sinh MCQ dễ, câu hỏi nhận diện nghĩa cơ bản
-##   0.4-0.6 → trung bình → MCQ khó hơn (đồng/trái nghĩa, điền vào chỗ trống)
-##   >= 0.6 → đã quen từ đủ → kích hoạt Reading Passage thay cho MCQ thuần túy
-func get_tier_avg_mastery(tier_id: int) -> float:
-	db.query_with_bindings("""
-		SELECT
-			AVG(
-				COALESCE(
-					CAST(m.correct_count AS REAL) / (m.encounter_count + 1),
-					0.0
-				)
-			) AS avg_mastery
-		FROM Vocabulary_Bank v
-		LEFT JOIN Player_Vocab_Mastery m
-			ON v.word_id = m.word_id AND m.save_id = ?
-		WHERE v.tier_id = ?;
-	""", [CURRENT_SAVE_SLOT, tier_id])
-
-	if db.query_result.is_empty() or db.query_result[0]["avg_mastery"] == null:
-		return 0.0
-
-	return float(db.query_result[0]["avg_mastery"])
-
-func get_mastery_summary() -> Array:
-	db.query_with_bindings(
-		"""SELECT
-			v.word, v.meaning, v.tier_id,
-			COALESCE(m.encounter_count, 0) AS encounter_count,
-			COALESCE(m.correct_count,   0) AS correct_count,
-			COALESCE(
-				ROUND(CAST(m.correct_count AS REAL) / (m.encounter_count + 1) * 100, 1),
-				0.0
-			) AS mastery_percent
-		FROM Vocabulary_Bank v
-		LEFT JOIN Player_Vocab_Mastery m
-			ON v.word_id = m.word_id AND m.save_id = ?
-		ORDER BY mastery_percent ASC, v.tier_id ASC;""",
-		[CURRENT_SAVE_SLOT]
-	)
-	return db.query_result.duplicate()
