@@ -1,6 +1,6 @@
 extends Area2D
 
-@export_enum("QuizBook", "Battle", "NPC_Dialogue") var object_type: String = "QuizBook"
+@export_enum("QuizBook", "Battle", "NPC_Dialogue", "Notebook") var object_type: String = "QuizBook"
 
 @export_group("Quiz Settings")
 @export var quiz_ui_node: CanvasLayer
@@ -9,9 +9,6 @@ extends Area2D
 @export_file("*.tscn") var battle_scene_path: String
 @export var monster_data: MonsterData
 
-
-
-# Đoạn hội thoại
 @export_group("Dialogue Settings")
 var elaria_dialogue = [
 	{
@@ -40,6 +37,7 @@ func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+
 func _on_body_entered(body):
 	if "player" in body.name.to_lower():
 		is_player_inside = true
@@ -59,10 +57,11 @@ func do_action():
 		_handle_quiz_action()
 	elif object_type == "Battle":
 		_handle_battle_action()
-# 3. KHU VỰC THÊM MỚI: Rẽ nhánh sang hàm xử lý hội thoại NPC
 	elif object_type == "NPC_Dialogue":
 		_handle_npc_dialogue_action()
-		
+	# 2. XỬ LÝ KHI CHỌN LOẠI NOTEBOOK
+	elif object_type == "Notebook":
+		_handle_notebook_action()
 		
 func _handle_quiz_action():
 	if quiz_ui_node:
@@ -83,24 +82,26 @@ func _handle_battle_action():
 		else:
 			push_error("Loi: Chua gan duong dan Battle Scene")
 
-# 4. HÀM THÊM MỚI: Xử lý bật hội thoại trước, sau khi nói xong mới mở Quiz
 func _handle_npc_dialogue_action():
-	# Ẩn nút bấm tương tác (DoorInteract) đi tạm thời khi đang nói chuyện
 	prompt.hide()
-	
 	if DialogueSystem:
-		# Gọi Autoload DialogueSystem lên và truyền kịch bản vào
 		DialogueSystem.start_dialogue(elaria_dialogue)
-		
-		# Lắng nghe tín hiệu: Khi nào người chơi đọc hết câu cuối cùng...
 		if not DialogueSystem.dialogue_finished.is_connected(_on_dialogue_before_quiz_finished):
 			DialogueSystem.dialogue_finished.connect(_on_dialogue_before_quiz_finished)
 	else:
 		push_error("Loi: Chua cai dat DialogueSystem trong Autoload")
 
 func _on_dialogue_before_quiz_finished():
-	# Sau khi hội thoại kết thúc, lập tức kích hoạt bài kiểm tra Quiz như cũ!
 	if quiz_ui_node:
 		quiz_ui_node.start_quiz()
 	else:
 		push_error("Loi: Chua gan Quiz UI Node cho NPC này")
+
+func _handle_notebook_action():
+	# Gọi thẳng Node đầu tiên nằm trong nhóm 'notebook_ui' (bất kể nó tên gì)
+	var notebook = get_tree().get_first_node_in_group("notebook_ui")
+	
+	if notebook:
+		notebook.toggle_notebook()
+	else:
+		push_error("Loi: Khong tim thay bat ky Node nao trong nhom 'notebook_ui'!")

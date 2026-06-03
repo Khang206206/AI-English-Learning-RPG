@@ -1,50 +1,50 @@
-word,meaning,tier_id
-Timber,Gỗ rừng / Cây lấy gỗ,1
-Canopy,Vòm lá / Tán cây rừng,1
-Flora,Hệ thực vật,1
-Mossy,Phủ rêu / Rêu phong,1
-Fern,Cây dương xỉ,1
-Creek,Suối nhỏ / Lạch nước,1
-Bloom,Nở hoa / Đơm hoa,1
-Thorn,Gai nhọn,1
-Burrow,Hang đào trong lòng đất,1
-Dusk,Hoàng hôn / Chạng vạng tối,1
-Dawn,Bình minh / Lúc tảng sáng,1
-Mist,Sương mù nhẹ,1
-Bark,Vỏ cây,1
-Root,Rễ cây,1
-Hollow,Hốc rỗng / Hang nhỏ trong cây,1
-Leap,Nhảy vọt / Bước nhảy lớn,1
-Nest,Tổ chim / Ổ làm bằng cành lá,1
-Prey,Con mồi / Vật bị săn đuổi,1
-Shrub,Cây bụi thấp,1
-Trail,Đường mòn / Lối đi trong rừng,1
-Grove,Rừng cây nhỏ / Bụi cây,1
-Pebble,Viên đá cuội nhỏ,1
-Dew,Sương đêm / Giọt sương,1
-Meadow,Đồng cỏ rộng,1
-Vine,Dây leo / Cây leo,1
-Biodiversity,Đa dạng sinh học,2
-Dense,Dày đặc / Rậm rạp,2
-Sustain,Duy trì / Chống đỡ,2
-Foliage,Tán lá / Lớp lá cây,2
-Predator,Động vật săn mồi,2
-Camouflage,Ngụy trang / Ẩn mình,2
-Hibernate,Ngủ đông,2
-Migrate,Di cư / Di trú theo mùa,2
-Nocturnal,Hoạt động về đêm,2
-Venomous,Có nọc độc,2
-Symbiosis,Quan hệ cộng sinh,2
-Ambush,Phục kích / Tấn công bất ngờ,2
-Terrain,Địa hình / Đặc điểm mặt đất,2
-Erosion,Sự xói mòn đất,2
-Apex,Đỉnh cao nhất / Kẻ thống trị,2
-Lurk,Rình rập / Ẩn nấp chờ đợi,2
-Abundant,Dồi dào / Phong phú,2
-Wither,Héo úa / Tàn lụi,2
-Stealthy,Âm thầm / Lén lút,2
-Agile,Nhanh nhẹn / Linh hoạt,2
-Dormant,Đang ngủ yên / Tạm ngừng hoạt động,2
-Ravine,Khe núi hẹp và sâu,2
-Overgrown,Bị cây cỏ mọc phủ kín,2
-Canine,Thuộc về loài chó / Răng nanh,2
+word,meaning,tier_id,cefr_level
+Timber,Gỗ rừng / Cây lấy gỗ,1,B2
+Canopy,Vòm lá / Tán cây rừng,1,C1
+Flora,Hệ thực vật,1,C1
+Mossy,Phủ rêu / Rêu phong,1,B2
+Fern,Cây dương xỉ,1,C1
+Creek,Suối nhỏ / Lạch nước,1,B2
+Bloom,Nở hoa / Đơm hoa,1,B1
+Thorn,Gai nhọn,1,B2
+Burrow,Hang đào trong lòng đất,1,C1
+Dusk,Hoàng hôn / Chạng vạng tối,1,B2
+Dawn,Bình minh / Lúc tảng sáng,1,B2
+Mist,Sương mù nhẹ,1,B1
+Bark,Vỏ cây,1,B1
+Root,Rễ cây,1,B1
+Hollow,Hốc rỗng / Hang nhỏ trong cây,1,B2
+Leap,Nhảy vọt / Bước nhảy lớn,1,B2
+Nest,Tổ chim / Ổ làm bằng cành lá,1,B1
+Prey,Con mồi / Vật bị săn đuổi,1,B2
+Shrub,Cây bụi thấp,1,C1
+Trail,Đường mòn / Lối đi trong rừng,1,B1
+Grove,Rừng cây nhỏ / Bụi cây,1,C1
+Pebble,Viên đá cuội nhỏ,1,C1
+Dew,Sương đêm / Giọt sương,1,B2
+Meadow,Đồng cỏ rộng,1,B2
+Vine,Dây leo / Cây leo,1,B2
+Biodiversity,Đa dạng sinh học,2,C1
+Dense,Dày đặc / Rậm rạp,2,B2
+Sustain,Duy trì / Chống đỡ,2,C1
+Foliage,Tán lá / Lớp lá cây,2,C1
+Predator,Động vật săn mồi,2,C1
+Camouflage,Ngụy trang / Ẩn mình,2,C1
+Hibernate,Ngủ đông,2,C1
+Migrate,Di cư / Di trú theo mùa,2,B2
+Nocturnal,Hoạt động về đêm,2,C1
+Venomous,Có nọc độc,2,C1
+Symbiosis,Quan hệ cộng sinh,2,C2
+Ambush,Phục kích / Tấn công bất ngờ,2,C1
+Terrain,Địa hình / Đặc điểm mặt đất,2,C1
+Erosion,Sự xói mòn đất,2,C1
+Apex,Đỉnh cao nhất / Kẻ thống trị,2,C1
+Lurk,Rình rập / Ẩn nấp chờ đợi,2,C1
+Abundant,Dồi dào / Phong phú,2,C1
+Wither,Héo úa / Tàn lụi,2,C1
+Stealthy,Âm thầm / Lén lút,2,C1
+Agile,Nhanh nhẹn / Linh hoạt,2,C1
+Dormant,Đang ngủ yên / Tạm ngừng hoạt động,2,C1
+Ravine,Khe núi hẹp và sâu,2,C2
+Overgrown,Bị cây cỏ mọc phủ kín,2,C1
+Canine,Thuộc về loài chó / Răng nanh,2,C1

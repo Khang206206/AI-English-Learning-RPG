@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://ckcp0gat3kqjr"]
+
+[ext_resource type="Script" uid="uid://bwnlxh1kt6i66" path="res://scenes/notebook_ui.gd" id="1_ns2gq"]
+
+[node name="NotebookUI" type="CanvasLayer" unique_id=2104752377]
+script = ExtResource("1_ns2gq")
+
+[node name="Background" type="ColorRect" parent="." unique_id=442771266]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.11764706, 0.11764706, 0.15686275, 0.9019608)
+
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=154484605]
+custom_minimum_size = Vector2(800, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel" unique_id=2004928411]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="SplitScreen" type="HBoxContainer" parent="MainPanel/MarginContainer" unique_id=559553111]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen" unique_id=1453063658]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Title" type="Label" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1049148875]
+layout_mode = 2
+
+[node name="TabButtons" type="HBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1623355634]
+layout_mode = 2
+
+[node name="BtnVocab" type="Button" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=469629831]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BtnGrammar" type="Button" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=180854932]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FilterBar" type="HBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1435214231]
+layout_mode = 2
+
+[node name="SearchBar" type="LineEdit" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1697269991]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TierFilter" type="OptionButton" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=943883083]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StatusFilter" type="OptionButton" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1543458194]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1667710624]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VocabList" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/ScrollContainer" unique_id=533887404]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ClosePrompt" type="Label" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=477873435]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPanel/MarginContainer/SplitScreen" unique_id=1484680535]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="DetailPanel" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer" unique_id=1847728413]
+layout_mode = 2
+
+[node name="DetMeaning" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=618068377]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetMastery" type="RichTextLabel" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=875562940]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="DetStats" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=878999672]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MasteryBar" type="ProgressBar" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1470544543]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WordHeader" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1216640813]
+layout_mode = 2
+
+[node name="DetCefr" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel/WordHeader" unique_id=657033532]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetWord" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel/WordHeader" unique_id=227943995]
+unique_name_in_owner = true
+layout_mode = 2

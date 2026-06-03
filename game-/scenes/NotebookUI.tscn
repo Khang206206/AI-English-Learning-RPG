@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://c7cch05hiaq57"]
+
+[ext_resource type="Script" uid="uid://bwnlxh1kt6i66" path="res://scenes/notebook_ui.gd" id="1_4wsej"]
+
+[node name="NotebookUI" type="CanvasLayer" unique_id=2104752377]
+layer = 10
+script = ExtResource("1_4wsej")
+
+[node name="Background" type="ColorRect" parent="." unique_id=442771266]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.11764706, 0.11764706, 0.15686275, 0.9019608)
+
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=1580368791]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel" unique_id=58851529]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="SplitScreen" type="HBoxContainer" parent="MainPanel/MarginContainer" unique_id=50935363]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen" unique_id=494093186]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Title" type="Label" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1991081607]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "SO TAY TU VUNG"
+
+[node name="TabButtons" type="HBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=959390331]
+layout_mode = 2
+
+[node name="BtnVocab" type="Button" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=1679594822]
+layout_mode = 2
+
+[node name="BtnGrammar" type="Button" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=915946831]
+layout_mode = 2
+
+[node name="BtnReview" type="Button" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=86893939]
+layout_mode = 2
+
+[node name="FilterBar" type="HBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1175145087]
+layout_mode = 2
+
+[node name="SearchBar" type="LineEdit" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1508344097]
+layout_mode = 2
+
+[node name="TierFilter" type="OptionButton" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=955195420]
+layout_mode = 2
+
+[node name="StatusFilter" type="OptionButton" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1465436097]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1576780799]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VocabList" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer/ScrollContainer" unique_id=558559941]
+layout_mode = 2
+
+[node name="ClosePrompt" type="Label" parent="MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=858962581]
+layout_mode = 2
+text = "Bấm Delete để đóng Notebook."
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPanel/MarginContainer/SplitScreen" unique_id=655116889]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="DetailPanel" type="VBoxContainer" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer" unique_id=442467994]
+layout_mode = 2
+
+[node name="DetWord" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1138962930]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="DetMeaning" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=666732995]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetMastery" type="RichTextLabel" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=957129192]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetStats" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1928504378]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetExample" type="Label" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=765574762]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MasteryBar" type="ProgressBar" parent="MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=313132964]
+unique_name_in_owner = true
+layout_mode = 2

@@ -6,10 +6,10 @@ uid="uid://2okkbmlfed2k"
 
 [deps]
 
-files=["res://vocabulary.meaning.translation", "res://vocabulary.tier.translation"]
+files=["res://vocabulary.meaning.translation", "res://vocabulary.tier.translation", "res://vocabulary.cefr.translation"]
 
 source_file="res://vocabulary.csv"
-dest_files=["res://vocabulary.meaning.translation", "res://vocabulary.tier.translation"]
+dest_files=["res://vocabulary.meaning.translation", "res://vocabulary.tier.translation", "res://vocabulary.cefr.translation"]
 
 [params]
 
