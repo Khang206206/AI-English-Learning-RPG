@@ -16,8 +16,8 @@ const DB_PATH: String = "data.db"
 const CSV_PATH: String = "vocabulary.csv"
 const CURRENT_SAVE_SLOT: int = 1
 
-var player_hearts: int = 5
-var max_hearts: int = 5
+var player_hearts: int = 20
+var max_hearts: int = 20
 var current_biome: String = "Beginner Forest"
 var dead_enemies: Array = []
 
@@ -61,7 +61,7 @@ func _create_tables() -> void:
 		CREATE TABLE IF NOT EXISTS Player_Profile (
 			save_id             INTEGER PRIMARY KEY,
 			last_played         TEXT,
-			hp                  INTEGER DEFAULT 5,
+			hp                  INTEGER DEFAULT 20,
 			current_biome       TEXT    DEFAULT 'Beginner Forest',
 			pos_x               REAL    DEFAULT 0.0,
 			pos_y               REAL    DEFAULT 0.0,
@@ -271,14 +271,14 @@ func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
 func update_after_combat(word_id: int, is_correct: bool) -> void:
 	if word_id == -1:
 		if not is_correct:
-			player_hearts = max(0, player_hearts - 1)
+			player_hearts = max(0, player_hearts - 4)
 			emit_signal("hp_changed", player_hearts)
 			if player_hearts <= 0:
 				emit_signal("game_over_triggered")
 		return
 
 	if not is_correct:
-		player_hearts = max(0, player_hearts - 1)
+		player_hearts = max(0, player_hearts - 4)
 		print("[DatabaseManager] Sai rồi! HP còn lại: %d/%d" % [player_hearts, max_hearts])
 
 	emit_signal("hp_changed", player_hearts)

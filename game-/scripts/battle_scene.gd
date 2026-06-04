@@ -36,16 +36,25 @@ extends Control
 @onready var btn_electric = $UI/MainPanel/MagicBullets/BtnElectric
 @onready var btn_ice = $UI/MainPanel/MagicBullets/BtnIce
 @onready var btn_wood = $UI/MainPanel/MagicBullets/BtnWood
+
 var current_bullet: String = "normal"
+var is_monster_frozen: bool = false
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
 var current_question: Dictionary
 var player_hp: int
-var monster_hp: int = 5
+var monster_hp: int = 20
 var heart_red = preload("res://assets/hearts/Heart_Full.tres")
+var heart_3_4 = preload("res://assets/hearts/Heart_3_4.tres")
+var heart_2_4 = preload("res://assets/hearts/Heart_2_4.tres")
+var heart_1_4 = preload("res://assets/hearts/Heart_1_4.tres")
 var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
+var is_player_time_frozen: bool = false # Người chơi có đang bị phạt giảm 50% thời gian không
+var is_magic_locked: int = 0
 
 const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
+const ICE_EFFECT_SCENE = preload("res://scenes/ice_effect.tscn")
+var current_ice_instance: AnimatedSprite2D = null # Biến giữ thực thể băng để xóa khi rã băng
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
@@ -110,16 +119,17 @@ func setup_hearts():
 		child.queue_free()
 	for child in monster_hearts_container.get_children():
 		child.queue_free()
-		
-	for i in range(player_hp):
+	var p_slots = player_hp / 4 if player_hp % 4 == 0 else (player_hp / 4) + 1
+	for i in range(p_slots):
 		var new_heart = TextureRect.new()
 		new_heart.texture = heart_red
 		new_heart.custom_minimum_size = Vector2(32, 32)
 		new_heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		player_hearts_container.add_child(new_heart)
-		
-	for i in range(monster_hp):
+	
+	var m_slots = monster_hp / 4 if monster_hp % 4 == 0 else (monster_hp / 4) + 1	
+	for i in range(m_slots):
 		var new_heart = TextureRect.new()
 		new_heart.texture = heart_red
 		new_heart.custom_minimum_size = Vector2(32, 32)
@@ -129,6 +139,12 @@ func setup_hearts():
 
 # --- LOAD CÂU HỎI TỨC THÌ (0.1 giây) ---
 func load_next_question():
+	if is_magic_locked > 0:
+		is_magic_locked -= 1
+		if is_magic_locked == 0:
+			print("[Combat] Mạch ma thuật phục hồi ở câu hỏi này!")
+		else:
+			print("[Combat] Mạch ma thuật đang bị phong ấn ở câu hỏi này!")
 	current_question = AIManager.get_question()
 	question_label.text = current_question.get("question", "Lỗi hiển thị câu hỏi")
 	word_input.text = "" # Xóa chữ hiệp cũ
@@ -150,6 +166,7 @@ func load_next_question():
 	if magic_timer:
 		magic_timer.show()
 		magic_timer.start_timer()
+	
 
 # 4. COMBAT STATE MACHINE
 func check_answer(selected_choice: String):
@@ -189,7 +206,42 @@ func check_answer(selected_choice: String):
 		await player_anim.animation_finished 
 		player_anim.position.y += 40
 		player_anim.play("idle")
-		monster_hp -= 1
+		match current_bullet:
+			"fire":
+				monster_hp -= 5 # Đạn lửa bạo kích mạnh: -5 máu lẻ (1 tim và 1/4 tim)
+				print("[Combat] Đạn Lửa thiêu đốt! Quái bị trừ 5 máu.")
+			"wood":
+				monster_hp -= 4 # Đạn mộc gây sát thương cơ bản
+				# Hồi lại 2 máu lẻ (1/2 quả tim) cho Player nhưng không vượt quá trần 20
+				player_hp = clampi(player_hp + 1, 0, 20)
+				# Đồng bộ ngược xuống DB để lưu trữ tiến trình tim mới hồi
+				DatabaseManager.player_hearts = player_hp
+				print("[Combat] Đạn Mộc hút máu! Hồi 2 máu lẻ cho người chơi.")
+			"ice":
+				monster_hp -= 4
+				if randf() <= 0.5:
+					is_monster_frozen = true 
+					print("[Combat] Đạn Băng kích hoạt ĐÓNG BĂNG THÀNH CÔNG (50%)!")
+					
+					# ĐỨNG HÌNH QUÁI VÀ SINH KHỐI BĂNG:
+					monster_anim.pause() # Dừng animation idle của quái vật lại
+					
+					if ICE_EFFECT_SCENE:
+						var ice = ICE_EFFECT_SCENE.instantiate()
+						get_node("Node2D").add_child(ice)
+						ice.global_position = monster_anim.global_position
+						ice.play("freeze") # Kích hoạt script chạy tự đứng im frame cuối bồ vừa viết
+						current_ice_instance = ice
+				else:
+					is_monster_frozen = false
+					print("[Combat] Đạn Băng trúng quái nhưng quái KHÔNG bị đóng băng (Xui xẻo)!")
+			"electric":
+				current_bullet = "electric"
+				# ⚡ ĐẠN ĐIỆN ĐÂY NHA BỒ:
+				monster_hp -= 4 # Gây 4 sát thương cơ bản
+				print("[Combat] Đạn Điện giật tê liệt! Hiệp kế tiếp la bàn đếm ngược tăng lên 30 giây.")
+			_:
+				monster_hp -= 4 # Các hệ đạn khác (normal, ice, electric) gây 4 sát thương cơ bản
 		update_health_ui()
 		ProgressManager.update_after_answer(word_id, true)
 		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")
@@ -202,6 +254,19 @@ func check_answer(selected_choice: String):
 			
 	else:
 		if SPELL_SCENE:
+			if is_monster_frozen:
+				print("[Combat] Quái đang bị đóng băng! May quá không bị phản công.")
+				is_monster_frozen = false
+				# BỔ SUNG: Rã băng đồ họa và cho quái chạy tiếp idle
+				if current_ice_instance and is_instance_valid(current_ice_instance):
+					current_ice_instance.play("ending")
+					await current_ice_instance.animation_finished
+					current_ice_instance.queue_free()
+				monster_anim.play("idle") # Cho quái thở tiếp
+				
+				await get_tree().create_timer(1.0).timeout
+				load_next_question()
+				return
 			var spell = SPELL_SCENE.instantiate()
 			get_node("Node2D").add_child(spell)
 			# Điểm xuất phát: Từ giữa quái | Điểm đích: Vị trí của Player
@@ -209,7 +274,12 @@ func check_answer(selected_choice: String):
 			var target_p = player_anim.global_position + Vector2(10, -5)
 			spell.shoot(start_p, target_p)
 			await get_tree().create_timer(1.1).timeout
-			if player_hp > 1: # Nếu trúng phát này mà chưa chết thì mới giật hit
+			var damage_will_take 
+			if current_bullet == "fire":
+				damage_will_take = 5
+			else:
+				damage_will_take = 4
+			if player_hp - damage_will_take > 0: # Nếu trúng phát này mà chưa chết thì mới giật hit
 				player_anim.play("hit")
 				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
 				await get_tree().create_timer(0.3).timeout 
@@ -218,8 +288,25 @@ func check_answer(selected_choice: String):
 
 		# Gọi ProgressManager xử lý trừ tim trong hệ thống và lưu SQLite
 		ProgressManager.update_after_answer(word_id, false)
+		if current_bullet == "wood":
+			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 2 máu lẻ (1/2 quả tim)
+			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 2 máu.")
+		if current_bullet == "fire":
+			player_hp = max(0, player_hp - 1) # Bị quái phản công rát, trừ thêm 1 máu lẻ nữa (Tổng cộng thành 5)
+			DatabaseManager.player_hearts = player_hp # Cập nhật lại cho DB giữ state
+			print("[Combat] Đạn Lửa nổ ngược! Người chơi bị vả tổng cộng 5 máu.")
+		if current_bullet == "ice":
+			is_player_time_frozen = true
+			print("[Combat] Đạn Băng nổ ngược! Bị đóng băng thanh thời gian ở hiệp sau.")
+		if current_bullet == "electric":
+			is_magic_locked = 2
+			current_bullet = "normal"
+			btn_electric.button_pressed = false # Nhả nút điện ra
+			print("[Combat] Hết giờ khi dùng đạn Điện! Khóa mạch ma thuật ở hiệp sau.")
+
+		update_health_ui()
 		# Cập nhật lại biến player_hp local từ DatabaseManager để UI vẽ tim cho đúng
-		player_hp = DatabaseManager.player_hearts
+		player_hp = DatabaseManager.player_hearts 
 		update_health_ui()
 		explanation_text.text = current_question.get("explanation", "Rất tiếc, bạn đã chọn sai!")
 		ai_tutor_popup.show()
@@ -249,6 +336,19 @@ func set_buttons_disabled(is_disabled: bool):
 	word_input.editable = !is_disabled
 	submit_btn.disabled = is_disabled
 	
+	if is_magic_locked > 0 and not is_disabled:
+		btn_fire.disabled = true
+		btn_electric.disabled = true
+		btn_ice.disabled = true
+		btn_wood.disabled = true
+	else:
+		btn_fire.disabled = is_disabled
+		# Trạng thái bình thường hoặc đang trong lúc chờ animation chạy
+		btn_fire.disabled = is_disabled
+		btn_electric.disabled = is_disabled
+		btn_ice.disabled = is_disabled
+		btn_wood.disabled = is_disabled
+	
 	# Bỏ dòng "if is_disabled:" cũ đi, luôn luôn ép cập nhật màu sắc mỗi khi trạng thái thay đổi
 	_update_button_visuals(btn_fire, btn_fire.button_pressed)
 	_update_button_visuals(btn_electric, btn_electric.button_pressed)
@@ -256,6 +356,8 @@ func set_buttons_disabled(is_disabled: bool):
 	_update_button_visuals(btn_wood, btn_wood.button_pressed)
 
 func win_battle():
+	if current_ice_instance and is_instance_valid(current_ice_instance):
+			current_ice_instance.queue_free()
 	if magic_timer: magic_timer.hide()
 	print("Victory!")
 	if bgm_player != null and bgm_player.playing:
@@ -269,6 +371,8 @@ func win_battle():
 	set_buttons_disabled(true)
 
 func lose_battle():
+	if current_ice_instance and is_instance_valid(current_ice_instance):
+		current_ice_instance.queue_free()
 	if magic_timer: magic_timer.hide()
 	print("Game Over!")
 	if bgm_player != null and bgm_player.playing:
@@ -284,17 +388,33 @@ func lose_battle():
 func update_health_ui():
 	var p_hearts = player_hearts_container.get_children()
 	for i in range(p_hearts.size()):
-		if i < player_hp:
+		var heart_idx = i + 1
+		if player_hp >= heart_idx * 4:
 			p_hearts[i].texture = heart_red
-		else:
+		elif player_hp <= (heart_idx - 1) * 4:
 			p_hearts[i].texture = heart_black
+		else:
+			var remainder = player_hp % 4
+			match remainder:
+				3: p_hearts[i].texture = heart_3_4
+				2: p_hearts[i].texture = heart_2_4
+				1: p_hearts[i].texture = heart_1_4
+				_: p_hearts[i].texture = heart_black
 
 	var m_hearts = monster_hearts_container.get_children()
 	for i in range(m_hearts.size()):
-		if i < monster_hp:
+		var heart_idx = i + 1
+		if monster_hp >= heart_idx * 4:
 			m_hearts[i].texture = heart_red
-		else:
+		elif monster_hp <= (heart_idx - 1) * 4:
 			m_hearts[i].texture = heart_black
+		else:
+			var remainder = monster_hp % 4
+			match remainder:
+				3: m_hearts[i].texture = heart_3_4
+				2: m_hearts[i].texture = heart_2_4
+				1: m_hearts[i].texture = heart_1_4
+				_: m_hearts[i].texture = heart_black
 func show_result_overlay(is_win: bool):
 	var background = $ResultOverlay/BG
 
@@ -358,6 +478,20 @@ func _on_timer_timeout():
 	set_buttons_disabled(true)
 	var word_id: int = current_question.get("word_id", -1)
 	if SPELL_SCENE:
+		if is_monster_frozen:
+			print("[Combat] Quái đang bị đóng băng! May quá không bị phản công.")
+			is_monster_frozen = false
+			# BỔ SUNG: Rã băng đồ họa và cho quái chạy tiếp idle
+			if current_ice_instance and is_instance_valid(current_ice_instance):
+				current_ice_instance.play("ending") # Xóa block băng
+				await current_ice_instance.animation_finished
+				current_ice_instance.queue_free()
+			monster_anim.play("idle") # Cho quái thở tiếp
+				
+			await get_tree().create_timer(1.0).timeout
+			load_next_question()
+			return
+			
 		var spell = SPELL_SCENE.instantiate()
 		get_node("Node2D").add_child(spell)
 		
@@ -368,13 +502,33 @@ func _on_timer_timeout():
 		# Đợi đạn bay cắm vào người Player xong xuôi đã
 		spell.shoot(start_p, target_p)
 		await get_tree().create_timer(1.1).timeout
-		if player_hp > 1: # Nếu trúng phát này mà chưa chết thì mới giật hit
+		var damage_will_take
+		if current_bullet == "fire":
+			damage_will_take = 5
+		else:
+			damage_will_take = 4
+		if player_hp - damage_will_take > 0: # Nếu trúng phát này mà chưa chết thì mới giật hit
 				player_anim.play("hit")
 				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
 				await get_tree().create_timer(0.3).timeout 
 				player_anim.play("idle")
 	ProgressManager.update_after_answer(word_id, false)
-	player_hp = DatabaseManager.player_hearts
+	if current_bullet == "wood":
+			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 1 máu lẻ (1/2 quả tim)
+			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 1 máu.")
+	if current_bullet == "fire":
+		player_hp = max(0, player_hp - 1) # Phạt thêm 1 máu lẻ (Tổng cộng thành 5)
+		DatabaseManager.player_hearts = player_hp
+		print("[Combat] Hết giờ! Đạn Lửa quá nhiệt nổ ngược 5 máu.")
+	if current_bullet == "ice":
+			is_player_time_frozen = true
+			print("[Combat] Đạn Băng nổ ngược! Bị đóng băng thanh thời gian ở hiệp sau.")
+	if current_bullet == "electric":
+		is_magic_locked = 2
+		current_bullet = "normal"
+		btn_electric.button_pressed = false # Nhả nút điện ra
+		print("[Combat] Hết giờ khi dùng đạn Điện! Khóa mạch ma thuật ở hiệp sau.")
+	player_hp = DatabaseManager.player_hearts 
 	update_health_ui()
 	explanation_text.text = "Đã hết thời gian suy nghĩ! " + current_question.get("explanation", "")
 	ai_tutor_popup.show()

@@ -55,7 +55,7 @@ func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
 func update_after_answer(word_id: int, is_correct: bool) -> void:
 	# ── Xử lý HP (ủy quyền cho DatabaseManager giữ state) ──
 	if not is_correct:
-		DatabaseManager.player_hearts = max(0, DatabaseManager.player_hearts - 1)
+		DatabaseManager.player_hearts = max(0, DatabaseManager.player_hearts - 4)
 		print("[ProgressManager] Sai! HP: %d/%d"
 			% [DatabaseManager.player_hearts, DatabaseManager.max_hearts])
 
