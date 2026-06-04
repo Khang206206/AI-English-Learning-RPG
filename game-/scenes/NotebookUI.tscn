@@ -134,48 +134,72 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1576780799]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 
 [node name="VocabList" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/ScrollContainer" unique_id=558559941]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen" unique_id=655116889]
+[node name="PanelContainer" type="PanelContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=655116889]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_vertical = 3
+size_flags_stretch_ratio = 7.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ux6k2")
 
-[node name="DetailPanel" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer" unique_id=442467994]
+[node name="DetailPanel" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer" unique_id=442467994]
 layout_mode = 2
 
-[node name="DetWord" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1138962930]
+[node name="DetWord" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=1138962930]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.116078965, 0.116078965, 0.11607895, 1)
 theme_override_font_sizes/font_size = 32
 
-[node name="DetMeaning" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=666732995]
+[node name="DetMeaning" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=666732995]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.01, 0.01, 0.01, 1)
 
-[node name="DetMastery" type="RichTextLabel" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=957129192]
+[node name="DetMastery" type="RichTextLabel" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=957129192]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/default_color = Color(0.02, 0.02, 0.02, 1)
 
-[node name="DetStats" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1928504378]
+[node name="DetStats" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=1928504378]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.04, 0.04, 0.04, 1)
 
-[node name="DetExample" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=765574762]
+[node name="DetExample" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=765574762]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MasteryBar" type="ProgressBar" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=313132964]
+[node name="MasteryBar" type="ProgressBar" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=313132964]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_35wx4")
+
+[node name="GrammarMargin" type="MarginContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen" unique_id=1900637229]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 200
+
+[node name="GrammarContainer" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin" unique_id=762704563]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GrammarTitle" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer" unique_id=1649533548]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Grammar"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer" unique_id=1981676276]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GrammarList" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer/ScrollContainer" unique_id=725171427]
+layout_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=932042053]
 unique_name_in_owner = true
