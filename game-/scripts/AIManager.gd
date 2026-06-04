@@ -363,10 +363,18 @@ func _normalize_question(q: Dictionary) -> Dictionary:
 		if ca.length() == 1 and ca.to_upper() in ["A","B","C","D"]:
 			q["correct_answer"] = ca.to_upper()
 		else:
+			var found: bool = false
+			var clean_ca: String = _strip_prefix(ca).to_lower().replace(".", "").replace(",", "").strip_edges()
 			for i in range(4):
-				if _strip_prefix(str(opts[i])) == _strip_prefix(ca):
+				var clean_opt: String = _strip_prefix(str(opts[i])).to_lower().replace(".", "").replace(",", "").strip_edges()
+				if clean_opt != "" and clean_opt == clean_ca:
 					q["correct_answer"] = labels[i]
+					found = true
 					break
+			
+			if not found:
+				q["correct_answer"] = "A"
+				push_warning("[AIManager] Fallback correct_answer = A do không map được: " + ca)
 
 	return q
 
