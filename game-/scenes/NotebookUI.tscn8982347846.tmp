@@ -7,9 +7,6 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ux6k2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35wx4"]
-bg_color = Color(0.01, 0.01, 0.01, 1)
-
 [sub_resource type="Animation" id="Animation_ux6k2"]
 length = 0.001
 tracks/0/type = "value"
@@ -103,7 +100,6 @@ size_flags_stretch_ratio = 0.6
 
 [node name="Title" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1991081607]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.01, 0.01, 0.01, 1)
 theme_override_font_sizes/font_size = 35
 text = "SỔ TAY TỪ VỰNG"
 
@@ -150,23 +146,19 @@ layout_mode = 2
 [node name="DetWord" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1138962930]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.116078965, 0.116078965, 0.11607895, 1)
 theme_override_font_sizes/font_size = 32
 
 [node name="DetMeaning" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=666732995]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.01, 0.01, 0.01, 1)
 
 [node name="DetMastery" type="RichTextLabel" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=957129192]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/default_color = Color(0.02, 0.02, 0.02, 1)
 
 [node name="DetStats" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=1928504378]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.04, 0.04, 0.04, 1)
 
 [node name="DetExample" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=765574762]
 unique_name_in_owner = true
@@ -175,7 +167,6 @@ layout_mode = 2
 [node name="MasteryBar" type="ProgressBar" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/PanelContainer/DetailPanel" unique_id=313132964]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_35wx4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=932042053]
 unique_name_in_owner = true

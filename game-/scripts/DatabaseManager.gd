@@ -29,7 +29,7 @@ func _ready() -> void:
 	print("[DatabaseManager] ===== Khởi động hệ thống dữ liệu =====")
 	init_database()
 	load_game(CURRENT_SAVE_SLOT)
-
+	cheat_unlock_vocab()
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_EXIT_TREE:
 		if db != null:
@@ -499,4 +499,20 @@ func get_grammar_spells() -> Array:
 		}
 	]
 	
+	# ==============================================================================
+# HÀM CHEAT: TỰ ĐỘNG MỞ KHÓA TỪ VỰNG VÀO SỔ TAY
+# ==============================================================================
+func cheat_unlock_vocab(limit: int = 10) -> void:
+	print("[DatabaseManager] 🪄 CHEAT: Đang mở khóa %d từ vựng vào sổ tay..." % limit)
 	
+	# Lệnh SQL copy ngẫu nhiên 10 từ từ Vocabulary_Bank sang Player_Vocab_Mastery
+	var sql = """
+		INSERT OR IGNORE INTO Player_Vocab_Mastery (save_id, word_id, encounter_count, correct_count)
+		SELECT ?, word_id, 10, 8  -- Giả vờ đã gặp 10 lần, trả lời đúng 8 lần (Mastery 80%)
+		FROM Vocabulary_Bank
+		ORDER BY RANDOM()
+		LIMIT ?;
+	"""
+	
+	db.query_with_bindings(sql, [CURRENT_SAVE_SLOT, limit])
+	print("[DatabaseManager] ✅ Đã cheat thành công! Hãy mở UI sổ tay lên để xem.")

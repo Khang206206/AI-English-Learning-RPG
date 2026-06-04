@@ -15,6 +15,10 @@ extends CanvasLayer
 @onready var det_mastery = find_child("DetMastery", true, false)
 @onready var det_stats = find_child("DetStats", true, false)
 @onready var mastery_bar = find_child("MasteryBar", true, false)
+@onready var content_ui = $ContentUI # Thay bằng đúng đường dẫn hộp chứa UI của bạn
+@onready var anim_player = $AnimationPlayer
+@onready var book_bg = $BookBackground
+
 
 var active_db = DatabaseManager 
 var current_tab = "vocab"
@@ -37,6 +41,7 @@ func _ready():
 	
 	if btn_vocab: btn_vocab.pressed.connect(func(): _switch_tab("vocab"))
 	if btn_grammar: btn_grammar.pressed.connect(func(): _switch_tab("grammar"))
+	$CloseButton.pressed.connect(_on_close_button_pressed)
 
 # --- HỆ THỐNG MỞ / ĐÓNG ---
 func toggle_notebook():
@@ -44,11 +49,22 @@ func toggle_notebook():
 	else: open_notebook()
 
 func open_notebook():
-
 	show()
 	get_tree().paused = true
+	
+	content_ui.hide() 
+	
+	anim_player.play("open_book")
+	
+	await anim_player.animation_finished 
+
+	content_ui.show()
 	_switch_tab("vocab")
 
+func _on_close_button_pressed():
+	hide()
+	get_tree().paused = false
+	
 func close_notebook():
 	hide()
 	get_tree().paused = false
@@ -115,22 +131,37 @@ func _display_word_detail(data: Dictionary, m_info: Dictionary):
 
 	if det_cefr:
 		det_cefr.text = "[" + cefr + "] "
-		det_cefr.add_theme_color_override("font_color", Color("#4caf50"))
+		det_cefr.add_theme_color_override("font_color", Color("#3b352d")) # Đen mực tàu
 		det_cefr.show()
 		
 	if det_word:
 		det_word.text = str(data.get("word", "")).to_upper()
-		det_word.add_theme_color_override("font_color", Color("#ffeb3b"))
+		det_word.add_theme_color_override("font_color", Color("#1e5631")) # Xanh lá đậm
 		det_word.show()
 		
-	det_meaning.text = "Nghĩa: " + data["meaning"]
-	det_stats.text = "Gặp %d | Đúng %d" % [data["encounter_count"], data["correct_count"]]
+	if det_meaning:
+		det_meaning.text = "Nghĩa: " + data["meaning"]
+		det_meaning.add_theme_color_override("font_color", Color("#3b352d")) # Đen mực tàu
+		
+	if det_stats:
+		det_stats.text = "Gặp %d | Đúng %d" % [data["encounter_count"], data["correct_count"]]
+		det_stats.add_theme_color_override("font_color", Color("#3b352d")) # Đen mực tàu
 	
 	if det_mastery:
 		det_mastery.text = m_info["text"]
+		det_mastery.add_theme_color_override("font_color", Color("#3b352d")) # Đen mực tàu
 	
 	if mastery_bar:
 		mastery_bar.value = m_info["val"]
+		
+		# Ép thanh Progress Bar thành màu Đen
+		var black_style = StyleBoxFlat.new()
+		black_style.bg_color = Color("#3b352d")
+		mastery_bar.add_theme_stylebox_override("fill", black_style)
+		
+		# Ép chữ % bên trong thanh thành màu Trắng cho nổi bật
+		mastery_bar.add_theme_color_override("font_color", Color.WHITE)
+		
 		mastery_bar.show()
 # --- [x] Render Tab Ngữ pháp ---
 func _render_grammar_tab():
