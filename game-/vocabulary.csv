@@ -1,50 +1,176 @@
-word,meaning,tier_id,cefr_level
-Timber,Gỗ rừng / Cây lấy gỗ,1,B2
-Canopy,Vòm lá / Tán cây rừng,1,C1
-Flora,Hệ thực vật,1,C1
-Mossy,Phủ rêu / Rêu phong,1,B2
-Fern,Cây dương xỉ,1,C1
-Creek,Suối nhỏ / Lạch nước,1,B2
-Bloom,Nở hoa / Đơm hoa,1,B1
-Thorn,Gai nhọn,1,B2
-Burrow,Hang đào trong lòng đất,1,C1
-Dusk,Hoàng hôn / Chạng vạng tối,1,B2
-Dawn,Bình minh / Lúc tảng sáng,1,B2
-Mist,Sương mù nhẹ,1,B1
-Bark,Vỏ cây,1,B1
-Root,Rễ cây,1,B1
-Hollow,Hốc rỗng / Hang nhỏ trong cây,1,B2
-Leap,Nhảy vọt / Bước nhảy lớn,1,B2
-Nest,Tổ chim / Ổ làm bằng cành lá,1,B1
-Prey,Con mồi / Vật bị săn đuổi,1,B2
-Shrub,Cây bụi thấp,1,C1
-Trail,Đường mòn / Lối đi trong rừng,1,B1
-Grove,Rừng cây nhỏ / Bụi cây,1,C1
-Pebble,Viên đá cuội nhỏ,1,C1
-Dew,Sương đêm / Giọt sương,1,B2
-Meadow,Đồng cỏ rộng,1,B2
-Vine,Dây leo / Cây leo,1,B2
-Biodiversity,Đa dạng sinh học,2,C1
-Dense,Dày đặc / Rậm rạp,2,B2
-Sustain,Duy trì / Chống đỡ,2,C1
-Foliage,Tán lá / Lớp lá cây,2,C1
-Predator,Động vật săn mồi,2,C1
-Camouflage,Ngụy trang / Ẩn mình,2,C1
-Hibernate,Ngủ đông,2,C1
-Migrate,Di cư / Di trú theo mùa,2,B2
-Nocturnal,Hoạt động về đêm,2,C1
-Venomous,Có nọc độc,2,C1
-Symbiosis,Quan hệ cộng sinh,2,C2
-Ambush,Phục kích / Tấn công bất ngờ,2,C1
-Terrain,Địa hình / Đặc điểm mặt đất,2,C1
-Erosion,Sự xói mòn đất,2,C1
-Apex,Đỉnh cao nhất / Kẻ thống trị,2,C1
-Lurk,Rình rập / Ẩn nấp chờ đợi,2,C1
-Abundant,Dồi dào / Phong phú,2,C1
-Wither,Héo úa / Tàn lụi,2,C1
-Stealthy,Âm thầm / Lén lút,2,C1
-Agile,Nhanh nhẹn / Linh hoạt,2,C1
-Dormant,Đang ngủ yên / Tạm ngừng hoạt động,2,C1
-Ravine,Khe núi hẹp và sâu,2,C2
-Overgrown,Bị cây cỏ mọc phủ kín,2,C1
-Canine,Thuộc về loài chó / Răng nanh,2,C1
+word,meaning,tier_id
+timber,Gỗ rừng / Cây lấy gỗ,1
+canopy,Vòm lá / Tán cây rừng,1
+flora,Hệ thực vật,1
+fauna,Hệ động vật,1
+moss,Rêu rừng,1
+creek,Dòng suối nhỏ,1
+foliage,Tán lá / Bộ lá,1
+wilderness,Vùng hoang dã,1
+sprout,Mầm cây / Nảy mầm,1
+bough,Cành cây lớn,1
+thicket,Bụi rậm / Lùm cây hoang,1
+woodland,Vùng đất rừng / Miền rừng,1
+rustle,Tiếng xào xạc của lá,1
+brook,Con suối nhỏ,1
+fern,Cây dương xỉ,1
+acorn,Quả sồi,1
+bark,Vỏ cây,1
+branch,Cành cây,1
+meadow,Đồng cỏ,1
+mushroom,Cây nấm,1
+owl,Con cú,1
+path,Đường mòn,1
+pine,Cây thông,1
+root,Rễ cây,1
+swamp,Đầm lầy,1
+lantern,Đèn lồng / Đèn xách tay,2
+backpack,Balo hành lý,2
+compass,La bàn chỉ hướng,2
+hatchet,Rìu nhỏ cầm tay,2
+campfire,Lửa trại,2
+tinder,Bùi nhùi nhóm lửa,2
+flask,Bình nước giữ nhiệt / Bình vát,2
+utility,Vật dụng tiện ích / Đa năng,2
+rope,Dây thừng bền,2
+pocketknife,Dao gấp bỏ túi,2
+hammock,Cái võng ngủ,2
+tarp,Bạt che mưa / Bạt cắm trại,2
+canteen,Bình toong đựng nước,2
+matches,Diêm nhóm lửa,2
+whistle,Còi cứu hộ / Còi báo hiệu,2
+axe,Cái rìu,2
+boots,Giày bốt / Giày leo núi,2
+gear,Trang thiết bị / Đồ dùng,2
+hike,Đi bộ đường dài,2
+insect,Côn trùng,2
+map,Bản đồ,2
+sleeping_bag,Túi ngủ,2
+stove,Bếp lò,2
+tent,Lều trại,2
+torch,Đuốc,2
+blizzard,Trận bão tuyết,3
+shelter,Nơi trú ẩn / Chỗ che mưa nắng,3
+frostbite,Bỏng lạnh / Bị tê cóng,3
+humidity,Độ ẩm không khí,3
+forecast,Dự báo thời tiết,3
+gale,Cơn gió mạnh / Gió bão,3
+avalanche,Trận lở tuyết,3
+drench,Làm ướt sũng,3
+temperature,Nhiệt độ cơ thể / Thời tiết,3
+predator,Động vật săn mồi,3
+downpour,Trận mưa rào / Mưa như trút nước,3
+hypothermia,Sự hạ thân nhiệt,3
+terrain,Địa hình / Địa thế,3
+hydration,Sự bù nước / Sự giữ nước,3
+navigation,Sự định hướng / Kỹ năng tìm đường,3
+breeze,Gió nhẹ,3
+climate,Khí hậu,3
+endure,Chịu đựng,3
+fog,Sương mù,3
+hazard,Mối nguy hiểm,3
+lightning,Tia chớp,3
+mist,Sương muối / Sương mù nhẹ,3
+rescue,Giải cứu,3
+storm,Cơn bão,3
+thunder,Sấm sét,3
+castle,Lâu đài,4
+century,Thế kỷ,4
+empire,Đế chế,4
+kingdom,Vương quốc,4
+legend,Truyền thuyết,4
+museum,Bảo tàng,4
+palace,Cung điện,4
+ruin,Tàn tích / Di tích,4
+statue,Tượng,4
+temple,Ngôi đền,4
+fossil,Hóa thạch,4
+ancient,Cổ xưa / Cổ kính,4
+artifact,Cổ vật / Di vật lịch sử,4
+civilization,Nền văn minh,4
+monument,Đài tưởng niệm / Công trình kiến trúc cổ,4
+dynasty,Triều đại,4
+relic,Di tích / Tàn tích còn sót lại,4
+excavation,Sự khai quật khảo cổ,4
+medieval,Thuộc về thời trung cổ,4
+heritage,Di sản văn hóa,4
+inscription,Chữ khắc / Văn bia cổ,4
+tomb,Ngôi mộ / Lăng mộ cổ,4
+sanctuary,Thánh địa / Nơi linh thiêng,4
+archive,Kho lưu trữ lịch sử,4
+hieroglyph,Chữ tượng hình,4
+armor,Bộ áo giáp bảo vệ,5
+blade,Lưỡi kiếm / Lưỡi dao,5
+shield,Cái khiên phòng thủ,5
+archery,Bắn cung / Môn bắn cung,5
+spear,Cây giáo / Cây thương,5
+siege,Sự bao vây / Cuộc vây hãm,5
+arsenal,Kho vũ khí,5
+onslaught,Cuộc tấn công dữ dội,5
+crossbow,Cái nỏ,5
+fortress,Pháo đài kiên cố,5
+gauntlet,Bao tay giáp,5
+dagger,Dao găm,5
+vanguard,Đội tiên phong,5
+cavalry,Kỵ binh / Đội quân cưỡi ngựa,5
+skirmish,Cuộc đụng độ nhỏ / Trận giao tranh ngắn,5
+stalactite,Nhũ đá hang động,6
+cavern,Hang động lớn / Đại địa động,6
+ore,Quặng khoáng sản,6
+crystal,Tinh thể / Pha lê,6
+gemstone,Đá quý,6
+tunnel,Đường hầm xuyên đất,6
+deposit,Mỏ khoáng sản / Lớp trầm tích,6
+mineral,Khoáng chất,6
+subterranean,Dưới lòng đất / Ngầm dưới lòng đất,6
+shaft,Hầm mỏ theo phương thẳng đứng,6
+stalagmite,Măng đá hang động,6
+pickaxe,Cúp khai khoáng / Cuốc chim,6
+stratum,Tầng đất đá / Lớp địa chất,6
+quarry,Mỏ đá / Nơi khai thác đá,6
+abyss,Vực sâu vô tạm,6
+sorcery,Ma thuật / Phép thuật,7
+incantation,Lời thần chú / Câu chú,7
+potion,Thuốc độc / Dược chất ma thuật,7
+spellbook,Sách phép thuật,7
+elixir,Thuốc trường sinh / Thần dược,7
+wizardry,Phép phù thủy,7
+ritual,Nghi lễ ma thuật,7
+amulet,Bùa hộ mệnh,7
+scroll,Cuộn giấy da chứa phép thuật,7
+enchantment,Bùa mê / Sự yểm bùa,7
+cauldron,Vạc nấu thuốc phù thủy,7
+talisman,Bùa chú / Vật hộ thân,7
+mana,Năng lượng ma thuật,7
+runes,Chữ cổ rune / Ký tự phép thuật,7
+transmutation,Sự chuyển hóa vật chất / Thuật giả kim,7
+mythical,Thuộc về thần thoại,8
+griffin,Quái vật đầu đại bàng mình sư tử,8
+phoenix,Phượng hoàng lửa,8
+centaur,Nhân mã,8
+folklore,Truyện dân gian / Huyền thoại truyền miệng,8
+hybrid,Sinh vật lai,8
+majestic,Uy nghiêm / Tráng lệ,8
+tusk,Răng nanh dài / Ngà,8
+beast,Quái thú / Dã thú,8
+mutation,Sự đột biến sinh học,8
+pegasus,Ngựa thần có cánh,8
+siren,Mỹ nhân ngư / Quái vật biển,8
+werewolf,Ma sói,8
+behemoth,Quái thú khổng lồ,8
+leviathan,Thủy quái khổng lồ,8
+hoard,Kho báu tích trữ / Tích trữ,9
+sovereign,Chúa tể / Tối cao,9
+immortal,Bất tử / Trường sinh,9
+catastrophic,Thảm khốc / Mang tính hủy diệt,9
+dominion,Lãnh thổ thống trị / Quyền lực,9
+prophecy,Lời tiên tri,9
+sanctuary,Thánh địa / Nơi trú ẩn an toàn,9
+tyrant,Kẻ bạo chúa,9
+reign,Triều đại trị vì / Trị vì,9
+legendary,Mang tính truyền thuyết / Huyền thoại,9
+wyvern,Loài rồng hai chân,9
+ember,Tàn lửa / Than hồng,9
+scales,Vảy rồng / Lớp vảy,9
+roar,Tiếng gầm lớn,9
+lair,Hang ổ quái vật,9

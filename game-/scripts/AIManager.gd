@@ -17,7 +17,19 @@ var question_queues: Dictionary = {}
 var _tier_generating: Dictionary = {}   # tier_id → bool
 
 const MAX_QUEUE_SIZE: int = 5
-const MANAGED_TIERS: Array = [1, 2]
+const MANAGED_TIERS: Array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+const TIER_THEMES: Dictionary = {
+	1: "Nature & Forest (Thiên nhiên & Rừng rậm)",
+	2: "Camping & Tools (Cắm trại & Vật dụng)",
+	3: "Survival & Weather (Sinh tồn & Thời tiết)",
+	4: "Ancient Ruins & History (Di tích cổ & Lịch sử)",
+	5: "Combat & Weaponry (Chiến đấu & Vũ khí)",
+	6: "Caves & Mining (Hang động & Khai khoáng)",
+	7: "Magic & Alchemy (Phép thuật & Giả kim)",
+	8: "Fantasy Creatures (Sinh vật huyền thoại)",
+	9: "Dragons & Legends (Rồng & Truyền thuyết)",
+}
 
 var current_tier_id: int = 1
 
@@ -85,7 +97,7 @@ func _generate_for_tier(tier_id: int) -> void:
 		% [tier_id, word, word_id, mastery_score])
 
 	var config: Dictionary    = _resolve_question_config(mastery_score, encounter_count, avg_mastery, tier_id)
-	var system_prompt: String = _build_prompt(word, meaning, config)
+	var system_prompt: String = _build_prompt(word, meaning, config, tier_id)
 	var user_msg: String      = "Tạo câu hỏi cho từ: \"%s\"." % word
 
 	var payload: Dictionary = {
@@ -266,10 +278,11 @@ func _resolve_question_config(
 # PROMPT BUILDER
 # ==============================================================================
 
-func _build_prompt(word: String, meaning: String, config: Dictionary) -> String:
+func _build_prompt(word: String, meaning: String, config: Dictionary, tier_id: int) -> String:
 	var q_type: String     = config.get("q_type",    "vocab_meaning")
 	var difficulty: String = config.get("difficulty", "")
 	var ui_mode: String    = config.get("ui_mode",    QTYPE_MCQ)
+	var theme: String      = TIER_THEMES.get(tier_id, "General English")
 
 	var json_template: String
 	if ui_mode == QTYPE_TEXT:
@@ -293,6 +306,7 @@ func _build_prompt(word: String, meaning: String, config: Dictionary) -> String:
 	return """Bạn là Elaria, hệ thống tạo câu hỏi tiếng Anh cho game RPG.
 
 TỪ BẮT BUỘC: "%s" (nghĩa: %s)
+CHỦ ĐỀ NGỮ CẢNH: "%s"
 
 CHỈ THỊ (BẮT BUỘC):
 %s
@@ -304,7 +318,7 @@ QUY TẮC:
 4. MCQ: 3 đáp án sai hợp lý, cùng từ loại.
 5. Trả về ĐÚNG JSON sau, KHÔNG thêm văn bản:
 %s
-KHÔNG sinh gì ngoài JSON.""" % [word, meaning, difficulty, word, json_template]
+KHÔNG sinh gì ngoài JSON.""" % [word, meaning, theme, difficulty, word, json_template]
 
 
 # ==============================================================================

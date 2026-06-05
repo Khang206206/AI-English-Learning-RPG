@@ -10424,7 +10424,7 @@ position = Vector2(-422, 367)
 
 [node name="Goblin" parent="." unique_id=347324171 instance=ExtResource("14_4mo47")]
 y_sort_enabled = true
-position = Vector2(-123.57062, 214.86884)
+position = Vector2(-122, 232)
 
 [node name="InteractableObject" parent="." unique_id=1971411768 instance=ExtResource("15_ayc5h")]
 z_index = 4
@@ -10448,11 +10448,11 @@ battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("17_samt2")
 
 [node name="CollisionShape2D" parent="InteractableObject2" index="0" unique_id=865465090]
-position = Vector2(248, -306)
+position = Vector2(247, -292)
 shape = SubResource("RectangleShape2D_ayc5h")
 
 [node name="DoorInteract" parent="InteractableObject2" index="1" unique_id=843343296]
-position = Vector2(243, -334)
+position = Vector2(243, -321)
 
 [node name="PlayerInChapel" parent="." unique_id=1446754781 instance=ExtResource("13_mqmwm")]
 position = Vector2(-103.86752, 354.5091)
