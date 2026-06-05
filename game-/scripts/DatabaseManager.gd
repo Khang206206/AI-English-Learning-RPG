@@ -499,4 +499,3 @@ func get_grammar_spells() -> Array:
 		}
 	]
 	
-	

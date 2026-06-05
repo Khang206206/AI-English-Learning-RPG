@@ -161,7 +161,7 @@ QUY TẮC SỐNG CÒN (NẾU VI PHẠM SẼ BỊ HỦY DIỆT):
 
 	# 3. Đóng gói Payload theo cấu trúc API của Ollama
 	var payload = {
-		"model": "qwen2.5:3b", # Đảm bảo đúng tên model máy bạn đang chạy (vd: qwen2.5:3b)
+		"model": "qwen3.5:4b", # Đảm bảo đúng tên model máy bạn đang chạy (vd: qwen2.5:3b)
 		"messages": [
 			{ "role": "system", "content": system_prompt },
 			{ "role": "user", "content": user_prompt }
