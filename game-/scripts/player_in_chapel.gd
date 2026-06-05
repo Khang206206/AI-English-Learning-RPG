@@ -3,6 +3,7 @@ extends CharacterBody2D
 const SPEED = 150.0
 var is_dead = false
 var is_waking = true
+var last_direction = "side"
 
 @onready var sprite = $AnimatedSprite2D
 
@@ -20,12 +21,21 @@ func _physics_process(_delta):
 	
 	if direction != Vector2.ZERO:
 		velocity = direction * SPEED
-		sprite.play("run")
-		if direction.x != 0:
+		
+		if abs(direction.y) > abs(direction.x):
+			if direction.y > 0:
+				sprite.play("run_down")
+				last_direction = "down"
+			else:
+				sprite.play("run_up")
+				last_direction = "up"
+		else:
+			sprite.play("run_side")
+			last_direction = "side"
 			sprite.flip_h = (direction.x < 0)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
-		sprite.play("idle")
+		sprite.play("idle_" + last_direction)
 
 	move_and_slide()
 

@@ -1,0 +1,6 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://c1hhtygh5dkns"]
+
+[ext_resource type="Texture2D" uid="uid://y264bi5octwx" path="res://assets/ElementUI-Icons/Electric-Icon.png" id="1_cnfn2"]
+
+[resource]
+atlas = ExtResource("1_cnfn2")

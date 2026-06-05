@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b7xc5abgcpx8w" path="res://assets/tileset nơi nhận sách/Candles.png" id="6_o5y4x"]
 [ext_resource type="PackedScene" uid="uid://dftrpkfy22rxb" path="res://scenes/PlayerInChapel.tscn" id="7_nog23"]
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="9_xy6rp"]
+[ext_resource type="PackedScene" uid="uid://c11d18ffq508i" path="res://scenes/ShopUI.tscn" id="11_yguj4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i3ued"]
 texture = ExtResource("1_fteks")
@@ -886,3 +887,21 @@ offset_left = 6.0
 offset_right = 6.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1957100153]
+
+[node name="ShopUi" parent="HUD" unique_id=1755367950 instance=ExtResource("11_yguj4")]
+visible = false
+offset_left = 252.0
+offset_top = 102.0
+offset_right = -226.0
+offset_bottom = -43.0
+
+[node name="OpenShop" type="Button" parent="HUD" unique_id=929452161]
+offset_left = 396.0
+offset_top = 80.0
+offset_right = 448.0
+offset_bottom = 115.0
+text = "SHOP"
+
+[connection signal="pressed" from="HUD/OpenShop" to="." method="_on_open_shop_pressed"]

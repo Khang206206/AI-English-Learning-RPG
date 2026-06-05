@@ -129,7 +129,53 @@ animations = [{
 "texture": ExtResource("24_42b1b")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_ha2mi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_apa73")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_74r1k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_8svfe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_2a3c5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_42b1b")
+}],
+"loop": true,
+"name": &"idle_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_ha2mi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_apa73")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_74r1k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_8svfe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_2a3c5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_42b1b")
+}],
+"loop": true,
+"name": &"idle_up",
 "speed": 5.0
 }, {
 "frames": [{
@@ -175,7 +221,53 @@ animations = [{
 "texture": ExtResource("36_vdulj")
 }],
 "loop": true,
-"name": &"run",
+"name": &"run_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_fuw3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_8txt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_2w11d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_770dr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_8f1cb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_vdulj")
+}],
+"loop": true,
+"name": &"run_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_fuw3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_8txt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_2w11d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_770dr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_8f1cb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_vdulj")
+}],
+"loop": true,
+"name": &"run_up",
 "speed": 5.0
 }, {
 "frames": [{
@@ -203,25 +295,25 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hax0n"]
-radius = 4.0
-height = 8.0
+radius = 7.0
+height = 14.0
 
 [node name="PlayerInChapel" type="CharacterBody2D" unique_id=1446754781]
-position = Vector2(0, 1)
 script = ExtResource("1_r702v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=662991125]
 texture_filter = 3
 texture_repeat = 2
-position = Vector2(1.4999999, -1.9999995)
+position = Vector2(0, -9)
 scale = Vector2(1.0625, 1.125)
 sprite_frames = SubResource("SpriteFrames_vau08")
-animation = &"idle"
-autoplay = "idle"
+animation = &"idle_down"
+autoplay = "idle_side"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=940606629]
-position = Vector2(2, 2)
+position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_hax0n")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1033155081]
+position = Vector2(0, -4)
 zoom = Vector2(2.3, 2.3)
