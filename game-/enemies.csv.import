@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cnb8r2g3fdama"
+
+[deps]
+
+files=["res://enemies. enemy.translation", "res://enemies. required.translation", "res://enemies. hp.translation", "res://enemies. vocabulary.translation"]
+
+source_file="res://enemies.csv"
+dest_files=["res://enemies. enemy.translation", "res://enemies. required.translation", "res://enemies. hp.translation", "res://enemies. vocabulary.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

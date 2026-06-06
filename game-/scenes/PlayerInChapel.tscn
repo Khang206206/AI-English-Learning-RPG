@@ -40,6 +40,8 @@
 [ext_resource type="Script" uid="uid://us6psgpnkl53" path="res://scripts/hud.gd" id="38_1stu6"]
 [ext_resource type="Texture2D" uid="uid://b61wu41uabavm" path="res://item_tres/50_50.tres" id="39_qv4wb"]
 [ext_resource type="PackedScene" uid="uid://c11d18ffq508i" path="res://scenes/ShopUI.tscn" id="40_133f2"]
+[ext_resource type="Texture2D" uid="uid://bs4426to2vbyv" path="res://assets/magic book/Book.png" id="41_d148o"]
+[ext_resource type="PackedScene" uid="uid://c4kav3vplws2v" path="res://scenes/NotebookUI_v2.tscn" id="42_03dlq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vau08"]
 animations = [{
@@ -346,4 +348,17 @@ offset_right = 0.0
 offset_bottom = 0.0
 size_flags_horizontal = 4
 
+[node name="BtnNotebook" type="TextureButton" parent="HUD" unique_id=386811796]
+offset_left = 1064.0
+offset_top = 601.0
+offset_right = 1099.0
+offset_bottom = 657.0
+texture_normal = ExtResource("41_d148o")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="NotebookUI2" parent="HUD" unique_id=447938710 instance=ExtResource("42_03dlq")]
+visible = false
+
 [connection signal="pressed" from="HUD/ShopButton" to="HUD" method="_on_shop_button_pressed"]
+[connection signal="pressed" from="HUD/BtnNotebook" to="HUD" method="_on_btn_notebook_pressed"]

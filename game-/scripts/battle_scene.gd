@@ -221,6 +221,8 @@ func check_answer(selected_choice: String):
 		magic_timer.stop_timer()
 
 	var word_id: int     = current_question.get("word_id", -1)
+	var grammar_id: int  = current_question.get("grammar_id", -1)
+	var is_grammar: bool = (grammar_id != -1)
 	var ui_mode = current_question.get("ui_mode", "mcq")
 	var is_correct: bool = false
 
@@ -289,7 +291,10 @@ func check_answer(selected_choice: String):
 			_:
 				monster_hp -= 4 # Các hệ đạn khác (normal, ice, electric) gây 4 sát thương cơ bản
 		update_health_ui()
-		ProgressManager.update_after_answer(word_id, true)
+		if is_grammar:
+			ProgressManager.update_grammar_after_answer(grammar_id, true)
+		else:
+			ProgressManager.update_after_answer(word_id, true)
 		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")
 		
 		if monster_hp <= 0:
@@ -333,7 +338,10 @@ func check_answer(selected_choice: String):
 		# -------------------------------------------------------------------
 
 		# Gọi ProgressManager xử lý trừ tim trong hệ thống và lưu SQLite
-		ProgressManager.update_after_answer(word_id, false)
+		if is_grammar:
+			ProgressManager.update_grammar_after_answer(grammar_id, false)
+		else:
+			ProgressManager.update_after_answer(word_id, false)
 		if current_bullet == "wood":
 			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 2 máu lẻ (1/2 quả tim)
 			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 2 máu.")
@@ -523,6 +531,8 @@ func _on_db_hp_changed(new_hp: int):
 func _on_timer_timeout():
 	set_buttons_disabled(true)
 	var word_id: int = current_question.get("word_id", -1)
+	var grammar_id: int = current_question.get("grammar_id", -1)
+	var is_grammar: bool = (grammar_id != -1)
 	if SPELL_SCENE:
 		if is_monster_frozen:
 			print("[Combat] Quái đang bị đóng băng! May quá không bị phản công.")
@@ -558,7 +568,10 @@ func _on_timer_timeout():
 				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
 				await get_tree().create_timer(0.3).timeout 
 				player_anim.play("idle")
-	ProgressManager.update_after_answer(word_id, false)
+	if is_grammar:
+		ProgressManager.update_grammar_after_answer(grammar_id, false)
+	else:
+		ProgressManager.update_after_answer(word_id, false)
 	if current_bullet == "wood":
 			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 1 máu lẻ (1/2 quả tim)
 			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 1 máu.")
