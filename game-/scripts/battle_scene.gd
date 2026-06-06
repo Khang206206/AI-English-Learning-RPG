@@ -37,6 +37,16 @@ extends Control
 @onready var btn_ice = $UI/MainPanel/MagicBullets/BtnIce
 @onready var btn_wood = $UI/MainPanel/MagicBullets/BtnWood
 
+@onready var btn_potion = get_node_or_null("UI/MainPanel/Items/BtnPotion")
+@onready var btn_fifty = get_node_or_null("UI/MainPanel/Items/BtnFifty")
+@onready var btn_skip = get_node_or_null("UI/MainPanel/Items/BtnSkip")
+@onready var btn_freeze = get_node_or_null("UI/MainPanel/Items/BtnFreeze")
+
+@onready var label_potion = get_node_or_null("UI/MainPanel/Items/BtnPotion/Label")
+@onready var label_fifty = get_node_or_null("UI/MainPanel/Items/BtnFifty/Label")
+@onready var label_skip = get_node_or_null("UI/MainPanel/Items/BtnSkip/Label")
+@onready var label_freeze = get_node_or_null("UI/MainPanel/Items/BtnFreeze/Label")
+
 var current_bullet: String = "normal"
 var is_monster_frozen: bool = false
 # 2. KHAI BÁO BIẾN TRẠNG THÁI (State)
@@ -114,6 +124,41 @@ func _ready():
 			# Đặt màu mặc định ban đầu cho nút
 			_update_button_visuals(button, button.button_pressed)
 
+	# Kết nối tín hiệu cho các nút vật phẩm
+	if btn_potion: btn_potion.pressed.connect(_use_potion)
+	if btn_fifty: btn_fifty.pressed.connect(_use_fifty_fifty)
+	if btn_skip: btn_skip.pressed.connect(_use_skip)
+	if btn_freeze: btn_freeze.pressed.connect(_use_time_freeze)
+
+func _get_item_quantity(item_id: int) -> int:
+	var inventory = ProgressManager.get_inventory()
+	for item in inventory:
+		if item["item_id"] == item_id:
+			return item["quantity"]
+	return 0
+
+func update_item_ui():
+	if btn_potion:
+		var count = _get_item_quantity(1)
+		btn_potion.disabled = count <= 0
+		if label_potion: label_potion.text = str(count)
+		
+	if btn_fifty:
+		var count = _get_item_quantity(2)
+		var ui_mode = current_question.get("ui_mode", "mcq") if current_question else "mcq"
+		btn_fifty.disabled = (count <= 0) or (ui_mode != "mcq")
+		if label_fifty: label_fifty.text = str(count)
+		
+	if btn_skip:
+		var count = _get_item_quantity(3)
+		btn_skip.disabled = count <= 0
+		if label_skip: label_skip.text = str(count)
+		
+	if btn_freeze:
+		var count = _get_item_quantity(4)
+		btn_freeze.disabled = count <= 0
+		if label_freeze: label_freeze.text = str(count)
+
 func setup_hearts():
 	for child in player_hearts_container.get_children():
 		child.queue_free()
@@ -166,7 +211,8 @@ func load_next_question():
 	if magic_timer:
 		magic_timer.show()
 		magic_timer.start_timer()
-	
+	update_item_ui()
+
 
 # 4. COMBAT STATE MACHINE
 func check_answer(selected_choice: String):
@@ -584,4 +630,54 @@ func _on_btn_wood_toggled(toggled_on: bool):
 		btn_ice.button_pressed = false
 	elif current_bullet == "wood":
 		current_bullet = "normal"
-		
+
+# ==========================================
+# CÁC HÀM XỬ LÝ VẬT PHẨM (ITEMS)
+# ==========================================
+func _use_potion():
+	if ProgressManager.consume_item(1):
+		player_hp = clampi(player_hp + 4, 0, 20)
+		DatabaseManager.player_hearts = player_hp
+		update_health_ui()
+		update_item_ui()
+		print("[Battle] Dùng Tinh Dược Sinh Lực! HP: %d" % player_hp)
+
+func _use_fifty_fifty():
+	if current_question.get("ui_mode") != "mcq": return
+	if ProgressManager.consume_item(2):
+		var correct = current_question["correct_answer"]
+		var wrong_btns = []
+		for label in ["A", "B", "C", "D"]:
+			if label != correct:
+				wrong_btns.append(label)
+		wrong_btns.shuffle()
+		for i in range(2):
+			match wrong_btns[i]:
+				"A": btn_a.disabled = true; btn_a.modulate.a = 0.3
+				"B": btn_b.disabled = true; btn_b.modulate.a = 0.3
+				"C": btn_c.disabled = true; btn_c.modulate.a = 0.3
+				"D": btn_d.disabled = true; btn_d.modulate.a = 0.3
+		update_item_ui()
+		print("[Battle] Dùng Nhãn Lực Tinh Tú! Ẩn 2 đáp án sai.")
+
+func _use_skip():
+	if ProgressManager.consume_item(3):
+		print("[Battle] Dùng Cuộn Giấy Không Gian! Bỏ qua câu hỏi.")
+		if magic_timer: magic_timer.stop_timer()
+		update_item_ui()
+		load_next_question()
+
+func _use_time_freeze():
+	if ProgressManager.consume_item(4):
+		print("[Battle] Dùng Băng Phong Thời Gian!")
+		if magic_timer:
+			magic_timer.stop_timer()
+			# Khởi tạo timer 10s độc lập
+			var timer = get_tree().create_timer(10.0)
+			timer.timeout.connect(func():
+				# Chỉ chạy lại timer nếu game chưa kết thúc và vẫn ở câu hỏi hiện tại
+				if not is_game_over and magic_timer and !btn_a.disabled:
+					magic_timer.start_timer()
+					print("[Battle] Hết hiệu lực Băng Phong Thời Gian!")
+			)
+		update_item_ui()

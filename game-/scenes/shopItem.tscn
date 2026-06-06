@@ -33,7 +33,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -7.0
+offset_top = -8.5
+offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 1
@@ -56,14 +57,25 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -4.5
+offset_right = 1.0
+offset_bottom = -4.5
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
+[node name="QuantityBox" type="SpinBox" parent="VBoxContainer" unique_id=1176052263]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1.0
+value = 1.0
+
 [node name="BuyButton" type="Button" parent="VBoxContainer" unique_id=1197249713]
 texture_filter = 1
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_cqd8q")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_r0xgj")

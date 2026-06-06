@@ -67,6 +67,10 @@
 [ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="52_d1qpi"]
 [ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
 [ext_resource type="Texture2D" uid="uid://42japmndwxs0" path="res://assets/ElementUI-Icons/Life-Icon.png" id="52_r4kuy"]
+[ext_resource type="Texture2D" uid="uid://bw7avx7fexn2w" path="res://item_tres/hp.tres" id="57_72s1w"]
+[ext_resource type="Texture2D" uid="uid://b61wu41uabavm" path="res://item_tres/50_50.tres" id="58_gpdlj"]
+[ext_resource type="Texture2D" uid="uid://co83lfb6vcu2a" path="res://item_tres/skip.tres" id="59_oyjdy"]
+[ext_resource type="Texture2D" uid="uid://dvfjk1ijue6gi" path="res://item_tres/time_freeze.tres" id="60_37dq0"]
 [ext_resource type="PackedScene" uid="uid://behvdv4rxcbpg" path="res://scenes/Timer.tscn" id="60_gewri"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_642jd"]
@@ -303,6 +307,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 30.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gkmpl")
@@ -520,9 +526,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_g7y7t")
 
 [node name="MagicBullets" type="HBoxContainer" parent="UI/MainPanel" unique_id=298678062]
 layout_mode = 0
-offset_top = 577.35
-offset_right = 1340.0
-offset_bottom = 930.35
+offset_left = 0.99999994
+offset_top = 567.0
+offset_right = 1341.0
+offset_bottom = 920.0
 scale = Vector2(0.2, 0.2)
 
 [node name="BtnFire" type="TextureButton" parent="UI/MainPanel/MagicBullets" unique_id=347573745]
@@ -544,6 +551,92 @@ texture_normal = ExtResource("51_ofjeq")
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("52_r4kuy")
+
+[node name="Items" type="HBoxContainer" parent="UI/MainPanel" unique_id=1979709415]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 820.0
+offset_top = 530.0
+offset_right = 1088.0
+offset_bottom = 594.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="BtnPotion" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1516244666]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("57_72s1w")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/MainPanel/Items/BtnPotion" unique_id=441865269]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 80.0
+offset_bottom = 89.0
+text = "0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnFifty" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1773672848]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("58_gpdlj")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="UI/MainPanel/Items/BtnFifty" unique_id=1582223774]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 80.0
+offset_bottom = 89.0
+text = "0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnSkip" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1550195334]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("59_oyjdy")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/MainPanel/Items/BtnSkip" unique_id=1245260171]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 80.0
+offset_bottom = 89.0
+text = "0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnFreeze" type="TextureButton" parent="UI/MainPanel/Items" unique_id=503099728]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("60_37dq0")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/MainPanel/Items/BtnFreeze" unique_id=682992858]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 80.0
+offset_bottom = 89.0
+text = "0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AITutorPopup" type="NinePatchRect" parent="UI" unique_id=600995695]
 texture_filter = 1
@@ -578,9 +671,10 @@ material = SubResource("ShaderMaterial_tba6u")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -2.0
-offset_right = 25.0
-offset_bottom = 27.0
+offset_left = -3.0
+offset_top = -12.0
+offset_right = 22.0
+offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.7254902)
@@ -664,6 +758,7 @@ volume_db = -6.0
 stream = ExtResource("51_giceh")
 
 [node name="Defeat_SFX" type="AudioStreamPlayer2D" parent="." unique_id=518581527]
+position = Vector2(-3, 3)
 stream = ExtResource("52_ljqkc")
 
 [node name="MagicTimer" parent="." unique_id=1302128451 instance=ExtResource("60_gewri")]

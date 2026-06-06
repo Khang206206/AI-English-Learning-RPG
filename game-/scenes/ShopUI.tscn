@@ -152,6 +152,17 @@ size_flags_vertical = 4
 texture_normal = SubResource("AtlasTexture_c6qty")
 stretch_mode = 0
 
+[node name="GoldLabel" type="Label" parent="Background/MarginContainer/VBoxContainer/Header" unique_id=1062370896]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 6.0
+offset_right = 445.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+text = "💰 Gold: 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Body" type="MarginContainer" parent="Background/MarginContainer/VBoxContainer" unique_id=1743512600]
 layout_mode = 2
 size_flags_vertical = 3

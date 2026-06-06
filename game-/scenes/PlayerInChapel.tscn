@@ -37,6 +37,9 @@
 [ext_resource type="Texture2D" uid="uid://bpxgkdvx1emh3" path="res://assets/player2/Run/Run4.png" id="34_770dr"]
 [ext_resource type="Texture2D" uid="uid://bi4rwgtf4lg0a" path="res://assets/player2/Run/Run5.png" id="35_8f1cb"]
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="36_vdulj"]
+[ext_resource type="Script" uid="uid://us6psgpnkl53" path="res://scripts/hud.gd" id="38_1stu6"]
+[ext_resource type="Texture2D" uid="uid://b61wu41uabavm" path="res://item_tres/50_50.tres" id="39_qv4wb"]
+[ext_resource type="PackedScene" uid="uid://c11d18ffq508i" path="res://scenes/ShopUI.tscn" id="40_133f2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vau08"]
 animations = [{
@@ -317,3 +320,30 @@ shape = SubResource("CapsuleShape2D_hax0n")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1033155081]
 position = Vector2(0, -4)
 zoom = Vector2(2.3, 2.3)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=215152764]
+script = ExtResource("38_1stu6")
+
+[node name="ShopButton" type="TextureButton" parent="HUD" unique_id=1882433777]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("39_qv4wb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ShopUI" parent="HUD" unique_id=1755367950 instance=ExtResource("40_133f2")]
+visible = false
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+size_flags_horizontal = 4
+
+[connection signal="pressed" from="HUD/ShopButton" to="HUD" method="_on_shop_button_pressed"]

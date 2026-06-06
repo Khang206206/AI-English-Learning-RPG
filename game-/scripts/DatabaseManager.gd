@@ -228,10 +228,14 @@ func _seed_items() -> void:
 		return
 	print("[DatabaseManager] Nạp vật phẩm ban đầu...")
 	var items = [
-		[1, "Bình Máu",     "Hồi phục 4 HP (1 quả tim).",     "potion",      1.0, 100],
-		[2, "Phép 50/50",   "Loại bỏ 2 đáp án sai.",          "fifty_fifty", 2.0, 200],
-		[3, "Bỏ qua câu",  "Bỏ qua câu, không mất máu.",     "skip",        1.0, 150],
-		[4, "Đóng băng",    "Đóng băng kim la bàn 10 giây.",   "time_freeze", 1.0, 250],
+		[1, "Tinh Dược Sinh Lực",     "Hồi 1 máu cho người chơi.",     "potion",      1.0, 15],
+		[2, "Lá Bài Tiên Tri",   "Dùng cho câu 4 đáp án, loại bỏ 2 đáp án sai.",          "fifty_fifty", 2.0, 30],
+		[3, "Cuộn Giấy Không Gian",  "Bỏ qua câu hỏi hiện tại, không mất máu.",     "skip",        1.0, 25],
+		[4, "Băng Phong Thời Gian",    "Dừng thời gian (timer) của câu hỏi đó lại.",   "time_freeze", 1.0, 40],
+		[5, "Hỏa Cầu",      "Gây 5 sát thương. Bị phản công mất 5 HP.",       "spell",       0.0, 60],
+		[6, "Băng Tiễn",    "Gây 4 sát thương. 50% đóng băng quái 1 lượt.",    "spell",       0.0, 60],
+		[7, "Sét Đánh",     "Gây 4 sát thương. 75% tăng thời gian 1.5x.",      "spell",       0.0, 60],
+		[8, "Gỗ Xưa",       "Gây 4 sát thương. Hồi 1 HP cho người chơi.",      "spell",       0.0, 60],
 	]
 	for it in items:
 		db.query_with_bindings(
