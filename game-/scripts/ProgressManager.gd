@@ -52,18 +52,20 @@ func get_weakest_vocab(tier_id: int, pool_size: int = 15) -> Dictionary:
 
 ## Hàm chính: gọi sau mỗi câu hỏi trong trận đấu hoặc ôn tập.
 ## Tính toán SM-2, cập nhật mastery và HP trong cùng 1 lần gọi.
-func update_after_answer(word_id: int, is_correct: bool) -> void:
+func update_after_answer(word_id: int, is_correct: bool, is_combat: bool = true) -> void:
 	# ── Xử lý HP (ủy quyền cho DatabaseManager giữ state) ──
-	if not is_correct:
+	if is_combat and not is_correct:
 		DatabaseManager.player_hearts = max(0, DatabaseManager.player_hearts - 4)
 		print("[ProgressManager] Sai! HP: %d/%d"
 			% [DatabaseManager.player_hearts, DatabaseManager.max_hearts])
 
-	DatabaseManager.emit_signal("hp_changed", DatabaseManager.player_hearts)
+	if is_combat:
+		DatabaseManager.emit_signal("hp_changed", DatabaseManager.player_hearts)
 
 	# ── Nếu word_id = -1 (emergency fallback) → chỉ xử lý HP ──
 	if word_id == -1:
-		_save_hp_and_check_gameover()
+		if is_combat:
+			_save_hp_and_check_gameover()
 		return
 
 	# ── Truy vấn bản ghi hiện tại ──
@@ -126,7 +128,8 @@ func update_after_answer(word_id: int, is_correct: bool) -> void:
 		print("[ProgressManager] SM-2: word=%d streak=%d interval=%d next=%s"
 			% [word_id, new_streak, new_interval, next_date])
 
-	_save_hp_and_check_gameover()
+	if is_combat:
+		_save_hp_and_check_gameover()
 
 
 func _save_hp_and_check_gameover() -> void:
@@ -281,14 +284,79 @@ func add_item(item_id: int, qty: int = 1) -> void:
 # 7. NGỮ PHÁP
 # ==============================================================================
 
-## Trả về 1 chủ điểm ngữ pháp ngẫu nhiên theo tier (dùng cho grammar_mcq).
-func get_random_grammar(tier_id: int) -> Dictionary:
-	db.query_with_bindings(
-		"SELECT * FROM Grammar_Bank WHERE tier_id = ? ORDER BY RANDOM() LIMIT 1;",
-		[tier_id])
+## Trả về chủ điểm ngữ pháp yếu nhất theo tier (dùng cho grammar DDA).
+func get_weakest_grammar(tier_id: int) -> Dictionary:
+	var save_id: int = DatabaseManager.CURRENT_SAVE_SLOT
+	db.query_with_bindings("""
+		SELECT
+			g.grammar_id, g.topic_name, g.formula, g.explanation_vi, g.example_en, g.tier_id,
+			COALESCE(CAST(m.correct_count AS REAL) / (m.encounter_count + 1), 0.0) AS mastery_score,
+			COALESCE(m.encounter_count, 0) AS encounter_count,
+			COALESCE(m.correct_count, 0)   AS correct_count
+		FROM Grammar_Bank g
+		LEFT JOIN Player_Grammar_Mastery m ON g.grammar_id = m.grammar_id AND m.save_id = ?
+		WHERE g.tier_id = ?
+		ORDER BY mastery_score ASC, RANDOM()
+		LIMIT 1;
+	""", [save_id, tier_id])
+
 	if db.query_result.is_empty():
+		push_warning("[ProgressManager] Không tìm thấy ngữ pháp cho tier %d" % tier_id)
 		return {}
-	return db.query_result[0]
+
+	var chosen: Dictionary = db.query_result[0].duplicate()
+	print("[ProgressManager] Chọn ngữ pháp (tier %d) → '%s' (mastery: %.2f)"
+		% [tier_id, chosen["topic_name"], chosen["mastery_score"]])
+	return chosen
+
+func update_grammar_after_answer(grammar_id: int, is_correct: bool, is_combat: bool = true) -> void:
+	if is_combat and not is_correct:
+		DatabaseManager.player_hearts = max(0, DatabaseManager.player_hearts - 4)
+		print("[ProgressManager] Sai Ngữ pháp! HP: %d/%d"
+			% [DatabaseManager.player_hearts, DatabaseManager.max_hearts])
+
+	if is_combat:
+		DatabaseManager.emit_signal("hp_changed", DatabaseManager.player_hearts)
+
+	var save_id: int = DatabaseManager.CURRENT_SAVE_SLOT
+	db.query_with_bindings(
+		"SELECT * FROM Player_Grammar_Mastery WHERE save_id = ? AND grammar_id = ?;",
+		[save_id, grammar_id])
+
+	var correct_delta: int = 1 if is_correct else 0
+
+	if db.query_result.is_empty():
+		db.query_with_bindings("""
+			INSERT INTO Player_Grammar_Mastery
+				(save_id, grammar_id, encounter_count, correct_count)
+			VALUES (?, ?, 1, ?);""",
+			[save_id, grammar_id, correct_delta])
+	else:
+		db.query_with_bindings("""
+			UPDATE Player_Grammar_Mastery
+			SET encounter_count = encounter_count + 1,
+			    correct_count   = correct_count + ?
+			WHERE save_id = ? AND grammar_id = ?;""",
+			[correct_delta, save_id, grammar_id])
+
+	if is_combat:
+		_save_hp_and_check_gameover()
+
+
+## Lấy toàn bộ danh sách ngữ pháp từ Grammar_Bank (dùng cho Notebook)
+func get_all_grammar() -> Array:
+	var save_id: int = DatabaseManager.CURRENT_SAVE_SLOT
+	db.query_with_bindings("""
+		SELECT g.grammar_id, g.topic_name, g.formula, 
+		       g.explanation_vi, g.example_en, g.tier_id,
+		       e.enemy_type,
+		       COALESCE(m.encounter_count, 0) AS encounter_count
+		FROM Grammar_Bank g
+		LEFT JOIN Enemy_Tier_Dict e ON g.tier_id = e.tier_id
+		LEFT JOIN Player_Grammar_Mastery m ON g.grammar_id = m.grammar_id AND m.save_id = ?
+		ORDER BY g.tier_id ASC, g.grammar_id ASC;
+	""", [save_id])
+	return db.query_result.duplicate()
 
 
 # ==============================================================================

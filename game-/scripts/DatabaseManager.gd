@@ -14,6 +14,8 @@ signal game_loaded(data: Dictionary)
 var db = null
 const DB_PATH: String = "data.db"
 const CSV_PATH: String = "vocabulary.csv"
+const ENEMIES_CSV_PATH: String = "enemies.csv"
+const GRAMMAR_CSV_PATH: String = "grammar.csv"
 const CURRENT_SAVE_SLOT: int = 1
 
 var player_hearts: int = 20
@@ -147,6 +149,18 @@ func _create_tables() -> void:
 		);
 	""")
 
+	db.query("""
+		CREATE TABLE IF NOT EXISTS Player_Grammar_Mastery (
+			save_id             INTEGER NOT NULL,
+			grammar_id          INTEGER NOT NULL,
+			encounter_count     INTEGER DEFAULT 0,
+			correct_count       INTEGER DEFAULT 0,
+			PRIMARY KEY (save_id, grammar_id),
+			FOREIGN KEY (save_id) REFERENCES Player_Profile(save_id),
+			FOREIGN KEY (grammar_id) REFERENCES Grammar_Bank(grammar_id)
+		);
+	""")
+
 	print("[DatabaseManager] Cấu trúc tất cả các bảng đã sẵn sàng.")
 
 # ==============================================================================
@@ -165,62 +179,84 @@ func _seed_enemies() -> void:
 	if not db.query_result.is_empty() and db.query_result[0]["total"] > 0:
 		return
 
-	print("[DatabaseManager] Nạp dữ liệu quái vật ban đầu...")
-	var enemies = [
-		[1, "Slime",       1,  5, "Nature & Forest"],
-		[2, "Goblin",      2,  8, "Camping & Tools"],
-		[3, "Wolf",        3, 10, "Survival & Weather"],
-		[4, "Skeleton",    4, 12, "Ancient Ruins & History"],
-		[5, "Orc",         5, 15, "Combat & Weaponry"],
-		[6, "Golem",       6, 20, "Caves & Mining"],
-		[7, "Witch",       7, 25, "Magic & Alchemy"],
-		[8, "Chimera",     8, 30, "Fantasy Creatures"],
-		[9, "Dragon_Boss", 9, 50, "Dragons & Legends"],
-	]
-	for e in enemies:
+	if not FileAccess.file_exists(ENEMIES_CSV_PATH):
+		push_warning("[DatabaseManager] Không tìm thấy '%s'. Bỏ qua." % ENEMIES_CSV_PATH)
+		return
+
+	var file = FileAccess.open(ENEMIES_CSV_PATH, FileAccess.READ)
+	if file == null:
+		push_error("[DatabaseManager] Không thể mở file CSV: %s" % ENEMIES_CSV_PATH)
+		return
+
+	print("[DatabaseManager] Nạp dữ liệu quái vật từ CSV...")
+	var imported_count: int = 0
+	var is_first_line: bool = true
+
+	while not file.eof_reached():
+		var parts = file.get_csv_line()
+		if is_first_line:
+			is_first_line = false
+			continue
+			
+		if parts.size() < 5 or parts[0].strip_edges() == "":
+			continue
+
+		var tier_id = parts[0].strip_edges().to_int()
+		var enemy_type = parts[1].strip_edges()
+		var req_level = parts[2].strip_edges().to_int()
+		var hp = parts[3].strip_edges().to_int()
+		var vocab_theme = parts[4].strip_edges()
+
 		db.query_with_bindings(
 			"INSERT OR IGNORE INTO Enemy_Tier_Dict (tier_id, enemy_type, required_level, hp, vocabulary_theme) VALUES (?, ?, ?, ?, ?);",
-			e
+			[tier_id, enemy_type, req_level, hp, vocab_theme]
 		)
+		imported_count += 1
+
+	file.close()
+	print("[DatabaseManager] Đã nạp %d quái vật từ CSV." % imported_count)
 
 func _seed_grammar() -> void:
 	db.query("SELECT COUNT(*) as total FROM Grammar_Bank;")
 	if not db.query_result.is_empty() and db.query_result[0]["total"] > 0:
 		return
-	print("[DatabaseManager] Nạp 18 chủ điểm ngữ pháp...")
-	var data = [
-		# ── Tier 1: Nature & Forest ──
-		["Present Simple",                "S + V(s/es)", "Thì hiện tại đơn: dùng để mô tả thói quen, sự thật hiển nhiên.", "The slime attacks every night in the forest.", 1],
-		["Articles a/an/the",             "a/an + N (ít) / the + N (xác định)", "Mạo từ: a/an cho danh từ chưa xác định, the cho danh từ đã biết.", "A slime appeared. The slime was green.", 1],
-		# ── Tier 2: Camping & Tools ──
-		["Past Simple",                   "S + V-ed / V2", "Thì quá khứ đơn: diễn tả hành động đã xảy ra và kết thúc trong quá khứ.", "The goblin stole my compass yesterday.", 2],
-		["Present Continuous",            "S + am/is/are + V-ing", "Thì hiện tại tiếp diễn: diễn tả hành động đang xảy ra tại thời điểm nói.", "Look! The goblin is lighting a campfire.", 2],
-		# ── Tier 3: Survival & Weather ──
-		["Future Simple",                 "S + will + V", "Thì tương lai đơn: diễn tả một quyết định hoặc dự đoán trong tương lai.", "The blizzard will freeze you if you do not find shelter.", 3],
-		["Comparatives & Superlatives",   "S + V + adj-er/est", "So sánh hơn và so sánh nhất: dùng để so sánh các đặc điểm của sự vật.", "This wolf is stronger than the goblin, but the dragon is the strongest.", 3],
-		# ── Tier 4: Ancient Ruins & History ──
-		["Present Perfect",               "S + have/has + V3/V-ed", "Thì hiện tại hoàn thành: diễn tả hành động bắt đầu trong quá khứ và còn liên quan đến hiện tại.", "I have explored this ancient tomb three times.", 4],
-		["Gerunds",                       "V-ing làm danh từ", "Danh động từ: động từ thêm đuôi -ing đóng vai trò như một danh từ trong câu.", "Excavating the ruins is very dangerous.", 4],
-		# ── Tier 5: Combat & Weaponry ──
-		["Conditional Type 1 & 2",        "If + S + V / S + will/would + V", "Câu điều kiện 1 và 2: diễn tả điều kiện có thể hoặc không thể xảy ra ở hiện tại.", "If you drop your shield, the orc warrior will strike.", 5],
-		["Past Continuous",               "S + was/were + V-ing", "Thì quá khứ tiếp diễn: diễn tả hành động đang xảy ra tại một thời điểm cụ thể trong quá khứ.", "The vanguard was marching when the ambush happened.", 5],
-		# ── Tier 6: Caves & Mining ──
-		["Passive Voice",                 "S + be + V3/V-ed", "Câu bị động: nhấn mạnh vào đối tượng chịu tác động của hành động.", "The rare gemstones were guarded by a giant golem.", 6],
-		["Past Perfect",                  "S + had + V3/V-ed", "Thì quá khứ hoàn thành: diễn tả một hành động xảy ra trước một hành động khác trong quá khứ.", "The tunnel had collapsed before the miners arrived.", 6],
-		# ── Tier 7: Magic & Alchemy ──
-		["Relative Clauses",              "N + who/which/that + V", "Mệnh đề quan hệ: dùng để bổ nghĩa cho danh từ đứng trước nó.", "The witch who cast the spell has disappeared.", 7],
-		["Reported Speech",               "S + said (that) + S + V (lùi thì)", "Câu gián tiếp: dùng để thuật lại lời nói của người khác.", "The wizard said that the elixir was ready.", 7],
-		# ── Tier 8: Fantasy Creatures ──
-		["Compound Nouns",                "Noun + Noun", "Danh từ ghép: hai danh từ kết hợp tạo thành một từ có nghĩa mới.", "The werewolf hunts by the pale moonlight.", 8],
-		["Participles as Adjectives",     "V-ing / V-ed làm tính từ", "Phân từ làm tính từ: V-ing mang nghĩa chủ động, V-ed mang nghĩa bị động.", "The terrifying beast roared at the frightened villagers.", 8],
-		# ── Tier 9: Dragons & Legends ──
-		["Inversion",                     "Trợ động từ + S + V", "Đảo ngữ: đưa trợ động từ hoặc phó từ lên đầu câu để nhấn mạnh.", "Never have I seen such a catastrophic fire.", 9],
-		["Cleft Sentences",               "It is/was + ... + that + ...", "Cấu trúc nhấn mạnh: dùng để tập trung sự chú ý vào một phần cụ thể của câu.", "It was the dragon that destroyed the entire sanctuary.", 9],
-	]
-	for g in data:
+
+	if not FileAccess.file_exists(GRAMMAR_CSV_PATH):
+		push_warning("[DatabaseManager] Không tìm thấy '%s'. Bỏ qua." % GRAMMAR_CSV_PATH)
+		return
+
+	var file = FileAccess.open(GRAMMAR_CSV_PATH, FileAccess.READ)
+	if file == null:
+		push_error("[DatabaseManager] Không thể mở file CSV: %s" % GRAMMAR_CSV_PATH)
+		return
+
+	print("[DatabaseManager] Nạp chủ điểm ngữ pháp từ CSV...")
+	var imported_count: int = 0
+	var is_first_line: bool = true
+
+	while not file.eof_reached():
+		var parts = file.get_csv_line()
+		if is_first_line:
+			is_first_line = false
+			continue
+			
+		if parts.size() < 5 or parts[0].strip_edges() == "":
+			continue
+
+		var topic_name = parts[0].strip_edges()
+		var formula = parts[1].strip_edges()
+		var explanation = parts[2].strip_edges()
+		var example = parts[3].strip_edges()
+		var tier_id = parts[4].strip_edges().to_int()
+
 		db.query_with_bindings(
-			"INSERT OR IGNORE INTO Grammar_Bank (topic_name, formula, explanation_vi, example_en, tier_id) VALUES (?, ?, ?, ?, ?);", g)
-	print("[DatabaseManager] Đã nạp %d chủ điểm ngữ pháp." % data.size())
+			"INSERT OR IGNORE INTO Grammar_Bank (topic_name, formula, explanation_vi, example_en, tier_id) VALUES (?, ?, ?, ?, ?);", 
+			[topic_name, formula, explanation, example, tier_id]
+		)
+		imported_count += 1
+
+	file.close()
+	print("[DatabaseManager] Đã nạp %d chủ điểm ngữ pháp từ CSV." % imported_count)
 
 func _seed_items() -> void:
 	db.query("SELECT COUNT(*) as total FROM Item_Dict;")

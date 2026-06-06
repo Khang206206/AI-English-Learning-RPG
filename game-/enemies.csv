@@ -1,0 +1,10 @@
+tier_id, enemy_type , required_level, hp, vocabulary_theme
+      1, Slime      ,              1,  5, Nature & Forest
+      2, Goblin     ,              2,  8, Camping & Tools
+      3, Wolf       ,              3, 10, Survival & Weather
+      4, Skeleton   ,              4, 12, Ancient Ruins & History
+      5, Orc        ,              5, 15, Combat & Weaponry
+      6, Golem      ,              6, 20, Caves & Mining
+      7, Witch      ,              7, 25, Magic & Alchemy
+      8, Chimera    ,              8, 30, Fantasy Creatures
+      9, Dragon_Boss,              9, 50, Dragons & Legends
