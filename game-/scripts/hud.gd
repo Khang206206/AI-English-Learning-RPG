@@ -1,10 +1,13 @@
 extends CanvasLayer
 
 @onready var shop_ui = $ShopUI
+@onready var shop_button = $ShopButton
 
 func _ready():
 	# Đảm bảo HUD luôn hoạt động ngay cả khi game bị pause
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	shop_button.pressed.connect(_on_shop_button_pressed)
 	
 	if shop_ui != null:
 		shop_ui.visible = false

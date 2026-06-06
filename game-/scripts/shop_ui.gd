@@ -8,10 +8,19 @@ extends Control
 # Khai báo UI Gold (Phần người dùng cần thêm node trong Design)
 @onready var gold_label = $Background/MarginContainer/VBoxContainer/Header/GoldLabel
 
+@onready var desc_overlay = $DescriptionOverlay
+@onready var name_label = $DescriptionOverlay/ContentPanel/NameLabel
+@onready var desc_label = $DescriptionOverlay/ContentPanel/DescLabel
+
+
 signal closed
 const SHOP_ITEM_SCENE = preload("res://scenes/shopItem.tscn")
 
 func _ready():
+	# Kết nối sự kiện để đóng bảng khi bấm vào vùng nền overlay
+	desc_overlay.gui_input.connect(_on_overlay_input)
+	desc_overlay.hide()
+	
 	if tab_spell == null or tab_item == null or close_button == null:
 		push_error("LỖI: Một trong các Node điều khiển của Shop bị NULL. Hãy kiểm tra lại cây Node!")
 		return
@@ -128,3 +137,12 @@ func _load_items_into_grid(items_data: Array):
 				item_info.get("description", ""),
 				item_info.get("owned", 0)
 			)
+
+func show_item_description(item_name: String, item_desc: String):
+	name_label.text = item_name
+	desc_label.text = item_desc
+	desc_overlay.show()
+
+func _on_overlay_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		desc_overlay.hide()

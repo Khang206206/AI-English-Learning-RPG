@@ -33,8 +33,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -8.5
-offset_bottom = 13.0
+offset_top = -14.75
+offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 1
@@ -43,10 +43,12 @@ theme_override_constants/separation = 1
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.2784314)
+theme_override_font_sizes/font_size = 14
+text = "item"
 
 [node name="ItemBg" type="TextureRect" parent="VBoxContainer" unique_id=924988614]
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -58,9 +60,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1.0
-offset_top = -4.5
-offset_right = 1.0
-offset_bottom = -4.5
+offset_top = -0.25
+offset_right = -1.0
+offset_bottom = 0.75
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
@@ -69,14 +71,26 @@ stretch_mode = 5
 [node name="QuantityBox" type="SpinBox" parent="VBoxContainer" unique_id=1176052263]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 min_value = 1.0
 value = 1.0
+alignment = 1
+
+[node name="OwnedLabel" type="Label" parent="VBoxContainer" unique_id=1697872655]
+texture_filter = 1
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
 
 [node name="BuyButton" type="Button" parent="VBoxContainer" unique_id=1197249713]
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_cqd8q")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_r0xgj")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_mk2u8")

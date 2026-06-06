@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://Press_Start_2P/PressStart2P.ttf" id="3_c6qty"]
 [ext_resource type="Texture2D" uid="uid://bykrr5bkhy2jn" path="res://item_tres/nen_vang.tres" id="4_d6x5n"]
 [ext_resource type="Texture2D" uid="uid://by8tl0jarlonx" path="res://item_tres/tab_mac_dinh.tres" id="5_vkgig"]
+[ext_resource type="Texture2D" uid="uid://7g0n30mpocvf" path="res://assets/shop-item/Shop1.png" id="7_d6x5n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_owitj"]
 atlas = ExtResource("1_owitj")
@@ -38,17 +39,24 @@ expand_margin_bottom = 3.0
 atlas = ExtResource("1_owitj")
 region = Rect2(104, 1, 17.118, 12.723)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkgig"]
+bg_color = Color(0, 0, 0, 0.039215688)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ed10p"]
+texture = ExtResource("7_d6x5n")
+
 [node name="ShopUi" type="Control" unique_id=1755367950]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 264.0
-offset_top = 70.0
-offset_right = -214.0
-offset_bottom = -75.0
+offset_left = 270.0
+offset_top = 90.0
+offset_right = -160.75012
+offset_bottom = -106.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.9, 0.9)
 script = ExtResource("1_c6qty")
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=998937986]
@@ -57,10 +65,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 35.0
-offset_top = 38.0
-offset_right = -71.0
-offset_bottom = -37.0
+offset_left = 36.0
+offset_top = -7.0
+offset_right = -81.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_owitj")
@@ -75,6 +83,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 11.0
+offset_right = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 14
@@ -154,10 +164,10 @@ stretch_mode = 0
 
 [node name="GoldLabel" type="Label" parent="Background/MarginContainer/VBoxContainer/Header" unique_id=1062370896]
 layout_mode = 0
-offset_left = 336.0
-offset_top = 6.0
-offset_right = 445.0
-offset_bottom = 43.0
+offset_left = 334.0
+offset_top = 24.0
+offset_right = 443.0
+offset_bottom = 61.0
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 text = "💰 Gold: 100"
 horizontal_alignment = 1
@@ -173,9 +183,61 @@ theme_override_constants/margin_bottom = 45
 
 [node name="ItemGrid" type="GridContainer" parent="Background/MarginContainer/VBoxContainer/Body" unique_id=1907824121]
 layout_mode = 2
-theme_override_constants/h_separation = 110
-theme_override_constants/v_separation = 45
+theme_override_constants/h_separation = 130
+theme_override_constants/v_separation = 60
 columns = 2
 
-[node name="Footer" type="HBoxContainer" parent="Background/MarginContainer/VBoxContainer" unique_id=1283674148]
-layout_mode = 2
+[node name="DescriptionOverlay" type="Panel" parent="." unique_id=519857450]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -14.4444275
+offset_top = -48.888893
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vkgig")
+
+[node name="ContentPanel" type="Panel" parent="DescriptionOverlay" unique_id=106800779]
+custom_minimum_size = Vector2(90, 130)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.39000002
+anchor_top = 0.48100004
+anchor_right = 0.39000002
+anchor_bottom = 0.48100004
+offset_left = -13.860016
+offset_top = -68.94302
+offset_right = 116.139984
+offset_bottom = 109.05698
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ed10p")
+
+[node name="NameLabel" type="Label" parent="DescriptionOverlay/ContentPanel" unique_id=155768888]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 9.0
+offset_top = 2.0
+offset_right = 73.0
+offset_bottom = 25.0
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "tên sản phẩm"
+
+[node name="DescLabel" type="Label" parent="DescriptionOverlay/ContentPanel" unique_id=514642533]
+custom_minimum_size = Vector2(60, 90)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 19.0
+offset_right = 118.0
+offset_bottom = 167.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_font_sizes/font_size = 11
+text = "mô tả"
+autowrap_mode = 3

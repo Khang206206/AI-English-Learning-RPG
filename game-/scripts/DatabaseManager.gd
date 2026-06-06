@@ -232,10 +232,10 @@ func _seed_items() -> void:
 		[2, "Lá Bài Tiên Tri",   "Dùng cho câu 4 đáp án, loại bỏ 2 đáp án sai.",          "fifty_fifty", 2.0, 30],
 		[3, "Cuộn Giấy Không Gian",  "Bỏ qua câu hỏi hiện tại, không mất máu.",     "skip",        1.0, 25],
 		[4, "Băng Phong Thời Gian",    "Dừng thời gian (timer) của câu hỏi đó lại.",   "time_freeze", 1.0, 40],
-		[5, "Hỏa Cầu",      "Gây 5 sát thương. Bị phản công mất 5 HP.",       "spell",       0.0, 60],
-		[6, "Băng Tiễn",    "Gây 4 sát thương. 50% đóng băng quái 1 lượt.",    "spell",       0.0, 60],
-		[7, "Sét Đánh",     "Gây 4 sát thương. 75% tăng thời gian 1.5x.",      "spell",       0.0, 60],
-		[8, "Gỗ Xưa",       "Gây 4 sát thương. Hồi 1 HP cho người chơi.",      "spell",       0.0, 60],
+		[5, "Hỏa Cầu",      "Trả lời đúng quái mất 1.25 máu. Trả lời sai sẽ nhận 1.25 sát thương",       "spell",       0.0, 60],
+		[6, "Băng Tiễn",    "Trả lời đúng quái mất 1 máu và có 50% bị đóng băng turn sau. Trả lời sai mất 1 máu người chơi và thời gian turn sau giảm 50%",    "spell",       0.0, 60],
+		[7, "Sét Đánh",     "Trả lời đúng quái mất 1 máu và có 75% tăng thời gian lên 1.5 lần. Trả lời sai mất 1 máu người chơi và khóa kĩ năng ",      "spell",       0.0, 60],
+		[8, "Gỗ Xưa",       "Trả lời đúng quái mất 1 máu và người chơi hồi 0.25 máu. Trả lời sai thì ngược lại",      "spell",       0.0, 60],
 	]
 	for it in items:
 		db.query_with_bindings(
