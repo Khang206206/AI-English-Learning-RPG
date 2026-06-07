@@ -34,21 +34,25 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -14.75
-offset_bottom = 34.0
+offset_right = 50.0
+offset_bottom = 43.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 1
 
 [node name="ItemName" type="Label" parent="VBoxContainer" unique_id=1637614840]
+custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.2784314)
 theme_override_font_sizes/font_size = 14
 text = "item"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ItemBg" type="TextureRect" parent="VBoxContainer" unique_id=924988614]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -62,7 +66,7 @@ anchor_bottom = 1.0
 offset_left = 1.0
 offset_top = -0.25
 offset_right = -1.0
-offset_bottom = 0.75
+offset_bottom = -0.25
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
@@ -83,6 +87,8 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BuyButton" type="Button" parent="VBoxContainer" unique_id=1197249713]
 texture_filter = 1

@@ -66,9 +66,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 36.0
-offset_top = -7.0
-offset_right = -81.0
-offset_bottom = 24.0
+offset_top = -38.88889
+offset_right = 102.083496
+offset_bottom = 135.77783
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_owitj")
@@ -83,8 +83,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 11.0
-offset_right = -7.0
+offset_left = -26.833313
+offset_top = -8.888889
+offset_right = 19.833313
+offset_bottom = -14.777893
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 14
@@ -118,6 +120,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 23.5
 offset_top = -30.0
 offset_bottom = 39.0
 grow_horizontal = 2
@@ -176,15 +179,17 @@ vertical_alignment = 1
 [node name="Body" type="MarginContainer" parent="Background/MarginContainer/VBoxContainer" unique_id=1743512600]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 131
+theme_override_constants/margin_left = 103
 theme_override_constants/margin_top = 80
-theme_override_constants/margin_right = 59
+theme_override_constants/margin_right = 103
 theme_override_constants/margin_bottom = 45
 
 [node name="ItemGrid" type="GridContainer" parent="Background/MarginContainer/VBoxContainer/Body" unique_id=1907824121]
 layout_mode = 2
-theme_override_constants/h_separation = 130
-theme_override_constants/v_separation = 60
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 150
+theme_override_constants/v_separation = 100
 columns = 2
 
 [node name="DescriptionOverlay" type="Panel" parent="." unique_id=519857450]

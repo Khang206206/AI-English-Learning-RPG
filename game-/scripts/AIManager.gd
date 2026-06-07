@@ -27,8 +27,8 @@ const TIER_THEMES: Dictionary = {
 	5: "Combat & Weaponry (Chiến đấu & Vũ khí)",
 	6: "Caves & Mining (Hang động & Khai khoáng)",
 	7: "Magic & Alchemy (Phép thuật & Giả kim)",
-	8: "Fantasy Creatures (Sinh vật huyền thoại)",
-	9: "Dragons & Legends (Rồng & Truyền thuyết)",
+	8: "Labyrinths & Myths (Mê cung & Thần thoại)",
+	9: "Demons & Underworld (Ác quỷ & Địa ngục)",
 }
 
 var current_tier_id: int = 1

@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://cfrpbyvpal0rj"]
+
+[ext_resource type="Texture2D" uid="uid://dhe1ldp7bsuwc" path="res://assets/Enemies/wolfpack_9.27.21/update_tailwag/wolf_tailwag_tf-shadow.png" id="1_ta28q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmk0a"]
+atlas = ExtResource("1_ta28q")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ol3ha"]
+atlas = ExtResource("1_ta28q")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfe53"]
+atlas = ExtResource("1_ta28q")
+region = Rect2(64, 32, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmk0a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ol3ha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfe53")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]

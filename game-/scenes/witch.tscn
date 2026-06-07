@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://si5326syjduf"]
+
+[ext_resource type="SpriteFrames" uid="uid://ngimhqhcdcqq" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/witch.tres" id="1_hgjeu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hgjeu"]
+radius = 9.0
+height = 18.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1396395572]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=418119438]
+sprite_frames = ExtResource("1_hgjeu")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.0008320014
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1901082487]
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_hgjeu")
