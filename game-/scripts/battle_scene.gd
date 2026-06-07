@@ -74,7 +74,20 @@ func _ready():
 		# Gán SpriteFrames từ resource truyền sang
 		monster_anim.flip_h = GameManager.current_monster.flip_h
 		monster_anim.sprite_frames = GameManager.current_monster.idle_animation
+		if "scale" in GameManager.current_monster:
+			monster_anim.scale = GameManager.current_monster.scale
+		elif "monster_scale" in GameManager.current_monster:
+			monster_anim.scale = GameManager.current_monster.monster_scale
+		else:
+			monster_anim.scale = Vector2(1.0, 1.0)
+		monster_anim.position = Vector2(984, 379)
+		if "position_offset" in GameManager.current_monster:
+			monster_anim.position += GameManager.current_monster.position_offset
+		elif "monster_position" in GameManager.current_amonster: # Đề phòng bồ đặt tên biến khác
+			monster_anim.position += GameManager.current_monster.monster_position
+		
 		monster_anim.play("idle") # Chạy animation idle
+		
 	else:
 		push_warning("Không có dữ liệu quái!")
 

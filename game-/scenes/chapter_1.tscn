@@ -27,13 +27,13 @@
 [ext_resource type="PackedScene" uid="uid://si5326syjduf" path="res://scenes/witch.tscn" id="25_8id66"]
 [ext_resource type="PackedScene" uid="uid://cmejtuuj2y5b1" path="res://scenes/minotaur.tscn" id="26_gqjk0"]
 [ext_resource type="PackedScene" uid="uid://dk5sn515nlsj2" path="res://scenes/demon_king.tscn" id="27_j0gu1"]
-[ext_resource type="Resource" path="res://assets/Enemies/Fill/Demon/demon_king_data.tres" id="res_demon_king"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/golem_data.tres" id="res_golem"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/minotaur_data.tres" id="res_minotaur"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/orc_data.tres" id="res_orc"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/skeleton_data.tres" id="res_skeleton"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/witch_data.tres" id="res_witch"]
-[ext_resource type="Resource" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/wolf_data.tres" id="res_wolf"]
+[ext_resource type="Resource" uid="uid://bl2kf6kx2s5ky" path="res://assets/Enemies/Fill/Demon/demon_king_data.tres" id="res_demon_king"]
+[ext_resource type="Resource" uid="uid://bgqyxju8r8inw" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/golem_data.tres" id="res_golem"]
+[ext_resource type="Resource" uid="uid://chomum4yisqlq" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/minotaur_data.tres" id="res_minotaur"]
+[ext_resource type="Resource" uid="uid://xr7pusbysyfp" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/orc_data.tres" id="res_orc"]
+[ext_resource type="Resource" uid="uid://c2tvg32mkv3j0" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/skeleton_data.tres" id="res_skeleton"]
+[ext_resource type="Resource" uid="uid://d4a0mgafoc4cb" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/witch_data.tres" id="res_witch"]
+[ext_resource type="Resource" uid="uid://qmf7b8c1y1c3" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/wolf_data.tres" id="res_wolf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hvi31"]
 texture = ExtResource("1_5rr72")
@@ -10452,6 +10452,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("16_ct7bd")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="SlimeInteract" index="0" unique_id=865465090]
 position = Vector2(-49, -160)
@@ -10462,7 +10463,8 @@ position = Vector2(-49, -186)
 
 [node name="Goblin" parent="." unique_id=347324171 instance=ExtResource("14_4mo47")]
 y_sort_enabled = true
-position = Vector2(-122, 232)
+position = Vector2(-122, 215)
+scale = Vector2(1.5, 1.5)
 
 [node name="GoblinInteract" parent="." unique_id=663297106 instance=ExtResource("15_ayc5h")]
 z_index = 4
@@ -10470,6 +10472,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("17_samt2")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="GoblinInteract" index="0" unique_id=865465090]
 position = Vector2(247, -292)
@@ -10487,6 +10490,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_wolf")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="WolfInteract" index="0" unique_id=865465090]
 position = Vector2(-92.546875, -601)
@@ -10525,6 +10529,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_orc")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="OrcInteract" index="0" unique_id=865465090]
 position = Vector2(851.27344, -550)
@@ -10542,6 +10547,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_golem")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="GolemInteract" index="0" unique_id=865465090]
 position = Vector2(189, -471)
@@ -10551,6 +10557,7 @@ shape = SubResource("RectangleShape2D_ayc5h")
 position = Vector2(171, -519)
 
 [node name="Witch" parent="." unique_id=1396395572 instance=ExtResource("25_8id66")]
+texture_filter = 1
 position = Vector2(-241, -469)
 
 [node name="WitchInteract" parent="." unique_id=1478675654 instance=ExtResource("15_ayc5h")]
@@ -10559,13 +10566,14 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_witch")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="WitchInteract" index="0" unique_id=865465090]
 position = Vector2(126, -982)
 shape = SubResource("RectangleShape2D_ayc5h")
 
 [node name="DoorInteract" parent="WitchInteract" index="1" unique_id=843343296]
-position = Vector2(-49, -186)
+position = Vector2(160, -1014)
 
 [node name="Minotaur" parent="." unique_id=1425242152 instance=ExtResource("26_gqjk0")]
 position = Vector2(-165, -592)
@@ -10576,6 +10584,7 @@ position = Vector2(-361, -96)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_minotaur")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="MinotaurInteract" index="0" unique_id=865465090]
 position = Vector2(194.5, -475)
@@ -10594,6 +10603,7 @@ position = Vector2(173, -847)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_demon_king")
+bypass_tier_check = true
 
 [node name="CollisionShape2D" parent="DemonKingInteract" index="0" unique_id=865465090]
 position = Vector2(-60, 131)

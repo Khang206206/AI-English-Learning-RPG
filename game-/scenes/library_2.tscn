@@ -3618,6 +3618,7 @@ layer = 4
 visible = false
 
 [node name="NotebookUI" parent="." unique_id=2104752377 instance=ExtResource("11_2lqjo")]
+script = null
 
 [node name="background" type="TextureRect" parent="." unique_id=1682581714]
 offset_left = -18.0

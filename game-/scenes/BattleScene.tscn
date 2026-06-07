@@ -333,7 +333,6 @@ autoplay = "idle"
 [node name="Monster_Anim" type="AnimatedSprite2D" parent="Node2D" unique_id=753816303]
 texture_filter = 1
 position = Vector2(984, 379)
-scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_gkmpl")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=756303721]
@@ -567,6 +566,7 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="BtnPotion" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1516244666]
+texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = ExtResource("57_72s1w")
@@ -585,6 +585,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BtnFifty" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1773672848]
+texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = ExtResource("58_gpdlj")
@@ -603,6 +604,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BtnSkip" type="TextureButton" parent="UI/MainPanel/Items" unique_id=1550195334]
+texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = ExtResource("59_oyjdy")
@@ -621,6 +623,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BtnFreeze" type="TextureButton" parent="UI/MainPanel/Items" unique_id=503099728]
+texture_filter = 5
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = ExtResource("60_37dq0")

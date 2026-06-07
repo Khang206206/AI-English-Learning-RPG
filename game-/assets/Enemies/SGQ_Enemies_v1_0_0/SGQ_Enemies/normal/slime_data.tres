@@ -8,4 +8,6 @@ script = ExtResource("1_jvgbg")
 monster_name = "Slime"
 idle_animation = ExtResource("1_27n3f")
 flip_h = true
+scale = Vector2(6, 6)
+position_offset = Vector2(0, 10)
 metadata/_custom_type_script = "uid://cf2ac2r4ucqxr"
