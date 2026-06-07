@@ -61,6 +61,7 @@ var heart_black = preload("res://assets/hearts/Heart_Hit.tres")
 var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
 var is_player_time_frozen: bool = false # Người chơi có đang bị phạt giảm 50% thời gian không
 var is_magic_locked: int = 0
+var revealed_letters_count: int = 0
 
 const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
 const ICE_EFFECT_SCENE = preload("res://scenes/ice_effect.tscn")
@@ -145,8 +146,7 @@ func update_item_ui():
 		
 	if btn_fifty:
 		var count = _get_item_quantity(2)
-		var ui_mode = current_question.get("ui_mode", "mcq") if current_question else "mcq"
-		btn_fifty.disabled = (count <= 0) or (ui_mode != "mcq")
+		btn_fifty.disabled = (count <= 0)
 		if label_fifty: label_fifty.text = str(count)
 		
 	if btn_skip:
@@ -193,6 +193,7 @@ func load_next_question():
 	current_question = AIManager.get_question()
 	question_label.text = current_question.get("question", "Lỗi hiển thị câu hỏi")
 	word_input.text = "" # Xóa chữ hiệp cũ
+	revealed_letters_count = 0
 	set_buttons_disabled(false)
 	var ui_mode = current_question.get("ui_mode", "mcq")
 	if ui_mode == "mcq": 
@@ -381,6 +382,12 @@ func set_buttons_disabled(is_disabled: bool):
 	btn_b.disabled = is_disabled
 	btn_c.disabled = is_disabled
 	btn_d.disabled = is_disabled
+	
+	if not is_disabled:
+		btn_a.modulate.a = 1.0
+		btn_b.modulate.a = 1.0
+		btn_c.modulate.a = 1.0
+		btn_d.modulate.a = 1.0
 	
 	btn_fire.disabled = is_disabled
 	btn_electric.disabled = is_disabled
@@ -656,22 +663,42 @@ func _use_potion():
 		print("[Battle] Dùng Tinh Dược Sinh Lực! HP: %d" % player_hp)
 
 func _use_fifty_fifty():
-	if current_question.get("ui_mode") != "mcq": return
-	if ProgressManager.consume_item(2):
-		var correct = current_question["correct_answer"]
-		var wrong_btns = []
-		for label in ["A", "B", "C", "D"]:
-			if label != correct:
-				wrong_btns.append(label)
-		wrong_btns.shuffle()
-		for i in range(2):
-			match wrong_btns[i]:
-				"A": btn_a.disabled = true; btn_a.modulate.a = 0.3
-				"B": btn_b.disabled = true; btn_b.modulate.a = 0.3
-				"C": btn_c.disabled = true; btn_c.modulate.a = 0.3
-				"D": btn_d.disabled = true; btn_d.modulate.a = 0.3
-		update_item_ui()
-		print("[Battle] Dùng Nhãn Lực Tinh Tú! Ẩn 2 đáp án sai.")
+	var ui_mode = current_question.get("ui_mode", "mcq")
+	if ui_mode == "mcq":
+		if ProgressManager.consume_item(2):
+			var correct = current_question["correct_answer"]
+			var wrong_btns = []
+			for label in ["A", "B", "C", "D"]:
+				if label != correct:
+					wrong_btns.append(label)
+			wrong_btns.shuffle()
+			for i in range(2):
+				match wrong_btns[i]:
+					"A": btn_a.disabled = true; btn_a.modulate.a = 0.3
+					"B": btn_b.disabled = true; btn_b.modulate.a = 0.3
+					"C": btn_c.disabled = true; btn_c.modulate.a = 0.3
+					"D": btn_d.disabled = true; btn_d.modulate.a = 0.3
+			update_item_ui()
+			print("[Battle] Dùng Lá Bài Tiên Tri! Ẩn 2 đáp án sai.")
+	else:
+		var correct_ans = str(current_question.get("correct_answer", "")).strip_edges()
+		if correct_ans == "": return
+		
+		if revealed_letters_count >= correct_ans.length():
+			print("[Battle] Đã hiển thị toàn bộ đáp án!")
+			return
+			
+		if ProgressManager.consume_item(2):
+			revealed_letters_count += 1
+			while revealed_letters_count < correct_ans.length() and correct_ans[revealed_letters_count - 1] == " ":
+				revealed_letters_count += 1
+				
+			var revealed_str = correct_ans.substr(0, revealed_letters_count)
+			word_input.text = revealed_str
+			word_input.caret_column = revealed_str.length()
+			
+			update_item_ui()
+			print("[Battle] Dùng Lá Bài Tiên Tri! Hé lộ: ", revealed_str)
 
 func _use_skip():
 	if ProgressManager.consume_item(3):

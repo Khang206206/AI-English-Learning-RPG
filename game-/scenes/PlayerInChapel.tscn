@@ -38,7 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://bi4rwgtf4lg0a" path="res://assets/player2/Run/Run5.png" id="35_8f1cb"]
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="36_vdulj"]
 [ext_resource type="Script" uid="uid://us6psgpnkl53" path="res://scripts/hud.gd" id="38_1stu6"]
-[ext_resource type="Texture2D" uid="uid://b61wu41uabavm" path="res://item_tres/50_50.tres" id="39_qv4wb"]
+[ext_resource type="Texture2D" uid="uid://b8nmtkodb7vxm" path="res://assets/shop-item/Sprite sheet for Basic Pack.png" id="39_133f2"]
 [ext_resource type="PackedScene" uid="uid://c11d18ffq508i" path="res://scenes/ShopUI.tscn" id="40_133f2"]
 [ext_resource type="Texture2D" uid="uid://bs4426to2vbyv" path="res://assets/magic book/Book.png" id="41_d148o"]
 [ext_resource type="PackedScene" uid="uid://c4kav3vplws2v" path="res://scenes/NotebookUI_v2.tscn" id="42_03dlq"]
@@ -303,6 +303,9 @@ animations = [{
 radius = 7.0
 height = 14.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_d148o"]
+atlas = ExtResource("39_133f2")
+
 [node name="PlayerInChapel" type="CharacterBody2D" unique_id=1446754781]
 script = ExtResource("1_r702v")
 
@@ -324,6 +327,7 @@ position = Vector2(0, -4)
 zoom = Vector2(2.3, 2.3)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=215152764]
+process_mode = 3
 script = ExtResource("38_1stu6")
 
 [node name="ShopButton" type="TextureButton" parent="HUD" unique_id=1882433777]
@@ -332,20 +336,19 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -56.0
+offset_top = -50.0
 grow_horizontal = 0
 grow_vertical = 0
-texture_normal = ExtResource("39_qv4wb")
+texture_normal = SubResource("AtlasTexture_d148o")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="ShopUI" parent="HUD" unique_id=1755367950 instance=ExtResource("40_133f2")]
 visible = false
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+offset_left = 306.0
+offset_right = -171.0
+offset_bottom = -35.0
 size_flags_horizontal = 4
 
 [node name="BtnNotebook" type="TextureButton" parent="HUD" unique_id=386811796]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/MonsterData.gd" id="1_jvgbg"]
+[ext_resource type="SpriteFrames" path="res://assets/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/wolf.tres" id="2_frames"]
+
+[resource]
+script = ExtResource("1_jvgbg")
+monster_name = "Wolf"
+idle_animation = ExtResource("2_frames")
+flip_h = false
+tier_id = 3

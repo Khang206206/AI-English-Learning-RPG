@@ -6,5 +6,5 @@ tier_id, enemy_type , required_level, hp, vocabulary_theme
       5, Orc        ,              5, 15, Combat & Weaponry
       6, Golem      ,              6, 20, Caves & Mining
       7, Witch      ,              7, 25, Magic & Alchemy
-      8, Chimera    ,              8, 30, Fantasy Creatures
-      9, Dragon_Boss,              9, 50, Dragons & Legends
+      8, Minotaur   ,              8, 30, Labyrinths & Myths
+      9, Demon_King ,              9, 50, Demons & Underworld

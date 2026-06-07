@@ -98,3 +98,9 @@ func _get_shop_ui(node: Node) -> Node:
 			return parent
 		parent = parent.get_parent()
 	return null
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var shop_ui = _get_shop_ui(self)
+		if shop_ui and shop_ui.has_method("show_item_description"):
+			shop_ui.show_item_description(item_name, item_desc)

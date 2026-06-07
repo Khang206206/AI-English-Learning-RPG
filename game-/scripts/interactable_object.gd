@@ -8,6 +8,7 @@ extends Area2D
 @export_group("Battle Settings")
 @export_file("*.tscn") var battle_scene_path: String
 @export var monster_data: MonsterData
+@export var bypass_tier_check: bool = false # Biến dùng cho tester/dev để test quái mà không cần cày cuốc
 
 @export_group("Dialogue Settings")
 var elaria_dialogue = [
@@ -70,13 +71,32 @@ func _handle_quiz_action():
 		push_error("Loi: Chua gan Quiz UI Node")
 
 func _handle_battle_action():
-	if BgmManager != null:
-		BgmManager.stop_music()
 	if monster_data:
+		var required_tier = monster_data.tier_id
+		
+		# Bỏ qua kiểm tra tier nếu biến bypass_tier_check = true
+		if required_tier > 1 and not bypass_tier_check:
+			var prev_tier_mastery = ProgressManager.get_tier_avg_mastery(required_tier - 1)
+			if prev_tier_mastery < 0.3:
+				prompt.hide()
+				if DialogueSystem:
+					DialogueSystem.start_dialogue([{
+						"name": "Elaria",
+						"portrait": "res://art/portraits/elaria_serious.png",
+						"text": "Bạn chưa đủ kinh nghiệm để đối đầu với quái vật này! Hãy ôn tập đạt 30% mastery ở khu vực trước nhé."
+					}])
+				return
+				
+		if BgmManager != null:
+			BgmManager.stop_music()
+			
 		GameManager.current_monster = monster_data
 		AIManager.set_tier(monster_data.tier_id)
 		get_tree().change_scene_to_file(battle_scene_path)
 	else:
+		if BgmManager != null:
+			BgmManager.stop_music()
+			
 		if battle_scene_path != null and battle_scene_path != "":
 			get_tree().change_scene_to_file(battle_scene_path)
 		else:
