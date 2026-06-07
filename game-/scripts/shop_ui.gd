@@ -138,9 +138,14 @@ func _load_items_into_grid(items_data: Array):
 				item_info.get("owned", 0)
 			)
 
-func show_item_description(item_name: String, item_desc: String):
+# THAY ĐỔI: Thêm tham số item_pos vào hàm
+func show_item_description(item_name: String, item_desc: String, item_pos: Vector2):
 	name_label.text = item_name
 	desc_label.text = item_desc
+	
+	# THAY ĐỔI: Đẩy bảng mô tả ContentPanel sang bên phải ô vật phẩm
+	$DescriptionOverlay/ContentPanel.global_position = item_pos + Vector2(100, -10)
+	
 	desc_overlay.show()
 
 func _on_overlay_input(event):

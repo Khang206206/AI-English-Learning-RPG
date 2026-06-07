@@ -346,9 +346,9 @@ stretch_mode = 5
 
 [node name="ShopUI" parent="HUD" unique_id=1755367950 instance=ExtResource("40_133f2")]
 visible = false
-offset_left = 306.0
-offset_right = -171.0
-offset_bottom = -35.0
+offset_left = 276.0
+offset_right = -179.33331
+offset_bottom = 41.333313
 size_flags_horizontal = 4
 
 [node name="BtnNotebook" type="TextureButton" parent="HUD" unique_id=386811796]

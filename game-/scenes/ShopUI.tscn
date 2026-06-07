@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dpved0ytj6c0c" path="res://scripts/shop_ui.gd" id="1_c6qty"]
 [ext_resource type="Texture2D" uid="uid://b5m3hyvfofrop" path="res://assets/shop-item/ui asset/Shop.png" id="1_owitj"]
-[ext_resource type="Texture2D" uid="uid://b1ootnn1mn2yh" path="res://item_tres/tile_header.tres" id="2_0ove6"]
 [ext_resource type="FontFile" uid="uid://b3cldc23igrji" path="res://Press_Start_2P/PressStart2P.ttf" id="3_c6qty"]
 [ext_resource type="Texture2D" uid="uid://bykrr5bkhy2jn" path="res://item_tres/nen_vang.tres" id="4_d6x5n"]
 [ext_resource type="Texture2D" uid="uid://by8tl0jarlonx" path="res://item_tres/tab_mac_dinh.tres" id="5_vkgig"]
@@ -40,7 +39,7 @@ atlas = ExtResource("1_owitj")
 region = Rect2(104, 1, 17.118, 12.723)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkgig"]
-bg_color = Color(0, 0, 0, 0.039215688)
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ed10p"]
 texture = ExtResource("7_d6x5n")
@@ -50,10 +49,10 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 270.0
-offset_top = 90.0
-offset_right = -160.75012
-offset_bottom = -106.0
+offset_left = 261.0
+offset_top = 26.0
+offset_right = -205.4444
+offset_bottom = 43.555542
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.9, 0.9)
@@ -65,10 +64,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 36.0
-offset_top = -38.88889
-offset_right = 102.083496
-offset_bottom = 135.77783
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_owitj")
@@ -83,10 +78,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -26.833313
-offset_top = -8.888889
-offset_right = 19.833313
-offset_bottom = -14.777893
+offset_left = -8.8888855
+offset_top = 7.7777786
+offset_right = -15.555603
+offset_bottom = -28.888977
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 14
@@ -101,19 +96,6 @@ theme_override_constants/separation = 12
 [node name="Header" type="Control" parent="Background/MarginContainer/VBoxContainer" unique_id=2146064703]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="Background/MarginContainer/VBoxContainer/Header" unique_id=1151396131]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 20.0
-texture = ExtResource("2_0ove6")
-expand_mode = 1
-stretch_mode = 6
 
 [node name="HeaderContainer" type="HBoxContainer" parent="Background/MarginContainer/VBoxContainer/Header" unique_id=1773855147]
 layout_mode = 1
@@ -167,11 +149,12 @@ stretch_mode = 0
 
 [node name="GoldLabel" type="Label" parent="Background/MarginContainer/VBoxContainer/Header" unique_id=1062370896]
 layout_mode = 0
-offset_left = 334.0
-offset_top = 24.0
-offset_right = 443.0
-offset_bottom = 61.0
+offset_left = 374.22217
+offset_top = 13.777781
+offset_right = 497.22217
+offset_bottom = 50.77778
 theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 20
 text = "💰 Gold: 100"
 horizontal_alignment = 1
 vertical_alignment = 1

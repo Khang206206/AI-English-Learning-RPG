@@ -103,4 +103,5 @@ func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var shop_ui = _get_shop_ui(self)
 		if shop_ui and shop_ui.has_method("show_item_description"):
-			shop_ui.show_item_description(item_name, item_desc)
+			# THAY ĐỔI: Truyền thêm tham số thứ 3 là vị trí global_position của ô này
+			shop_ui.show_item_description(item_name, item_desc, self.global_position)
