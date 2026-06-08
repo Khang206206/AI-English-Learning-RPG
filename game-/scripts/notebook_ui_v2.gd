@@ -47,6 +47,22 @@ extends CanvasLayer
 @onready var btn_forgot:      Button = %BtnForgot
 @onready var btn_remember:    Button = %BtnRemember
 
+# ── Mini Test Nodes ───────────────────────────────────────────────────────────
+@onready var btn_start_mini_test: Button = get_node_or_null("%BtnStartMiniTest")
+@onready var mini_test_container: VBoxContainer = get_node_or_null("%MiniTestContainer")
+@onready var mt_label_question: Label = get_node_or_null("%MTLabelQuestion")
+@onready var mt_mcq_container: VBoxContainer = get_node_or_null("%MTMCQContainer")
+@onready var mt_btn_a: Button = get_node_or_null("%MTBtnA")
+@onready var mt_btn_b: Button = get_node_or_null("%MTBtnB")
+@onready var mt_btn_c: Button = get_node_or_null("%MTBtnC")
+@onready var mt_btn_d: Button = get_node_or_null("%MTBtnD")
+@onready var mt_text_container: HBoxContainer = get_node_or_null("%MTTextContainer")
+@onready var mt_line_edit: LineEdit = get_node_or_null("%MTLineEdit")
+@onready var mt_btn_submit_text: Button = get_node_or_null("%MTBtnSubmitText")
+@onready var mt_label_result: Label = get_node_or_null("%MTLabelResult")
+@onready var mt_label_explanation: Label = get_node_or_null("%MTLabelExplanation")
+@onready var mt_btn_next: Button = get_node_or_null("%MTBtnNext")
+
 # ── AI Example Nodes (Optional / Dynamically resolved) ──────────
 @onready var btn_ai_example:    Button = get_node_or_null("%BtnAIExample")
 @onready var ai_example_label:  Label  = get_node_or_null("%AIExampleLabel")
@@ -61,10 +77,15 @@ var all_tabs: Array
 
 # Review state
 var review_queue: Array = []
+var _reviewed_items_today: Array = []
 var current_review_word: Dictionary = {}
 var is_card_flipped := false
 var review_started := false
 var _current_review_type: String = "vocab" # "vocab" or "grammar"
+
+# Mini Test state
+var _mini_test_questions: Array = []
+var _current_mt_index: int = 0
 
 # AI Example State
 var current_vocab_detail: Dictionary = {}
@@ -125,11 +146,26 @@ func _ready() -> void:
 
 	if ai_manager and ai_manager.has_signal("hint_ready"):
 		ai_manager.hint_ready.connect(_on_ai_hint_ready)
+	
+	if btn_gr_ai_example: btn_gr_ai_example.pressed.connect(_on_grammar_ai_example_pressed)
+
 	if ai_manager and ai_manager.has_signal("example_sentence_ready"):
 		ai_manager.example_sentence_ready.connect(_on_example_sentence_ready)
 
+	# Mini Test signals
+	if btn_start_mini_test:
+		btn_start_mini_test.pressed.connect(_on_start_mini_test_pressed)
+	if mt_btn_a: mt_btn_a.pressed.connect(func(): _on_mt_mcq_pressed("A"))
+	if mt_btn_b: mt_btn_b.pressed.connect(func(): _on_mt_mcq_pressed("B"))
+	if mt_btn_c: mt_btn_c.pressed.connect(func(): _on_mt_mcq_pressed("C"))
+	if mt_btn_d: mt_btn_d.pressed.connect(func(): _on_mt_mcq_pressed("D"))
+	if mt_btn_submit_text: mt_btn_submit_text.pressed.connect(_on_mt_text_submitted)
+	if mt_btn_next: mt_btn_next.pressed.connect(_next_mini_test_question)
+	
+	if ai_manager and ai_manager.has_signal("mini_test_ready"):
+		ai_manager.mini_test_ready.connect(_on_mini_test_ready)
+
 	if btn_ai_example: btn_ai_example.pressed.connect(_on_vocab_ai_example_pressed)
-	if btn_gr_ai_example: btn_gr_ai_example.pressed.connect(_on_grammar_ai_example_pressed)
 
 	# Sổ tay sẽ đóng mặc định khi game bắt đầu
 	hide()
@@ -257,7 +293,20 @@ func _refresh_vocab_list(query: String) -> void:
 		v["status_str"] = status_str
 		filtered_list.append(v)
 
-	vocab_stats.text = "Từ tìm thấy: %d" % filtered_list.size()
+	var total_words = progress_manager.get_total_vocab_count() if progress_manager.has_method("get_total_vocab_count") else raw_list.size()
+	var base_text = "Từ tìm thấy: %d/%d" % [filtered_list.size(), total_words]
+	
+	var mastery_text = ""
+	if progress_manager.has_method("get_tier_avg_mastery") and progress_manager.has_method("get_global_avg_mastery"):
+		var avg = 0.0
+		if tier_idx > 0:
+			avg = progress_manager.get_tier_avg_mastery(tier_idx)
+			mastery_text = "  |  Độ thuần thục Tier %d: %d%%" % [tier_idx, round(avg * 100)]
+		else:
+			avg = progress_manager.get_global_avg_mastery()
+			mastery_text = "  |  Độ thuần thục tổng: %d%%" % round(avg * 100)
+			
+	vocab_stats.text = base_text + mastery_text
 
 	for v in filtered_list:
 		var btn := Button.new()
@@ -356,6 +405,7 @@ func _show_grammar_detail(g: Dictionary) -> void:
 # ==============================================================================
 func _init_review_tab() -> void:
 	review_started = false
+	_reviewed_items_today.clear()
 	_reset_flashcard_ui()
 	if not progress_manager:
 		return
@@ -397,7 +447,12 @@ func _init_review_tab() -> void:
 	btn_start_review.visible = cnt > 0
 	if cnt == 0:
 		flashcard_word.text = "🎉 Tuyệt vời!"
-		hint_label.text     = "Hôm nay bạn không có nội dung nào cần ôn."
+		if reviewed_today > 0:
+			hint_label.text = "Bạn đã ôn tập toàn bộ nội dung của hôm nay."
+		else:
+			hint_label.text = "Hôm nay bạn không có nội dung nào cần ôn."
+		btn_ai_hint.hide()
+		btn_flip.hide()
 
 func _start_flashcard_session() -> void:
 	review_started = true
@@ -416,6 +471,8 @@ func _next_flashcard() -> void:
 		btn_flip.hide()
 		btn_forgot.hide()
 		btn_remember.hide()
+		if btn_start_mini_test and _reviewed_items_today.size() > 0:
+			btn_start_mini_test.show()
 		return
 
 	current_review_word = review_queue[0]
@@ -438,13 +495,19 @@ func _next_flashcard() -> void:
 	btn_remember.hide()
 
 func _reset_flashcard_ui() -> void:
+	flashcard_word.show()
 	flashcard_word.text = "---"
 	flashcard_meaning.hide()
+	hint_label.show()
 	hint_label.text     = ""
 	btn_ai_hint.show()
 	btn_flip.show()
 	btn_forgot.hide()
 	btn_remember.hide()
+	if btn_start_mini_test:
+		btn_start_mini_test.hide()
+	if mini_test_container:
+		mini_test_container.hide()
 
 func _on_flip_pressed() -> void:
 	is_card_flipped = true
@@ -491,6 +554,11 @@ func _submit_review(is_correct: bool) -> void:
 			var word_id: int = current_review_word.get("word_id", -1)
 			if word_id != -1:
 				progress_manager.update_after_answer(word_id, is_correct, false)
+	
+	var item_copy = current_review_word.duplicate()
+	item_copy["_was_forgotten"] = not is_correct
+	_reviewed_items_today.append(item_copy)
+	
 	review_queue.pop_front()
 	_next_flashcard()
 
@@ -524,3 +592,146 @@ func _on_example_sentence_ready(text: String) -> void:
 	else:
 		if gr_ai_example_label:
 			gr_ai_example_label.text = text
+
+# ==============================================================================
+# MINI TEST LOGIC
+# ==============================================================================
+
+func _on_start_mini_test_pressed() -> void:
+	btn_start_mini_test.hide()
+	flashcard_word.text = "⏳ Đang tạo\nbài kiểm tra..."
+	hint_label.text = "Elaria đang chuẩn bị câu hỏi, vui lòng đợi..."
+	
+	# Chọn 1 Vocab và 1 Grammar từ _reviewed_items_today
+	var vocabs = []
+	var grammars = []
+	for item in _reviewed_items_today:
+		if item.has("word_id"):
+			vocabs.append(item)
+		elif item.has("grammar_id"):
+			grammars.append(item)
+	
+	# Ưu tiên "_was_forgotten"
+	vocabs.sort_custom(func(a, b): return a.get("_was_forgotten", false) and not b.get("_was_forgotten", false))
+	grammars.sort_custom(func(a, b): return a.get("_was_forgotten", false) and not b.get("_was_forgotten", false))
+	
+	var v_item = vocabs[0] if vocabs.size() > 0 else {"word": "hello", "meaning": "xin chào"}
+	var g_item = grammars[0] if grammars.size() > 0 else {"topic_name": "Present Simple", "formula": "S + V(s/es)"}
+	
+	if ai_manager and ai_manager.has_method("request_mini_test"):
+		ai_manager.request_mini_test(v_item, g_item)
+	else:
+		flashcard_word.text = "❌ Lỗi hệ thống"
+
+func _on_mini_test_ready(questions: Array) -> void:
+	if questions.is_empty():
+		flashcard_word.text = "❌ AI không phản hồi."
+		hint_label.text = "Vui lòng thử lại sau."
+		btn_start_mini_test.show()
+		return
+	
+	_mini_test_questions = questions
+	_current_mt_index = 0
+	
+	# Hide flashcard elements
+	flashcard_word.hide()
+	flashcard_meaning.hide()
+	hint_label.hide()
+	
+	# Show Mini Test UI
+	mini_test_container.show()
+	_show_mini_test_question(_current_mt_index)
+
+func _show_mini_test_question(index: int) -> void:
+	if index >= _mini_test_questions.size():
+		_finish_mini_test()
+		return
+	
+	var q = _mini_test_questions[index]
+	mt_label_question.text = "Câu %d: " % (index + 1) + q.get("question", "")
+	
+	mt_label_result.hide()
+	mt_label_explanation.hide()
+	mt_btn_next.hide()
+	
+	if q.get("type", "mcq") == "mcq":
+		mt_mcq_container.show()
+		mt_text_container.hide()
+		mt_btn_a.text = "A. " + q.get("A", "")
+		mt_btn_b.text = "B. " + q.get("B", "")
+		mt_btn_c.text = "C. " + q.get("C", "")
+		mt_btn_d.text = "D. " + q.get("D", "")
+		mt_btn_a.disabled = false
+		mt_btn_b.disabled = false
+		mt_btn_c.disabled = false
+		mt_btn_d.disabled = false
+	else:
+		mt_mcq_container.hide()
+		mt_text_container.show()
+		mt_line_edit.text = ""
+		mt_line_edit.editable = true
+		mt_btn_submit_text.disabled = false
+
+func _on_mt_mcq_pressed(option: String) -> void:
+	mt_btn_a.disabled = true
+	mt_btn_b.disabled = true
+	mt_btn_c.disabled = true
+	mt_btn_d.disabled = true
+	_handle_mini_test_answer(option)
+
+func _on_mt_text_submitted() -> void:
+	var ans = mt_line_edit.text.strip_edges()
+	if ans.is_empty(): return
+	mt_line_edit.editable = false
+	mt_btn_submit_text.disabled = true
+	_handle_mini_test_answer(ans)
+
+func _handle_mini_test_answer(user_ans: String) -> void:
+	var q = _mini_test_questions[_current_mt_index]
+	var correct_ans = str(q.get("correct_answer", "")).strip_edges()
+	
+	var is_correct = false
+	if q.get("type", "mcq") == "mcq":
+		is_correct = (user_ans.to_upper() == correct_ans.to_upper())
+	else:
+		is_correct = (user_ans.to_lower() == correct_ans.to_lower())
+	
+	mt_label_result.show()
+	if is_correct:
+		mt_label_result.text = "✅ ĐÚNG!"
+		mt_label_result.add_theme_color_override("font_color", Color(0.1, 0.6, 0.1))
+	else:
+		mt_label_result.text = "❌ SAI! Đáp án đúng: " + correct_ans
+		mt_label_result.add_theme_color_override("font_color", Color(0.8, 0.1, 0.1))
+	
+	mt_label_explanation.text = q.get("explanation", "")
+	mt_label_explanation.show()
+	mt_btn_next.show()
+	
+	# Update SRS Database
+	if progress_manager:
+		var item_id = q.get("item_id", -1)
+		var item_type = q.get("item_type", "vocab")
+		if item_id != -1:
+			if item_type == "grammar":
+				progress_manager.update_grammar_after_answer(item_id, is_correct, false)
+			else:
+				progress_manager.update_after_answer(item_id, is_correct, false)
+
+func _next_mini_test_question() -> void:
+	_current_mt_index += 1
+	_show_mini_test_question(_current_mt_index)
+
+func _finish_mini_test() -> void:
+	mini_test_container.hide()
+	flashcard_word.show()
+	flashcard_meaning.hide()
+	hint_label.show()
+	
+	flashcard_word.text = "🎉 Tuyệt vời!"
+	hint_label.text = "Bạn đã ôn tập toàn bộ nội dung của hôm nay."
+	
+	btn_ai_hint.hide()
+	btn_flip.hide()
+	btn_forgot.hide()
+	btn_remember.hide()

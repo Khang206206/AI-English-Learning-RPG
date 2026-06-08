@@ -41,6 +41,7 @@ const QTYPE_TEXT: String = "text_input"
 # ── Signal cho NPC hint ──
 signal hint_ready(hint_text: String)
 signal example_sentence_ready(sentence_text: String)
+signal mini_test_ready(questions: Array)
 
 # ── Biến quản lý gián đoạn (Preemption) ──
 var current_bg_http: HTTPRequest = null
@@ -747,6 +748,131 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 		if is_instance_valid(timer): timer.queue_free()
 	else:
 		print("[AIManager] 📝 Request sent OK! Waiting for Ollama (max 20s)...")
+
+
+# ==============================================================================
+# 3. MINI TEST SAU PHIÊN ÔN TẬP
+# ==============================================================================
+
+func request_mini_test(vocab_item: Dictionary, grammar_item: Dictionary) -> void:
+	_interrupt_background_task()
+	
+	var is_vocab_mcq = (randi() % 2 == 0)
+	
+	var v_word = vocab_item.get("word", "")
+	var v_mean = vocab_item.get("meaning", "")
+	var v_id   = vocab_item.get("word_id", -1)
+	
+	var g_topic = grammar_item.get("topic_name", "")
+	var g_form  = grammar_item.get("formula", "")
+	var g_id    = grammar_item.get("grammar_id", -1)
+	
+	var type_v = "mcq" if is_vocab_mcq else "text"
+	var type_g = "text" if is_vocab_mcq else "mcq"
+	
+	var prompt = """You are an English teacher generating a mini test. Create exactly 2 questions in JSON.
+Question 1 (Vocabulary): About the word '%s' (meaning: %s). It MUST be a %s question.
+Question 2 (Grammar): About the topic '%s' (formula: %s). It MUST be a %s question.
+
+Rules for 'mcq' (Multiple Choice):
+- Generate question testing the knowledge. Do NOT include Vietnamese in the question.
+- Provide 4 options A, B, C, D. Only 1 is correct.
+
+Rules for 'text' (Fill in the blank):
+- Generate an English sentence with a missing word/phrase marked by "___".
+- The correct_answer MUST be exactly what goes in the blank (lowercase).
+
+MUST return strictly this JSON format:
+{
+  "q1": {
+    "type": "%s",
+    "question": "...", "A": "...", "B": "...", "C": "...", "D": "...",
+    "correct_answer": "A", "explanation": "Vietnamese explanation"
+  },
+  "q2": {
+    "type": "%s",
+    "question": "...", "correct_answer": "...", "explanation": "Vietnamese explanation"
+  }
+}
+Return ONLY valid JSON.""" % [
+		v_word, v_mean, "Multiple Choice (mcq)" if type_v=="mcq" else "Fill in the blank (text)",
+		g_topic, g_form, "Multiple Choice (mcq)" if type_g=="mcq" else "Fill in the blank (text)",
+		type_v, type_g
+	]
+	
+	print("[AIManager] 📝 Requesting Mini Test...")
+	
+	var payload: Dictionary = {
+		"model": OLLAMA_MODEL,
+		"messages": [
+			{"role": "system", "content": "You return only valid JSON without markdown formatting."},
+			{"role": "user",   "content": prompt}
+		],
+		"think": false, "format": "json", "stream": false,
+		"options": {"temperature": 0.5, "num_predict": 300}
+	}
+	
+	var http := HTTPRequest.new()
+	add_child(http)
+	
+	var timer := Timer.new()
+	timer.wait_time = 15.0
+	timer.one_shot = true
+	add_child(timer)
+	
+	var _completed = [false]
+	
+	http.request_completed.connect(func(result: int, code: int, headers: PackedStringArray, body: PackedByteArray):
+		if _completed[0]: return
+		_completed[0] = true
+		if is_instance_valid(timer): timer.stop()
+		
+		var out_questions: Array = []
+		if result == HTTPRequest.RESULT_SUCCESS and code == 200:
+			var raw: String = body.get_string_from_utf8()
+			var outer := JSON.new()
+			if outer.parse(raw) == OK and outer.get_data() is Dictionary:
+				var content: String = str(outer.get_data().get("message", {}).get("content", ""))
+				var js: String = _extract_json(content)
+				var p := JSON.new()
+				if not js.is_empty() and p.parse(js) == OK and p.get_data() is Dictionary:
+					var data: Dictionary = p.get_data()
+					if data.has("q1") and data.has("q2"):
+						var q1: Dictionary = data["q1"]
+						q1["item_id"] = v_id
+						q1["item_type"] = "vocab"
+						
+						var q2: Dictionary = data["q2"]
+						q2["item_id"] = g_id
+						q2["item_type"] = "grammar"
+						
+						out_questions = [q1, q2]
+		
+		emit_signal("mini_test_ready", out_questions)
+		check_and_fill_all_queues()
+		if is_instance_valid(http): http.queue_free()
+		if is_instance_valid(timer): timer.queue_free()
+	)
+	
+	timer.timeout.connect(func():
+		if _completed[0]: return
+		_completed[0] = true
+		emit_signal("mini_test_ready", [])
+		check_and_fill_all_queues()
+		if is_instance_valid(http):
+			http.cancel_request()
+			http.queue_free()
+		if is_instance_valid(timer): timer.queue_free()
+	)
+	timer.start()
+	
+	var err = http.request(OLLAMA_URL, ["Content-Type: application/json"],
+				 HTTPClient.METHOD_POST, JSON.stringify(payload))
+	if err != OK:
+		_completed[0] = true
+		emit_signal("mini_test_ready", [])
+		if is_instance_valid(http): http.queue_free()
+		if is_instance_valid(timer): timer.queue_free()
 
 
 # ==============================================================================

@@ -9,8 +9,6 @@ func _ready():
 	# Đảm bảo HUD luôn hoạt động ngay cả khi game bị pause
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	shop_button.pressed.connect(_on_shop_button_pressed)
-	
 	if shop_ui != null:
 		shop_ui.visible = false
 		if not shop_ui.is_connected("closed", Callable(self, "_on_shop_closed")):

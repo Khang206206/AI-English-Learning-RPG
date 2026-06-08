@@ -161,6 +161,20 @@ func get_tier_avg_mastery(tier_id: int) -> float:
 		return 0.0
 	return float(db.query_result[0]["avg_mastery"])
 
+## Mastery trung bình (0.0–1.0) cho toàn bộ từ trong hệ thống.
+func get_global_avg_mastery() -> float:
+	var save_id: int = DatabaseManager.CURRENT_SAVE_SLOT
+	db.query_with_bindings("""
+		SELECT AVG(COALESCE(
+			CAST(m.correct_count AS REAL) / (m.encounter_count + 1), 0.0
+		)) AS avg_mastery
+		FROM Vocabulary_Bank v
+		LEFT JOIN Player_Vocab_Mastery m ON v.word_id = m.word_id AND m.save_id = ?;
+	""", [save_id])
+	if db.query_result.is_empty() or db.query_result[0]["avg_mastery"] == null:
+		return 0.0
+	return float(db.query_result[0]["avg_mastery"])
+
 
 ## Tóm tắt toàn bộ tiến trình học (dùng cho màn hình Notebook/Stats).
 func get_mastery_summary() -> Array:
@@ -244,6 +258,13 @@ func search_vocab(keyword: String, limit: int = 30) -> Array:
 		LIMIT ?;
 	""", [DatabaseManager.CURRENT_SAVE_SLOT, pattern, pattern, limit])
 	return db.query_result.duplicate()
+
+## Lấy tổng số từ vựng trong hệ thống
+func get_total_vocab_count() -> int:
+	db.query("SELECT COUNT(*) AS cnt FROM Vocabulary_Bank;")
+	if not db.query_result.is_empty():
+		return db.query_result[0].get("cnt", 0)
+	return 0
 
 
 # ==============================================================================

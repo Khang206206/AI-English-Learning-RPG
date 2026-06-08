@@ -320,7 +320,7 @@ theme_override_constants/separation = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.25, 0.12, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 18
 text = "Từ đã gặp: 0"
 horizontal_alignment = 1
 
@@ -574,6 +574,93 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.05, 0.45, 0.05, 1)
 theme_override_font_sizes/font_size = 16
 text = "Đã Nhớ"
+
+[node name="BtnStartMiniTest" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/ActionRow" unique_id=9876543210]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.4, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Bắt đầu Mini Test"
+
+[node name="MiniTestContainer" type="VBoxContainer" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage" unique_id=1234567890]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MTLabelQuestion" type="Label" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567891]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="MTMCQContainer" type="VBoxContainer" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567892]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="MTBtnA" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTMCQContainer" unique_id=1234567893]
+unique_name_in_owner = true
+layout_mode = 2
+text = "A."
+alignment = 0
+
+[node name="MTBtnB" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTMCQContainer" unique_id=1234567894]
+unique_name_in_owner = true
+layout_mode = 2
+text = "B."
+alignment = 0
+
+[node name="MTBtnC" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTMCQContainer" unique_id=1234567895]
+unique_name_in_owner = true
+layout_mode = 2
+text = "C."
+alignment = 0
+
+[node name="MTBtnD" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTMCQContainer" unique_id=1234567896]
+unique_name_in_owner = true
+layout_mode = 2
+text = "D."
+alignment = 0
+
+[node name="MTTextContainer" type="HBoxContainer" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567897]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="MTLineEdit" type="LineEdit" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTTextContainer" unique_id=1234567898]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Nhập đáp án..."
+
+[node name="MTBtnSubmitText" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer/MTTextContainer" unique_id=1234567899]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Trả lời"
+
+[node name="MTLabelResult" type="Label" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567900]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+
+[node name="MTLabelExplanation" type="Label" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567901]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.4, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+
+[node name="MTBtnNext" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabReview/RightPage/MiniTestContainer" unique_id=1234567902]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Tiếp tục"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1378699333]
 unique_name_in_owner = true
