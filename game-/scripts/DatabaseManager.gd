@@ -23,6 +23,7 @@ var max_hearts: int = 20
 var player_gold: int = 100
 var current_biome: String = "Beginner Forest"
 var dead_enemies: Array = []
+var has_save_data: bool = false
 
 # ==============================================================================
 # VÒNG ĐỜI NODE
@@ -57,6 +58,7 @@ func init_database() -> void:
 	db.query("PRAGMA foreign_keys = ON;")
 
 	_create_tables()
+	_migrate_grammar_srs_columns()
 	seed_initial_data()
 
 func _create_tables() -> void:
@@ -162,6 +164,19 @@ func _create_tables() -> void:
 	""")
 
 	print("[DatabaseManager] Cấu trúc tất cả các bảng đã sẵn sàng.")
+
+## Migration an toàn: thêm các cột SRS vào bảng Player_Grammar_Mastery nếu chưa có
+func _migrate_grammar_srs_columns() -> void:
+	var cols_to_add := [
+		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN streak INTEGER DEFAULT 0",
+		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN ease_factor REAL DEFAULT 2.5",
+		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN interval_days INTEGER DEFAULT 1",
+		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN next_review_date TEXT DEFAULT ''",
+		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN last_reviewed_date TEXT DEFAULT ''",
+	]
+	for sql in cols_to_add:
+		db.query(sql) # SQLite sẽ bỏ qua nếu cột đã tồn tại ("duplicate column" error is silent)
+	print("[DatabaseManager] Migration grammar SRS columns: done.")
 
 # ==============================================================================
 # 2. SEED DỮ LIỆU BAN ĐẦU
@@ -380,7 +395,14 @@ func spend_gold(amount: int) -> bool:
 # 5. SAVE / LOAD TIẾN TRÌNH
 # ==============================================================================
 
-func save_game(pos_x: float, pos_y: float) -> void:
+func save_game(pos_x: float, pos_y: float, scene_path: String = "") -> void:
+	if scene_path == "":
+		var current_tree = Engine.get_main_loop() as SceneTree
+		if current_tree and current_tree.current_scene:
+			scene_path = current_tree.current_scene.scene_file_path
+	if scene_path != "":
+		current_biome = scene_path
+
 	var serialized_enemies: String = JSON.stringify(dead_enemies)
 	var timestamp: String          = Time.get_datetime_string_from_system()
 
@@ -412,7 +434,16 @@ func load_game(save_slot: int) -> void:
 
 		player_hearts = data.get("hp",            max_hearts)
 		player_gold   = data.get("gold",          100)
-		current_biome = data.get("current_biome", "Beginner Forest")
+		current_biome = data.get("current_biome", "res://scenes/chapel.tscn")
+		
+		# Nạp vị trí người chơi
+		var pos_x = float(data.get("pos_x", 0.0))
+		var pos_y = float(data.get("pos_y", 0.0))
+		if GameManager != null:
+			GameManager.player_position = Vector2(pos_x, pos_y)
+			
+		var last_played = data.get("last_played", "")
+		has_save_data = (last_played != null and str(last_played).strip_edges() != "")
 
 		var raw_enemies: String = data.get("dead_enemies_list", "[]")
 		var json_parser         = JSON.new()
@@ -431,6 +462,7 @@ func load_game(save_slot: int) -> void:
 		player_hearts = max_hearts
 		player_gold = 100
 		dead_enemies  = []
+		has_save_data = false
 		print("[DatabaseManager] Không tìm thấy Save Slot %d — bắt đầu hành trình mới!" % save_slot)
 		emit_signal("hp_changed", player_hearts)
 
@@ -441,6 +473,12 @@ func load_game(save_slot: int) -> void:
 func mark_enemy_dead(enemy_id: int) -> void:
 	if enemy_id not in dead_enemies:
 		dead_enemies.append(enemy_id)
+		var serialized_enemies: String = JSON.stringify(dead_enemies)
+		db.query_with_bindings(
+			"UPDATE Player_Profile SET dead_enemies_list = ? WHERE save_id = ?;",
+			[serialized_enemies, CURRENT_SAVE_SLOT]
+		)
+		print("[DatabaseManager] Đã lưu quái bị diệt! ID: %d" % enemy_id)
 
 func is_enemy_dead(enemy_id: int) -> bool:
 	return enemy_id in dead_enemies

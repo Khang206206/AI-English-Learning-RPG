@@ -2,20 +2,18 @@ extends CharacterBody2D
 
 const SPEED = 150.0
 var is_dead = false
-var is_waking = true
 var last_direction = "side"
 
 @onready var sprite = $AnimatedSprite2D
 
 func _ready():
-	sprite.play("wake")
-	sprite.animation_finished.connect(_on_animation_finished)
+	sprite.play("idle_down")
 	if GameManager.should_load_position:
 		global_position = GameManager.player_position
 		GameManager.should_load_position = false
 
 func _physics_process(_delta):
-	if is_dead or is_waking:
+	if is_dead:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
@@ -42,10 +40,6 @@ func _physics_process(_delta):
 
 	move_and_slide()
 	GameManager.player_position = global_position
-
-func _on_animation_finished():
-	if sprite.animation == "wake":
-		is_waking = false
 
 func die():
 	is_dead = true

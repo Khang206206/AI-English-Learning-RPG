@@ -886,3 +886,7 @@ offset_left = 6.0
 offset_right = 6.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1364480987]
+position = Vector2(546, 169)
+zoom = Vector2(2, 2)

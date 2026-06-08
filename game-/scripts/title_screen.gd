@@ -18,6 +18,13 @@ func _ready():
 	$VBoxContainer/Button4.pressed.connect(_on_quit_pressed)
 
 	$SettingsPanel.back_pressed.connect(_on_settings_back)
+	
+	if not DatabaseManager.has_save_data:
+		$VBoxContainer/Button2.disabled = true
+		$VBoxContainer/Button2.modulate.a = 0.5
+	else:
+		$VBoxContainer/Button2.disabled = false
+		$VBoxContainer/Button2.modulate.a = 1.0
 
 func _on_start_pressed():
 
@@ -28,8 +35,14 @@ func _on_start_pressed():
 
 
 func _on_continue_pressed():
-
-	print("Continue game")
+	# Cờ báo cho Player script biết rằng cần set lại vị trí từ GameManager
+	GameManager.should_load_position = true
+	
+	var scene_to_load = DatabaseManager.current_biome
+	if not scene_to_load.begins_with("res://"):
+		scene_to_load = "res://scenes/chapel.tscn"
+		
+	get_tree().change_scene_to_file(scene_to_load)
 
 
 

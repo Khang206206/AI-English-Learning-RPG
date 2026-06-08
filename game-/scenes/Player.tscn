@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://dftrpkfy22rxb"]
+[gd_scene format=3 ]
 
 [ext_resource type="Texture2D" uid="uid://clg0smmg0a2fo" path="res://assets/player2/Crouch/Crouch1.png" id="1_jc3p3"]
-[ext_resource type="Script" uid="uid://n7mjeaktj2lh" path="res://scripts/player_in_chapel.gd" id="1_r702v"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_r702v"]
 [ext_resource type="Texture2D" uid="uid://dvflqc0dt3p8t" path="res://assets/player2/Crouch/Crouch2.png" id="2_hax0n"]
 [ext_resource type="Texture2D" uid="uid://c3r8ov0a3bpoi" path="res://assets/player2/Crouch/Crouch3.png" id="3_t4otl"]
 [ext_resource type="Texture2D" uid="uid://bfe1l7vc0t2xf" path="res://assets/player2/Crouch/Crouch4.png" id="4_j2b1d"]
@@ -37,6 +37,11 @@
 [ext_resource type="Texture2D" uid="uid://bpxgkdvx1emh3" path="res://assets/player2/Run/Run4.png" id="34_770dr"]
 [ext_resource type="Texture2D" uid="uid://bi4rwgtf4lg0a" path="res://assets/player2/Run/Run5.png" id="35_8f1cb"]
 [ext_resource type="Texture2D" uid="uid://cisw4672sh5ux" path="res://assets/player2/Run/Run6.png" id="36_vdulj"]
+[ext_resource type="Script" uid="uid://us6psgpnkl53" path="res://scripts/hud.gd" id="38_1stu6"]
+[ext_resource type="Texture2D" uid="uid://b8nmtkodb7vxm" path="res://assets/shop-item/Sprite sheet for Basic Pack.png" id="39_133f2"]
+[ext_resource type="PackedScene" uid="uid://c11d18ffq508i" path="res://scenes/ShopUI.tscn" id="40_133f2"]
+[ext_resource type="Texture2D" uid="uid://bs4426to2vbyv" path="res://assets/magic book/Book.png" id="41_d148o"]
+[ext_resource type="PackedScene" uid="uid://c4kav3vplws2v" path="res://scenes/NotebookUI_v2.tscn" id="42_03dlq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vau08"]
 animations = [{
@@ -298,7 +303,10 @@ animations = [{
 radius = 7.0
 height = 14.0
 
-[node name="PlayerInChapel" type="CharacterBody2D" unique_id=1446754781]
+[sub_resource type="AtlasTexture" id="AtlasTexture_d148o"]
+atlas = ExtResource("39_133f2")
+
+[node name="Player" type="CharacterBody2D" unique_id=1446754781]
 script = ExtResource("1_r702v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=662991125]
@@ -313,3 +321,47 @@ autoplay = "idle_side"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=940606629]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_hax0n")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1033155081]
+position = Vector2(0, -4)
+zoom = Vector2(2.3, 2.3)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=215152764]
+process_mode = 3
+script = ExtResource("38_1stu6")
+
+[node name="ShopButton" type="TextureButton" parent="HUD" unique_id=1882433777]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -98.0
+offset_top = -89.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = SubResource("AtlasTexture_d148o")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ShopUI" parent="HUD" unique_id=1755367950 instance=ExtResource("40_133f2")]
+visible = false
+offset_left = 276.0
+offset_right = -179.33331
+offset_bottom = 41.333313
+size_flags_horizontal = 4
+
+[node name="BtnNotebook" type="TextureButton" parent="HUD" unique_id=386811796]
+offset_left = 965.0
+offset_top = 541.0
+offset_right = 1068.0
+offset_bottom = 654.0
+texture_normal = ExtResource("41_d148o")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="NotebookUI2" parent="HUD" unique_id=447938710 instance=ExtResource("42_03dlq")]
+visible = false
+
+[connection signal="pressed" from="HUD/ShopButton" to="HUD" method="_on_shop_button_pressed"]
+[connection signal="pressed" from="HUD/BtnNotebook" to="HUD" method="_on_btn_notebook_pressed"]

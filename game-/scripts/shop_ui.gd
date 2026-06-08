@@ -135,7 +135,8 @@ func _load_items_into_grid(items_data: Array):
 				item_info["price"],
 				item_info.get("item_id", -1),
 				item_info.get("description", ""),
-				item_info.get("owned", 0)
+				item_info.get("owned", 0),
+				item_info.get("type", "item")
 			)
 
 # THAY ĐỔI: Thêm tham số item_pos vào hàm

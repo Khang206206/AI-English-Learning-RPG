@@ -361,8 +361,8 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Spacer" type="Control" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabVocab/RightPage" unique_id=219283381]
-custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="AIExampleLabel" type="Label" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabVocab/RightPage" unique_id=236835721]
 unique_name_in_owner = true
@@ -377,7 +377,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_vertical = 4
 size_flags_stretch_ratio = 1.92
 text = "✨ AI Tạo Câu"
 
@@ -440,8 +440,8 @@ theme_override_font_sizes/font_size = 17
 autowrap_mode = 3
 
 [node name="Spacer" type="Control" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabGrammar/RightPage" unique_id=566488507]
-custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="GrAIExampleLabel" type="Label" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabGrammar/RightPage" unique_id=1891914254]
 unique_name_in_owner = true
@@ -452,7 +452,11 @@ autowrap_mode = 3
 
 [node name="BtnGrAIExample" type="Button" parent="ContentUI/BookMargin/BookLayout/ContentArea/TabGrammar/RightPage" unique_id=291511944]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 1.92
 text = "✨ AI Tạo Câu"
 
 [node name="TabReview" type="HBoxContainer" parent="ContentUI/BookMargin/BookLayout/ContentArea" unique_id=715410810]

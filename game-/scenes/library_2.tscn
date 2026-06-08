@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://bfwdcjc0gda6f" path="res://scenes/teleport_gate.tscn" id="6_qdpyw"]
 [ext_resource type="PackedScene" uid="uid://clc44mj5uvd60" path="res://scenes/instructor_side_view.tscn" id="7_sggt6"]
 [ext_resource type="PackedScene" uid="uid://bwisenv78tcms" path="res://scenes/quiz_ui.tscn" id="8_63gu8"]
-[ext_resource type="PackedScene" uid="uid://c7cch05hiaq57" path="res://scenes/NotebookUI.tscn" id="11_2lqjo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdpyw"]
 texture = ExtResource("2_ubwkx")
@@ -3617,9 +3616,6 @@ lib2_music = ExtResource("2_0qe26")
 layer = 4
 visible = false
 
-[node name="NotebookUI" parent="." unique_id=2104752377 instance=ExtResource("11_2lqjo")]
-script = null
-
 [node name="background" type="TextureRect" parent="." unique_id=1682581714]
 offset_left = -18.0
 offset_top = -18.0
@@ -3696,17 +3692,4 @@ quiz_ui_node = NodePath("../QuizUI")
 position = Vector2(7, -140)
 shape = SubResource("RectangleShape2D_63gu8")
 
-[node name="NotebookInteract" parent="." unique_id=1905065837 node_paths=PackedStringArray("quiz_ui_node") instance=ExtResource("5_midgi")]
-position = Vector2(704, 598)
-object_type = "Notebook"
-quiz_ui_node = NodePath("../QuizUI")
-
-[node name="CollisionShape2D" parent="NotebookInteract" index="0" unique_id=865465090]
-position = Vector2(-244, -140)
-shape = SubResource("RectangleShape2D_63gu8")
-
-[node name="DoorInteract" parent="NotebookInteract" index="1" unique_id=843343296]
-position = Vector2(-244, -177)
-
 [editable path="InteractableObject"]
-[editable path="NotebookInteract"]

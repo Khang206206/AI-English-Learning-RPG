@@ -441,6 +441,10 @@ func win_battle():
 	var db = get_node_or_null("/root/DatabaseManager")
 	if db:
 		db.restore_full_hp()
+	
+	if GameManager.current_enemy_id > 0:
+		DatabaseManager.mark_enemy_dead(GameManager.current_enemy_id)
+		
 	show_result_overlay(true)
 	set_buttons_disabled(true)
 
@@ -541,8 +545,7 @@ func _on_try_again_pressed():
 	get_tree().reload_current_scene()
 
 func _on_go_back_pressed():
-	
-	get_tree().change_scene_to_file("res://scenes/chapter_1.tscn")
+	get_tree().change_scene_to_file(GameManager.previous_scene_path)
 
 # Lắng nghe signal từ DatabaseManager — đồng bộ HP runtime khi DB thay đổi
 func _on_db_hp_changed(new_hp: int):

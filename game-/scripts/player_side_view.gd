@@ -13,6 +13,9 @@ func _ready():
 	# Cho nhân vật đứng yên ngay từ đầu [cite: 9]
 	sprite.play("idle")
 	is_waking = false # Đảm bảo biến này tắt đi để kích hoạt _physics_process [cite: 9]
+	if GameManager.should_load_position:
+		global_position = GameManager.player_position
+		GameManager.should_load_position = false
 
 func _physics_process(delta):
 	# Nếu vẫn bị kẹt ở đây, nhân vật sẽ không bao giờ cập nhật is_on_floor() 
@@ -49,6 +52,7 @@ func _physics_process(delta):
 			sprite.play("idle")
 
 	move_and_slide()
+	GameManager.player_position = global_position
 
 func _on_animation_finished():
 	if sprite.animation == "wake":

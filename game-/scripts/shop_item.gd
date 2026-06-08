@@ -32,14 +32,17 @@ func setup(p_name: String, p_icon_path: String, p_price: int, p_item_id: int = -
 	if buy_button != null:
 		if item_type == "spell":
 			if p_owned > 0:
-				buy_button.text = "SỞ HỮU"
+				buy_button.text = "BOUGHT"
 				buy_button.disabled = true
+				buy_button.modulate.a = 0.5 # Làm mờ nút
 			else:
 				buy_button.text = str(p_price) + " G"
 				buy_button.disabled = false
+				buy_button.modulate.a = 1.0
 		else:
 			buy_button.text = str(p_price) + " G"
 			buy_button.disabled = false
+			buy_button.modulate.a = 1.0
 		
 	if icon_texture != null:
 		if ResourceLoader.exists(p_icon_path):
@@ -48,7 +51,7 @@ func setup(p_name: String, p_icon_path: String, p_price: int, p_item_id: int = -
 			icon_texture.texture = null
 			
 	if owned_label != null:
-		if item_id != -1:
+		if item_id != -1 and item_type != "spell":
 			owned_label.text = "Đang có: %d" % p_owned
 			owned_label.visible = true
 		else:
@@ -81,13 +84,17 @@ func _on_buy_pressed():
 	if DatabaseManager.spend_gold(total_price):
 		ProgressManager.add_item(item_id, qty)
 		print("[Shop] Mua thành công %d %s" % [qty, item_name])
+		DatabaseManager.save_game(GameManager.player_position.x, GameManager.player_position.y)
 		
 		# Gọi cha để update UI Gold và Refresh
 		var shop_ui = _get_shop_ui(self)
 		if shop_ui:
 			shop_ui._update_gold_display()
 			# Làm mới danh sách item để cập nhật số lượng
-			shop_ui._on_tab_item_pressed()
+			if item_type == "spell":
+				shop_ui._on_tab_spell_pressed()
+			else:
+				shop_ui._on_tab_item_pressed()
 	else:
 		print("[Shop] Không đủ Gold để mua %s!" % item_name)
 

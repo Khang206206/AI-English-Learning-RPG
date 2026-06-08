@@ -9,6 +9,7 @@ extends Area2D
 @export_file("*.tscn") var battle_scene_path: String
 @export var monster_data: MonsterData
 @export var bypass_tier_check: bool = false # Biến dùng cho tester/dev để test quái mà không cần cày cuốc
+@export var enemy_id: int = 0 # ID duy nhất để lưu tiến trình tiêu diệt quái
 
 @export_group("Dialogue Settings")
 var elaria_dialogue = [
@@ -35,6 +36,12 @@ var is_player_inside = false
 
 func _ready():
 	prompt.hide()
+	
+	if object_type == "Battle" and enemy_id > 0:
+		if DatabaseManager.is_enemy_dead(enemy_id):
+			queue_free() # Nếu quái này đã chết trước đó, tự động xóa khỏi map
+			return
+			
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
@@ -91,12 +98,17 @@ func _handle_battle_action():
 			BgmManager.stop_music()
 			
 		GameManager.current_monster = monster_data
+		GameManager.current_enemy_id = enemy_id
 		AIManager.set_tier(monster_data.tier_id)
+		GameManager.previous_scene_path = get_tree().current_scene.scene_file_path
+		GameManager.should_load_position = true
+		DatabaseManager.save_game(GameManager.player_position.x, GameManager.player_position.y)
 		get_tree().change_scene_to_file(battle_scene_path)
 	else:
 		if BgmManager != null:
 			BgmManager.stop_music()
 			
+		DatabaseManager.save_game(GameManager.player_position.x, GameManager.player_position.y)
 		if battle_scene_path != null and battle_scene_path != "":
 			get_tree().change_scene_to_file(battle_scene_path)
 		else:

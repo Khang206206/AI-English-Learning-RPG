@@ -64,6 +64,7 @@ var review_queue: Array = []
 var current_review_word: Dictionary = {}
 var is_card_flipped := false
 var review_started := false
+var _current_review_type: String = "vocab" # "vocab" or "grammar"
 
 # AI Example State
 var current_vocab_detail: Dictionary = {}
@@ -148,6 +149,9 @@ func toggle_notebook() -> void:
 		await animation_player.animation_finished
 		content_ui.show()
 		close_button.show()
+		
+		# Force a full refresh of tab 0 when opening the notebook
+		current_tab_index = -1
 		_switch_tab(0, false) # No page-turn anim on first open
 
 func _on_close_requested() -> void:
@@ -337,7 +341,15 @@ func _show_grammar_detail(g: Dictionary) -> void:
 
 	gr_det_title.text       = str(g.get("topic_name",      ""))
 	gr_det_formula.text     = "📐 Công thức:\n"    + str(g.get("formula",        ""))
-	gr_det_explanation.text = "\n💡 Giải thích:\n" + str(g.get("explanation_vi", ""))
+	
+	var enc = g.get("encounter_count", 0) as int
+	var corr = g.get("correct_count", 0) as int
+	var mast = 0.0
+	if enc > 0:
+		mast = float(corr) / float(enc)
+	var progress_str = "\n\n📊 Tiến độ: Gặp %d lần  |  Đúng %d lần  |  Độ thuần thục: %d%%" % [enc, corr, round(mast * 100)]
+	
+	gr_det_explanation.text = "\n💡 Giải thích:\n" + str(g.get("explanation_vi", "")) + progress_str
 
 # ==============================================================================
 # TAB 3 — REVIEW (Flashcard)
@@ -348,24 +360,44 @@ func _init_review_tab() -> void:
 	if not progress_manager:
 		return
 
-	review_queue   = progress_manager.get_due_review_words(20)
-	var cnt        := review_queue.size()
-	review_status.text = "🔥 Cần ôn hôm nay: %d từ" % cnt
+	# Lấy cả từ vựng lẫn ngữ pháp cần ôn
+	var vocab_due: Array = progress_manager.get_due_review_words(20)
+	var grammar_due: Array = []
+	if progress_manager.has_method("get_due_review_grammar"):
+		grammar_due = progress_manager.get_due_review_grammar(10)
 
-	# Build the due-word list on the left page
+	# Đánh dấu loại và gộp vào hàng đợi chung
+	for v in vocab_due:
+		v["_review_type"] = "vocab"
+	for g in grammar_due:
+		g["_review_type"] = "grammar"
+
+	review_queue = vocab_due + grammar_due
+	review_queue.shuffle()
+
+	var cnt := review_queue.size()
+	var vocab_cnt := vocab_due.size()
+	var grammar_cnt := grammar_due.size()
+	var reviewed_today = progress_manager.get_reviewed_today_count() if progress_manager.has_method("get_reviewed_today_count") else 0
+	review_status.text = "🔥 Cần ôn hôm nay: %d từ + %d ngữ pháp\n✅ Đã ôn: %d" % [vocab_cnt, grammar_cnt, reviewed_today]
+
+	# Xây dựng danh sách bên trái
 	for c in due_list.get_children():
 		c.queue_free()
-	for w in review_queue:
+	for item in review_queue:
 		var lbl := Label.new()
-		lbl.text = "• " + str(w.get("word", ""))
-		lbl.add_theme_font_size_override("font_size", 15)
+		if item["_review_type"] == "grammar":
+			lbl.text = "📐 " + str(item.get("topic_name", ""))
+		else:
+			lbl.text = "• " + str(item.get("word", ""))
+		lbl.add_theme_font_size_override("font_size", 14)
 		lbl.add_theme_color_override("font_color", Color(0.18, 0.1, 0.03, 1))
 		due_list.add_child(lbl)
 
 	btn_start_review.visible = cnt > 0
 	if cnt == 0:
 		flashcard_word.text = "🎉 Tuyệt vời!"
-		hint_label.text     = "Hôm nay bạn không có từ nào cần ôn."
+		hint_label.text     = "Hôm nay bạn không có nội dung nào cần ôn."
 
 func _start_flashcard_session() -> void:
 	review_started = true
@@ -373,7 +405,8 @@ func _start_flashcard_session() -> void:
 	_next_flashcard()
 
 func _next_flashcard() -> void:
-	review_status.text = "🔥 Còn lại: %d từ" % review_queue.size()
+	var reviewed_today = progress_manager.get_reviewed_today_count() if progress_manager and progress_manager.has_method("get_reviewed_today_count") else 0
+	review_status.text = "🔥 Còn lại: %d\n✅ Đã ôn hôm nay: %d" % [review_queue.size(), reviewed_today]
 
 	if review_queue.is_empty():
 		flashcard_word.text   = "🎉 Xong!"
@@ -386,10 +419,17 @@ func _next_flashcard() -> void:
 		return
 
 	current_review_word = review_queue[0]
+	_current_review_type = current_review_word.get("_review_type", "vocab")
 	is_card_flipped     = false
 
-	flashcard_word.text = str(current_review_word.get("word", "")).to_upper()
-	flashcard_meaning.text = ""
+	if _current_review_type == "grammar":
+		# Mặt trước thẻ: Tên ngữ pháp (VD: PRESENT SIMPLE)
+		flashcard_word.text = str(current_review_word.get("topic_name", "")).to_upper()
+		flashcard_meaning.text = ""
+	else:
+		flashcard_word.text = str(current_review_word.get("word", "")).to_upper()
+		flashcard_meaning.text = ""
+
 	flashcard_meaning.hide()
 	hint_label.text = ""
 	btn_ai_hint.show()
@@ -408,7 +448,13 @@ func _reset_flashcard_ui() -> void:
 
 func _on_flip_pressed() -> void:
 	is_card_flipped = true
-	flashcard_meaning.text = str(current_review_word.get("meaning", ""))
+	if _current_review_type == "grammar":
+		# Mặt sau: Công thức + giải thích
+		var formula = str(current_review_word.get("formula", ""))
+		var explanation = str(current_review_word.get("explanation_vi", ""))
+		flashcard_meaning.text = "📐 %s\n\n%s" % [formula, explanation]
+	else:
+		flashcard_meaning.text = str(current_review_word.get("meaning", ""))
 	flashcard_meaning.show()
 	btn_flip.hide()
 	btn_ai_hint.hide()
@@ -420,10 +466,16 @@ func _on_ai_hint_pressed() -> void:
 		hint_label.text = "(AIManager chưa sẵn sàng)"
 		return
 	hint_label.text = "✨ Elaria đang suy nghĩ..."
-	ai_manager.request_npc_hint(
-		current_review_word.get("word",    ""),
-		current_review_word.get("meaning", "")
-	)
+	if _current_review_type == "grammar":
+		ai_manager.request_npc_hint(
+			current_review_word.get("topic_name", ""),
+			current_review_word.get("formula",    "")
+		)
+	else:
+		ai_manager.request_npc_hint(
+			current_review_word.get("word",    ""),
+			current_review_word.get("meaning", "")
+		)
 
 func _on_ai_hint_ready(hint_text: String) -> void:
 	if current_tab_index == 2 and not is_card_flipped:
@@ -431,9 +483,14 @@ func _on_ai_hint_ready(hint_text: String) -> void:
 
 func _submit_review(is_correct: bool) -> void:
 	if progress_manager:
-		var word_id: int = current_review_word.get("word_id", -1)
-		if word_id != -1:
-			progress_manager.update_after_answer(word_id, is_correct, false) # Pass false for is_combat
+		if _current_review_type == "grammar":
+			var grammar_id: int = current_review_word.get("grammar_id", -1)
+			if grammar_id != -1:
+				progress_manager.update_grammar_after_answer(grammar_id, is_correct, false)
+		else:
+			var word_id: int = current_review_word.get("word_id", -1)
+			if word_id != -1:
+				progress_manager.update_after_answer(word_id, is_correct, false)
 	review_queue.pop_front()
 	_next_flashcard()
 

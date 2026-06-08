@@ -210,6 +210,18 @@ func get_due_review_count() -> int:
 		return 0
 	return db.query_result[0].get("total", 0)
 
+## Đếm số từ/ngữ pháp đã ôn hôm nay
+func get_reviewed_today_count() -> int:
+	var today: String = Time.get_date_string_from_system()
+	var total = 0
+	db.query_with_bindings("SELECT COUNT(*) as cnt FROM Player_Vocab_Mastery WHERE save_id = ? AND last_reviewed_date = ?;", [DatabaseManager.CURRENT_SAVE_SLOT, today])
+	if not db.query_result.is_empty():
+		total += db.query_result[0].get("cnt", 0)
+	db.query_with_bindings("SELECT COUNT(*) as cnt FROM Player_Grammar_Mastery WHERE save_id = ? AND last_reviewed_date = ?;", [DatabaseManager.CURRENT_SAVE_SLOT, today])
+	if not db.query_result.is_empty():
+		total += db.query_result[0].get("cnt", 0)
+	return total
+
 
 # ==============================================================================
 # 5. TÌM KIẾM TỪ VỰNG (cho Notebook)
@@ -319,28 +331,83 @@ func update_grammar_after_answer(grammar_id: int, is_correct: bool, is_combat: b
 		DatabaseManager.emit_signal("hp_changed", DatabaseManager.player_hearts)
 
 	var save_id: int = DatabaseManager.CURRENT_SAVE_SLOT
+	var today: String = Time.get_date_string_from_system()
+	var correct_delta: int = 1 if is_correct else 0
+
 	db.query_with_bindings(
 		"SELECT * FROM Player_Grammar_Mastery WHERE save_id = ? AND grammar_id = ?;",
 		[save_id, grammar_id])
 
-	var correct_delta: int = 1 if is_correct else 0
-
 	if db.query_result.is_empty():
+		# ── Lần đầu gặp: INSERT với SRS khởi tạo ──
+		var next_date: String = _add_days(today, 1)
 		db.query_with_bindings("""
 			INSERT INTO Player_Grammar_Mastery
-				(save_id, grammar_id, encounter_count, correct_count)
-			VALUES (?, ?, 1, ?);""",
-			[save_id, grammar_id, correct_delta])
+				(save_id, grammar_id, encounter_count, correct_count,
+				 streak, ease_factor, interval_days, next_review_date, last_reviewed_date)
+			VALUES (?, ?, 1, ?, ?, 2.5, 1, ?, ?);""",
+			[save_id, grammar_id, correct_delta,
+			 (1 if is_correct else 0), next_date, today])
 	else:
+		# ── Đã gặp: cập nhật SM-2 ──
+		var row: Dictionary   = db.query_result[0]
+		var old_streak: int   = row.get("streak", 0)
+		var old_ef: float     = row.get("ease_factor", 2.5)
+		var old_interval: int = row.get("interval_days", 1)
+
+		var new_streak: int
+		var new_ef: float
+		var new_interval: int
+
+		if is_correct:
+			new_streak = old_streak + 1
+			new_ef     = max(1.3, old_ef + 0.1)
+			match new_streak:
+				1: new_interval = 1
+				2: new_interval = 3
+				_: new_interval = int(old_interval * new_ef)
+		else:
+			new_streak   = 0
+			new_ef       = max(1.3, old_ef - 0.2)
+			new_interval = 1
+
+		var next_date: String = _add_days(today, new_interval)
+
 		db.query_with_bindings("""
 			UPDATE Player_Grammar_Mastery
-			SET encounter_count = encounter_count + 1,
-			    correct_count   = correct_count + ?
+			SET encounter_count    = encounter_count + 1,
+			    correct_count      = correct_count + ?,
+			    streak             = ?,
+			    ease_factor        = ?,
+			    interval_days      = ?,
+			    next_review_date   = ?,
+			    last_reviewed_date = ?
 			WHERE save_id = ? AND grammar_id = ?;""",
-			[correct_delta, save_id, grammar_id])
+			[correct_delta, new_streak, new_ef, new_interval, next_date, today,
+			 save_id, grammar_id])
+
+		print("[ProgressManager] SM-2 Grammar: id=%d streak=%d interval=%d next=%s"
+			% [grammar_id, new_streak, new_interval, next_date])
 
 	if is_combat:
 		_save_hp_and_check_gameover()
+
+
+## Trả về danh sách ngữ pháp cần ôn hôm nay (next_review_date <= today).
+func get_due_review_grammar(limit: int = 20) -> Array:
+	var today: String = Time.get_date_string_from_system()
+	db.query_with_bindings("""
+		SELECT g.grammar_id, g.topic_name, g.formula, g.explanation_vi, g.tier_id,
+		       m.encounter_count, m.correct_count, m.streak,
+		       m.ease_factor, m.interval_days, m.next_review_date,
+		       COALESCE(CAST(m.correct_count AS REAL) / (m.encounter_count + 1), 0.0) AS mastery_score
+		FROM Player_Grammar_Mastery m
+		JOIN Grammar_Bank g ON g.grammar_id = m.grammar_id
+		WHERE m.save_id = ? AND m.next_review_date <= ? AND m.next_review_date != ''
+		ORDER BY m.next_review_date ASC, mastery_score ASC
+		LIMIT ?;
+	""", [DatabaseManager.CURRENT_SAVE_SLOT, today, limit])
+	return db.query_result.duplicate()
 
 
 ## Lấy toàn bộ danh sách ngữ pháp từ Grammar_Bank (dùng cho Notebook)
@@ -350,7 +417,8 @@ func get_all_grammar() -> Array:
 		SELECT g.grammar_id, g.topic_name, g.formula, 
 		       g.explanation_vi, g.example_en, g.tier_id,
 		       e.enemy_type,
-		       COALESCE(m.encounter_count, 0) AS encounter_count
+		       COALESCE(m.encounter_count, 0) AS encounter_count,
+		       COALESCE(m.correct_count, 0) AS correct_count
 		FROM Grammar_Bank g
 		LEFT JOIN Enemy_Tier_Dict e ON g.tier_id = e.tier_id
 		LEFT JOIN Player_Grammar_Mastery m ON g.grammar_id = m.grammar_id AND m.save_id = ?
