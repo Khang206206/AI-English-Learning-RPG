@@ -6,3 +6,5 @@
 data/data.db
 data/data.db-shm
 data/data.db-wal
+addons/godot-sqlite/bin/libgodot-cpp.ios.template_debug.xcframework/
+addons/godot-sqlite/bin/libgodot-cpp.ios.template_release.xcframework/
