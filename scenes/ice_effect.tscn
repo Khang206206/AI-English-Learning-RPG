@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dw1g0yiofsdi2"]
+
+[ext_resource type="SpriteFrames" uid="uid://c5fg5ue1tjapw" path="res://resources/effects/ice/frozen.tres" id="1_ndmwd"]
+[ext_resource type="Script" uid="uid://bxukcihjmkky0" path="res://scenes/ice_effect.gd" id="2_kvqf1"]
+
+[node name="IceEffect" type="AnimatedSprite2D" unique_id=2034208696]
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = ExtResource("1_ndmwd")
+animation = &"starting"
+script = ExtResource("2_kvqf1")

@@ -1,8 +1,0 @@
-# Godot 4+ specific ignores
-.godot/
-/android/
-
-# SQLite databases
-data.db
-data.db-shm
-data.db-wal

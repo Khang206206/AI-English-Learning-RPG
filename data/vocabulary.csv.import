@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://2okkbmlfed2k"
+
+[deps]
+
+files=["res://data/vocabulary.meaning.translation", "res://data/vocabulary.tier.translation", "res://data/vocabulary.cefr.translation"]
+
+source_file="res://data/vocabulary.csv"
+dest_files=["res://data/vocabulary.meaning.translation", "res://data/vocabulary.tier.translation", "res://data/vocabulary.cefr.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

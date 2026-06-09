@@ -1,0 +1,7 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://c205g5u8xc60j"]
+
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://resources/ui/gui_assets/GuiAssets/sprites/gdp_styles.png" id="1_aiovi"]
+
+[resource]
+texture = ExtResource("1_aiovi")
+region_rect = Rect2(173.86104, 44.851627, 9.246674, 9.278133)

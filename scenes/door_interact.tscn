@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bvlrlbv1wtv3c"]
+
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://resources/ui/gui_assets/GuiAssets/sprites/gdp_styles.png" id="1_61k36"]
+[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://resources/ui/gui_assets/GuiAssets/fonts/TinyPixie2.ttf" id="2_ypp13"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ypp13"]
+atlas = ExtResource("1_61k36")
+region = Rect2(85.30875, 147.12468, 17.50193, 17.242126)
+
+[node name="DoorInteract" type="Node2D" unique_id=843343296]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=934672592]
+position = Vector2(3.75, 3.25)
+scale = Vector2(1.4411764, 1.382353)
+texture = SubResource("AtlasTexture_ypp13")
+
+[node name="Label" type="Label" parent="." unique_id=915483017]
+offset_left = -6.0
+offset_top = -7.0
+offset_right = 19.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("2_ypp13")
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1

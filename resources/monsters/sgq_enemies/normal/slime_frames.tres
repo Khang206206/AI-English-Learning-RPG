@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://d2st37e6j0krv"]
+
+[ext_resource type="Texture2D" uid="uid://4n5dci7bergv" path="res://resources/monsters/sgq_enemies/normal/16x16/slime.png" id="1_n15nd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4q1k4"]
+atlas = ExtResource("1_n15nd")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v470m"]
+atlas = ExtResource("1_n15nd")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw212"]
+atlas = ExtResource("1_n15nd")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3kx0"]
+atlas = ExtResource("1_n15nd")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ey3na"]
+atlas = ExtResource("1_n15nd")
+region = Rect2(32, 32, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4q1k4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v470m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw212")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3kx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ey3na")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]

@@ -1,7 +1,0 @@
-[gd_resource type="StyleBoxTexture" format=3 uid="uid://dnbnt7aydind7"]
-
-[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="1_hpqyn"]
-
-[resource]
-texture = ExtResource("1_hpqyn")
-region_rect = Rect2(174.91348, 17.892534, 7.173767, 7.2306976)

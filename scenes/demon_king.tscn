@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dk5sn515nlsj2"]
+
+[ext_resource type="Texture2D" uid="uid://ij6ub1gi4xxp" path="res://resources/monsters/fill/demon/demon-idle.png" id="1_275ao"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jksfe"]
+atlas = ExtResource("1_275ao")
+region = Rect2(0, 0, 240, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_en0qa"]
+atlas = ExtResource("1_275ao")
+region = Rect2(240, 0, 240, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k71cc"]
+atlas = ExtResource("1_275ao")
+region = Rect2(480, 0, 240, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wn1j0"]
+atlas = ExtResource("1_275ao")
+region = Rect2(720, 0, 240, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5f76"]
+atlas = ExtResource("1_275ao")
+region = Rect2(960, 0, 240, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0fqy0"]
+atlas = ExtResource("1_275ao")
+region = Rect2(1200, 0, 240, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wnxew"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jksfe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_en0qa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k71cc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wn1j0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5f76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0fqy0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_thite"]
+radius = 34.0
+height = 68.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1732772598]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1027770304]
+sprite_frames = SubResource("SpriteFrames_wnxew")
+animation = &"idle"
+autoplay = "idle"
+frame = 2
+frame_progress = 0.892982
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=787722759]
+position = Vector2(19, 41)
+shape = SubResource("CapsuleShape2D_thite")
