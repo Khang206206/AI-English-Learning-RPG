@@ -763,8 +763,7 @@ func _init_review_tab() -> void:
 	var cnt := review_queue.size()
 	var vocab_cnt := vocab_due.size()
 	var grammar_cnt := grammar_due.size()
-	var reviewed_today = progress_manager.get_reviewed_today_count() if progress_manager.has_method("get_reviewed_today_count") else 0
-	review_status.text = "🔥 Cần ôn hôm nay: %d từ + %d ngữ pháp\n✅ Đã ôn: %d" % [vocab_cnt, grammar_cnt, reviewed_today]
+	review_status.text = "🔥 Cần ôn hôm nay: %d từ + %d ngữ pháp\n✅ Đã ôn: %d" % [vocab_cnt, grammar_cnt, _reviewed_items_today.size()]
 
 	# Xây dựng danh sách bên trái
 	for c in due_list.get_children():
@@ -775,10 +774,7 @@ func _init_review_tab() -> void:
 	btn_start_review.visible = cnt > 0
 	if cnt == 0:
 		flashcard_word.text = "🎉 Tuyệt vời!"
-		if reviewed_today > 0:
-			hint_label.text = "Bạn đã ôn tập toàn bộ nội dung của hôm nay."
-		else:
-			hint_label.text = "Hôm nay bạn không có nội dung nào cần ôn."
+		hint_label.text = "Hôm nay bạn không có nội dung nào cần ôn."
 		btn_ai_hint.hide()
 		btn_flip.hide()
 	else:
@@ -790,8 +786,7 @@ func _start_flashcard_session() -> void:
 	_next_flashcard()
 
 func _next_flashcard() -> void:
-	var reviewed_today = progress_manager.get_reviewed_today_count() if progress_manager and progress_manager.has_method("get_reviewed_today_count") else 0
-	review_status.text = "🔥 Còn lại: %d\n✅ Đã ôn hôm nay: %d" % [review_queue.size(), reviewed_today]
+	review_status.text = "🔥 Còn lại: %d\n✅ Đã ôn phiên này: %d" % [review_queue.size(), _reviewed_items_today.size()]
 
 	if review_queue.is_empty():
 		flashcard_word.text   = "🎉 Xong!"

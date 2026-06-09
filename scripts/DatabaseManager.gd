@@ -10,6 +10,7 @@ signal hp_changed(new_hp: int)
 signal game_over_triggered()
 signal game_saved()
 signal game_loaded(data: Dictionary)
+signal intro_quiz_state_changed(is_completed: bool)
 
 var db = null
 const DB_PATH: String = "res://data/data.db"
@@ -25,6 +26,7 @@ var current_biome: String = "Beginner Forest"
 var dead_enemies: Array = []
 var interacted_enemies: Array = []
 var has_save_data: bool = false
+var intro_quiz_completed: bool = false
 
 # ==============================================================================
 # VÒNG ĐỜI NODE
@@ -62,6 +64,7 @@ func init_database() -> void:
 	_migrate_vocabulary_cefr_column()
 	_migrate_grammar_srs_columns()
 	_migrate_interacted_enemies_column()
+	_migrate_intro_quiz_completed_column()
 	seed_initial_data()
 
 func _create_tables() -> void:
@@ -75,7 +78,8 @@ func _create_tables() -> void:
 			pos_x               REAL    DEFAULT 0.0,
 			pos_y               REAL    DEFAULT 0.0,
 			dead_enemies_list   TEXT    DEFAULT '[]',
-			interacted_enemies_list TEXT DEFAULT '[]'
+			interacted_enemies_list TEXT DEFAULT '[]',
+			intro_quiz_completed INTEGER DEFAULT 0
 		);
 	""")
 
@@ -190,6 +194,10 @@ func _migrate_vocabulary_cefr_column() -> void:
 func _migrate_interacted_enemies_column() -> void:
 	db.query("ALTER TABLE Player_Profile ADD COLUMN interacted_enemies_list TEXT DEFAULT '[]'")
 	print("[DatabaseManager] Migration interacted_enemies_list column: done.")
+
+func _migrate_intro_quiz_completed_column() -> void:
+	db.query("ALTER TABLE Player_Profile ADD COLUMN intro_quiz_completed INTEGER DEFAULT 0")
+	print("[DatabaseManager] Migration intro_quiz_completed column: done.")
 
 # ==============================================================================
 # 2. SEED DỮ LIỆU BAN ĐẦU
@@ -440,13 +448,32 @@ func spend_gold(amount: int) -> bool:
 # 5. SAVE / LOAD TIẾN TRÌNH
 # ==============================================================================
 
-func save_game(pos_x: float, pos_y: float, scene_path: String = "") -> void:
-	if scene_path == "":
+func _resolve_save_context(pos_x: float, pos_y: float, scene_path: String = "") -> Dictionary:
+	var resolved_position := Vector2(pos_x, pos_y)
+	var resolved_scene_path := scene_path
+
+	if resolved_scene_path == "":
 		var current_tree = Engine.get_main_loop() as SceneTree
 		if current_tree and current_tree.current_scene:
-			scene_path = current_tree.current_scene.scene_file_path
-	if scene_path != "":
-		current_biome = scene_path
+			resolved_scene_path = current_tree.current_scene.scene_file_path
+
+	# Nếu người chơi đang lưu giữa trận, luôn trả save về scene/vị trí lúc họ bấm F vào quái.
+	if resolved_scene_path == "res://scenes/BattleScene.tscn" and GameManager != null:
+		if GameManager.previous_scene_path != "":
+			resolved_scene_path = GameManager.previous_scene_path
+		resolved_position = GameManager.player_position
+
+	return {
+		"position": resolved_position,
+		"scene_path": resolved_scene_path,
+	}
+
+func save_game(pos_x: float, pos_y: float, scene_path: String = "") -> void:
+	var save_context = _resolve_save_context(pos_x, pos_y, scene_path)
+	var resolved_position: Vector2 = save_context["position"]
+	var resolved_scene_path: String = save_context["scene_path"]
+	if resolved_scene_path != "":
+		current_biome = resolved_scene_path
 
 	var serialized_enemies: String = JSON.stringify(dead_enemies)
 	var serialized_interacted: String = JSON.stringify(interacted_enemies)
@@ -461,14 +488,67 @@ func save_game(pos_x: float, pos_y: float, scene_path: String = "") -> void:
 		    pos_x             = ?,
 		    pos_y             = ?,
 		    dead_enemies_list = ?,
-		    interacted_enemies_list = ?
+		    interacted_enemies_list = ?,
+		    intro_quiz_completed = ?
 		WHERE save_id = ?;""",
-		[timestamp, player_hearts, player_gold, current_biome, pos_x, pos_y, serialized_enemies, serialized_interacted, CURRENT_SAVE_SLOT]
+		[timestamp, player_hearts, player_gold, current_biome, resolved_position.x, resolved_position.y, serialized_enemies, serialized_interacted, 1 if intro_quiz_completed else 0, CURRENT_SAVE_SLOT]
 	)
 
 	print("[DatabaseManager] Game đã lưu lúc %s | HP: %d | Vị trí: (%.1f, %.1f) | Gold: %d" \
-		% [timestamp, player_hearts, pos_x, pos_y, player_gold])
+		% [timestamp, player_hearts, resolved_position.x, resolved_position.y, player_gold])
 	emit_signal("game_saved")
+
+func save_and_quit(pos_x: float, pos_y: float, scene_path: String = "") -> void:
+	restore_full_hp()
+	save_game(pos_x, pos_y, scene_path)
+
+	var current_tree = Engine.get_main_loop() as SceneTree
+	if current_tree:
+		current_tree.quit()
+
+func reset_save_for_new_game() -> void:
+	player_hearts = max_hearts
+	player_gold = 100
+	current_biome = "res://scenes/chapel.tscn"
+	dead_enemies = []
+	interacted_enemies = []
+	has_save_data = false
+	intro_quiz_completed = false
+
+	db.query_with_bindings(
+		"""UPDATE Player_Profile
+		SET last_played = '',
+		    hp = ?,
+		    gold = ?,
+		    current_biome = ?,
+		    pos_x = 0.0,
+		    pos_y = 0.0,
+		    dead_enemies_list = '[]',
+		    interacted_enemies_list = '[]',
+		    intro_quiz_completed = 0
+		WHERE save_id = ?;""",
+		[player_hearts, player_gold, current_biome, CURRENT_SAVE_SLOT]
+	)
+	db.query_with_bindings("DELETE FROM Player_Vocab_Mastery WHERE save_id = ?;", [CURRENT_SAVE_SLOT])
+	db.query_with_bindings("DELETE FROM Player_Grammar_Mastery WHERE save_id = ?;", [CURRENT_SAVE_SLOT])
+	db.query_with_bindings("DELETE FROM Player_Inventory WHERE save_id = ?;", [CURRENT_SAVE_SLOT])
+	for item_id in [1, 2, 3, 4]:
+		db.query_with_bindings(
+			"INSERT INTO Player_Inventory (save_id, item_id, quantity) VALUES (?, ?, 2);",
+			[CURRENT_SAVE_SLOT, item_id]
+		)
+
+	if GameManager != null:
+		GameManager.target_spawn_id = ""
+		GameManager.current_monster = null
+		GameManager.current_enemy_id = 0
+		GameManager.player_position = Vector2.ZERO
+		GameManager.previous_scene_path = "res://scenes/chapter_1.tscn"
+		GameManager.should_load_position = false
+
+	emit_signal("hp_changed", player_hearts)
+	emit_signal("intro_quiz_state_changed", intro_quiz_completed)
+	print("[DatabaseManager] Đã reset dữ liệu cho New Game.")
 
 func load_game(save_slot: int) -> void:
 	db.query_with_bindings(
@@ -491,6 +571,7 @@ func load_game(save_slot: int) -> void:
 			
 		var last_played = data.get("last_played", "")
 		has_save_data = (last_played != null and str(last_played).strip_edges() != "")
+		intro_quiz_completed = bool(data.get("intro_quiz_completed", 0))
 
 		var raw_enemies: String = data.get("dead_enemies_list", "[]")
 		var json_parser         = JSON.new()
@@ -511,6 +592,7 @@ func load_game(save_slot: int) -> void:
 			% [player_hearts, max_hearts, dead_enemies.size(), player_gold])
 
 		emit_signal("hp_changed", player_hearts)
+		emit_signal("intro_quiz_state_changed", intro_quiz_completed)
 		emit_signal("game_loaded", data)
 	else:
 		player_hearts = max_hearts
@@ -518,8 +600,10 @@ func load_game(save_slot: int) -> void:
 		dead_enemies  = []
 		interacted_enemies = []
 		has_save_data = false
+		intro_quiz_completed = false
 		print("[DatabaseManager] Không tìm thấy Save Slot %d — bắt đầu hành trình mới!" % save_slot)
 		emit_signal("hp_changed", player_hearts)
+		emit_signal("intro_quiz_state_changed", intro_quiz_completed)
 
 # ==============================================================================
 # 6. TIỆN ÍCH BỔ SUNG
@@ -550,6 +634,20 @@ func mark_enemy_interacted(enemy_id: int) -> void:
 
 func has_interacted_with_enemy(enemy_id: int) -> bool:
 	return enemy_id in interacted_enemies
+
+func has_completed_intro_quiz() -> bool:
+	return intro_quiz_completed
+
+func mark_intro_quiz_completed() -> void:
+	if intro_quiz_completed:
+		return
+	intro_quiz_completed = true
+	db.query_with_bindings(
+		"UPDATE Player_Profile SET intro_quiz_completed = ? WHERE save_id = ?;",
+		[1, CURRENT_SAVE_SLOT]
+	)
+	emit_signal("intro_quiz_state_changed", intro_quiz_completed)
+	print("[DatabaseManager] Đã đánh dấu hoàn thành bài test đầu game.")
 
 func restore_full_hp() -> void:
 	player_hearts = max_hearts

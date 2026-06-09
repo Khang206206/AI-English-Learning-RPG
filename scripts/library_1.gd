@@ -1,6 +1,24 @@
 extends Node2D
 @export var lib1_music: AudioStream
 
+const PLAYER_ENTER_LIBRARY_DIALOGUE = [
+	{
+		"name": "Bạn",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "Khoan đã... Mình vừa bước vào trong một quyển sách sao?"
+	},
+	{
+		"name": "Bạn",
+		"portrait": "res://assets/textures/player2/_Faces/face_empty.png",
+		"text": "Không khí ở đây lạ quá. Cứ như từng con chữ đang bay lơ lửng quanh mình."
+	},
+	{
+		"name": "Bạn",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "Đây là pháp thuật của thế giới này à? Hay mình vẫn còn đang mơ?"
+	},
+]
+
 func _ready():
 	if lib1_music != null:
 		BgmManager.play_music(lib1_music)
@@ -18,3 +36,14 @@ func _ready():
 			player.get_node("AnimatedSprite2D").play("idle") 
 			
 		GameManager.target_spawn_id = ""
+	_maybe_start_player_entry_dialogue()
+
+func _maybe_start_player_entry_dialogue() -> void:
+	if DatabaseManager != null and DatabaseManager.has_completed_intro_quiz():
+		return
+	if GameManager != null and GameManager.has_seen_library_entry_dialogue:
+		return
+	if GameManager != null:
+		GameManager.has_seen_library_entry_dialogue = true
+	if DialogueSystem != null:
+		DialogueSystem.start_dialogue(PLAYER_ENTER_LIBRARY_DIALOGUE)

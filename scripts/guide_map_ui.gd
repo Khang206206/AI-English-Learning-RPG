@@ -53,6 +53,7 @@ const COLOR_MUTED_INK := Color(0.36, 0.25, 0.14, 1.0)
 const COLOR_LOCKED := Color(0.13, 0.13, 0.13, 1.0)
 const COLOR_DISCOVERED := Color(0.88, 0.68, 0.26, 1.0)
 const COLOR_DEFEATED := Color(0.74, 0.10, 0.08, 1.0)
+const COLOR_GATED := Color(0.85, 0.66, 0.22, 1.0)
 const DEFAULT_MARKER_PATH := "res://assets/textures/guide_map/ui/marker_default.png"
 const DEFAULT_SILHOUETTE_PATH := "res://assets/textures/guide_map/ui/silhouette_default.png"
 const DEFAULT_TEXTURE_PATH := "res://icon.svg"
@@ -626,6 +627,16 @@ func _get_status_color(status: String) -> Color:
 		_:
 			return COLOR_LOCKED
 
+func _is_monster_gated(m: Dictionary) -> bool:
+	if progress_manager == null:
+		return false
+	var tier := int(m.get("tier", 1))
+	if tier <= 1:
+		return false
+	if _get_monster_status(m) == "locked":
+		return false
+	return not progress_manager.can_access_tier(tier)
+
 func _create_marker_frame(marker_size: int, status: String) -> Panel:
 	var frame_size = marker_size + 14
 	var frame = Panel.new()
@@ -782,6 +793,7 @@ func _refresh_monster_tab() -> void:
 	
 	for m in monster_db:
 		var status := _get_monster_status(m)
+		var is_gated := _is_monster_gated(m)
 		var has_interacted = status != "locked"
 		var icon_path = m.portrait_path if has_interacted else m.silhouette_path
 		var icon_fallback = DEFAULT_TEXTURE_PATH if has_interacted else DEFAULT_SILHOUETTE_PATH
@@ -796,32 +808,44 @@ func _refresh_monster_tab() -> void:
 		btn.expand_icon = true
 		btn.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		
-		if has_interacted:
+		if has_interacted and is_gated:
+			btn.text = "  Tier %d  %s\n  LOCKED | Ôn lại Tier %d" % [m.tier, m.name, max(m.tier - 1, 1)]
+			btn.add_theme_color_override("font_color", Color(0.26, 0.18, 0.08, 1))
+		elif has_interacted:
 			btn.text = "  Tier %d  %s\n  %s" % [m.tier, m.name, _get_status_label(status)]
 			btn.add_theme_color_override("font_color", Color(0.15, 0.08, 0.02, 1))
 		else:
 			btn.text = "  Tier %d  ???\n  %s" % [m.tier, _get_status_label(status)]
 			btn.add_theme_color_override("font_color", Color(0.32, 0.31, 0.30, 1))
 			
-		var normal_color = Color(0.90, 0.80, 0.58, 0.68) if has_interacted else Color(0.55, 0.52, 0.46, 0.58)
-		var hover_color = Color(0.98, 0.88, 0.62, 0.94) if has_interacted else Color(0.68, 0.65, 0.58, 0.86)
+		var normal_color = Color(0.58, 0.50, 0.34, 0.74) if is_gated else (Color(0.90, 0.80, 0.58, 0.68) if has_interacted else Color(0.55, 0.52, 0.46, 0.58))
+		var hover_color = Color(0.72, 0.61, 0.40, 0.92) if is_gated else (Color(0.98, 0.88, 0.62, 0.94) if has_interacted else Color(0.68, 0.65, 0.58, 0.86))
 		var style_normal = _create_list_item_hover_style(normal_color, status)
 		var style_hover = _create_list_item_hover_style(hover_color, status)
+		if is_gated:
+			style_normal.border_color = COLOR_GATED
+			style_hover.border_color = COLOR_GATED
 		btn.add_theme_stylebox_override("normal", style_normal)
 		btn.add_theme_stylebox_override("hover", style_hover)
 		btn.add_theme_stylebox_override("pressed", style_hover)
 		
-		btn.pressed.connect(func(): _show_monster_detail(m, has_interacted))
+		btn.pressed.connect(func(): _show_monster_detail(m, has_interacted, is_gated))
 		monster_list_container.add_child(btn)
 
-func _show_monster_detail(m: Dictionary, has_interacted: bool) -> void:
+func _show_monster_detail(m: Dictionary, has_interacted: bool, is_gated: bool = false) -> void:
 	var status := _get_monster_status(m)
 	if has_interacted:
-		mon_locked_overlay.hide()
 		mon_name_label.text = m.name
-		mon_tier_label.text = "Tier %d  |  %s" % [m.tier, _get_status_label(status)]
-		mon_story_label.text = m.story
-		mon_learning_label.text = "Nội dung học tập\n" + m.learning
+		if is_gated:
+			mon_locked_overlay.show()
+			mon_tier_label.text = "Tier %d  |  LOCKED" % [m.tier]
+			mon_story_label.text = "%s\n\nBạn cần đạt lại 30%% mastery ở Tier %d để chiến đấu với quái vật này." % [m.story, max(m.tier - 1, 1)]
+			mon_learning_label.text = "Nội dung học tập\n" + m.learning
+		else:
+			mon_locked_overlay.hide()
+			mon_tier_label.text = "Tier %d  |  %s" % [m.tier, _get_status_label(status)]
+			mon_story_label.text = m.story
+			mon_learning_label.text = "Nội dung học tập\n" + m.learning
 		mon_texture.texture = _load_texture_or_null(m.portrait_path, DEFAULT_TEXTURE_PATH)
 	else:
 		mon_locked_overlay.show()

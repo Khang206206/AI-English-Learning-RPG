@@ -6,6 +6,18 @@ signal back_pressed
 @onready var bright_slider = $HBoxContainer2/BrightSlider
 @onready var back_button = $Backbutton
 @onready var continue_button = $ContinueButton
+@onready var quit_dialog = $QuitDialog
+@onready var save_and_quit_button = $QuitDialog/QuitDialogVBox/SaveAndQuitButton
+@onready var quit_without_saving_button = $QuitDialog/QuitDialogVBox/QuitWithoutSavingButton
+@onready var cancel_quit_button = $QuitDialog/QuitDialogVBox/CancelQuitButton
+@onready var volume_row = $HBoxContainer
+@onready var brightness_row = $HBoxContainer2
+@onready var save_game_button = get_node_or_null("SaveGameButton")
+@onready var quit_game_button = get_node_or_null("QuitGameButton")
+
+var is_ingame_mode := false
+var close_panel_on_quit_cancel := false
+var quit_dialog_only_mode := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,8 +33,15 @@ func _ready():
 		$SaveGameButton.pressed.connect(_on_save_pressed)
 	if has_node("QuitGameButton"):
 		$QuitGameButton.pressed.connect(_on_quit_pressed)
+	save_and_quit_button.pressed.connect(_on_save_and_quit_pressed)
+	quit_without_saving_button.pressed.connect(_on_quit_without_saving_pressed)
+	cancel_quit_button.pressed.connect(_hide_quit_dialog)
 
 func setup_mode(is_ingame: bool):
+	is_ingame_mode = is_ingame
+	quit_dialog_only_mode = false
+	_apply_base_visibility()
+	_hide_quit_dialog()
 	if is_ingame:
 		# Nếu đang chơi game: Hiện CONTINUE, ẩn EXIT (Backbutton)
 		$ContinueButton.visible = true
@@ -51,4 +70,43 @@ func _on_save_pressed():
 		timer.timeout.connect(func(): $SaveGameButton.text = "SAVE GAME")
 
 func _on_quit_pressed():
+	show_quit_dialog()
+
+func show_quit_dialog(close_panel_on_cancel: bool = false, dialog_only: bool = false) -> void:
+	close_panel_on_quit_cancel = close_panel_on_cancel
+	quit_dialog_only_mode = dialog_only
+	_apply_base_visibility()
+	quit_dialog.show()
+
+func _hide_quit_dialog() -> void:
+	if quit_dialog != null:
+		quit_dialog.hide()
+	quit_dialog_only_mode = false
+	_apply_base_visibility()
+	if close_panel_on_quit_cancel:
+		close_panel_on_quit_cancel = false
+		back_pressed.emit()
+
+func _apply_base_visibility() -> void:
+	if volume_row != null:
+		volume_row.visible = not quit_dialog_only_mode
+	if brightness_row != null:
+		brightness_row.visible = not quit_dialog_only_mode
+	if continue_button != null:
+		continue_button.visible = (not quit_dialog_only_mode) and is_ingame_mode
+	if back_button != null:
+		back_button.visible = (not quit_dialog_only_mode) and (not is_ingame_mode)
+	if save_game_button != null:
+		save_game_button.visible = (not quit_dialog_only_mode) and is_ingame_mode
+	if quit_game_button != null:
+		quit_game_button.visible = not quit_dialog_only_mode
+
+func _on_save_and_quit_pressed() -> void:
+	DatabaseManager.save_and_quit(
+		GameManager.player_position.x,
+		GameManager.player_position.y,
+		DatabaseManager.current_biome if not is_ingame_mode else ""
+	)
+
+func _on_quit_without_saving_pressed() -> void:
 	get_tree().quit()

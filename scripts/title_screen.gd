@@ -27,7 +27,7 @@ func _ready():
 		$VBoxContainer/Button2.modulate.a = 1.0
 
 func _on_start_pressed():
-
+	DatabaseManager.reset_save_for_new_game()
 	get_tree().change_scene_to_file(
         "res://scenes/chapel.tscn"
 	)
@@ -58,5 +58,7 @@ func _on_settings_back():
 	$SettingsPanel.visible = false
 
 func _on_quit_pressed():
-
-	get_tree().quit()
+	$VBoxContainer.visible = false
+	$SettingsPanel.setup_mode(false)
+	$SettingsPanel.visible = true
+	$SettingsPanel.show_quit_dialog(true, true)

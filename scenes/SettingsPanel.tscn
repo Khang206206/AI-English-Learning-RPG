@@ -23,6 +23,18 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_dialog"]
+bg_color = Color(0.211765, 0.12549, 0.0784314, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.929412, 0.733333, 0.341176, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="SettingsPanel" type="Panel" unique_id=215623673]
 theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 visible = false
@@ -150,3 +162,82 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_udqel")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_sdcb2")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2drfb")
 text = "QUIT GAME"
+
+[node name="QuitDialog" type="Panel" parent="."]
+visible = false
+z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -120.0
+offset_right = 250.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_quit_dialog")
+
+[node name="QuitDialogVBox" type="VBoxContainer" parent="QuitDialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+
+[node name="QuitDialogLabel" type="Label" parent="QuitDialog/QuitDialogVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.996078, 0.92549, 0.772549, 1)
+theme_override_fonts/font = ExtResource("2_u3u7m")
+theme_override_font_sizes/font_size = 16
+text = "QUIT THE GAME?"
+horizontal_alignment = 1
+
+[node name="SaveAndQuitButton" type="Button" parent="QuitDialog/QuitDialogVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+theme_override_colors/font_pressed_color = Color(0.99607843, 0.8392157, 0.64705884, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_u3u7m")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vwjty")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_udqel")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sdcb2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2drfb")
+text = "SAVE AND QUIT"
+
+[node name="QuitWithoutSavingButton" type="Button" parent="QuitDialog/QuitDialogVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+theme_override_colors/font_pressed_color = Color(0.99607843, 0.8392157, 0.64705884, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_u3u7m")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vwjty")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_udqel")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sdcb2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2drfb")
+text = "QUIT WITHOUT SAVING"
+
+[node name="CancelQuitButton" type="Button" parent="QuitDialog/QuitDialogVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+theme_override_colors/font_pressed_color = Color(0.99607843, 0.8392157, 0.64705884, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_u3u7m")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vwjty")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_udqel")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sdcb2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2drfb")
+text = "CANCEL"

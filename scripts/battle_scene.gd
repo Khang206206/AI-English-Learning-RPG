@@ -66,10 +66,18 @@ var revealed_letters_count: int = 0
 const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
 const ICE_EFFECT_SCENE = preload("res://scenes/ice_effect.tscn")
 var current_ice_instance: AnimatedSprite2D = null # Biến giữ thực thể băng để xóa khi rã băng
+const SPELL_ITEM_IDS := {
+	"fire": 5,
+	"ice": 6,
+	"electric": 7,
+	"wood": 8,
+}
+
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
 	player_anim.play("idle")
+	_style_item_slots()
 	if GameManager.current_monster:
 		# Gán SpriteFrames từ resource truyền sang
 		monster_anim.flip_h = GameManager.current_monster.flip_h
@@ -151,26 +159,126 @@ func _get_item_quantity(item_id: int) -> int:
 			return item["quantity"]
 	return 0
 
+func _make_item_slot_stylebox(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style = StyleBoxFlat.new()
+	style.bg_color = bg_color
+	style.border_color = border_color
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	return style
+
+func _style_item_slots() -> void:
+	for button in [btn_potion, btn_fifty, btn_skip, btn_freeze]:
+		_wrap_item_button_with_frame(button)
+
+func _wrap_item_button_with_frame(button: TextureButton) -> void:
+	if button == null:
+		return
+	if button.get_parent() is PanelContainer:
+		return
+
+	var container := PanelContainer.new()
+	container.name = "%sFrame" % button.name
+	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	container.custom_minimum_size = Vector2(66, 66)
+	container.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	container.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	container.add_theme_stylebox_override(
+		"panel",
+		_make_item_slot_stylebox(Color(0.20, 0.13, 0.08, 0.92), Color(0.86, 0.66, 0.28, 1.0))
+	)
+
+	var parent := button.get_parent()
+	if parent == null:
+		return
+
+	var index := button.get_index()
+	parent.remove_child(button)
+	parent.add_child(container)
+	parent.move_child(container, index)
+	container.add_child(button)
+
+	button.set_anchors_preset(Control.PRESET_FULL_RECT)
+	button.offset_left = 2.0
+	button.offset_top = 2.0
+	button.offset_right = -2.0
+	button.offset_bottom = -2.0
+
+func _has_spell_unlocked(spell_name: String) -> bool:
+	var item_id = SPELL_ITEM_IDS.get(spell_name, -1)
+	if item_id == -1:
+		return false
+	return _get_item_quantity(item_id) > 0
+
 func update_item_ui():
+	_update_spell_ui()
+	
 	if btn_potion:
 		var count = _get_item_quantity(1)
 		btn_potion.disabled = count <= 0
+		_update_utility_button_visual(btn_potion, count > 0)
 		if label_potion: label_potion.text = str(count)
 		
 	if btn_fifty:
 		var count = _get_item_quantity(2)
 		btn_fifty.disabled = (count <= 0)
+		_update_utility_button_visual(btn_fifty, count > 0)
 		if label_fifty: label_fifty.text = str(count)
 		
 	if btn_skip:
 		var count = _get_item_quantity(3)
 		btn_skip.disabled = count <= 0
+		_update_utility_button_visual(btn_skip, count > 0)
 		if label_skip: label_skip.text = str(count)
 		
 	if btn_freeze:
 		var count = _get_item_quantity(4)
 		btn_freeze.disabled = count <= 0
+		_update_utility_button_visual(btn_freeze, count > 0)
 		if label_freeze: label_freeze.text = str(count)
+
+func _update_spell_ui() -> void:
+	var fire_unlocked := _has_spell_unlocked("fire")
+	var electric_unlocked := _has_spell_unlocked("electric")
+	var ice_unlocked := _has_spell_unlocked("ice")
+	var wood_unlocked := _has_spell_unlocked("wood")
+
+	if not fire_unlocked and current_bullet == "fire":
+		current_bullet = "normal"
+		btn_fire.button_pressed = false
+	if not electric_unlocked and current_bullet == "electric":
+		current_bullet = "normal"
+		btn_electric.button_pressed = false
+	if not ice_unlocked and current_bullet == "ice":
+		current_bullet = "normal"
+		btn_ice.button_pressed = false
+	if not wood_unlocked and current_bullet == "wood":
+		current_bullet = "normal"
+		btn_wood.button_pressed = false
+
+	btn_fire.disabled = btn_fire.disabled or not fire_unlocked
+	btn_electric.disabled = btn_electric.disabled or not electric_unlocked
+	btn_ice.disabled = btn_ice.disabled or not ice_unlocked
+	btn_wood.disabled = btn_wood.disabled or not wood_unlocked
+
+	_update_button_visuals(btn_fire, btn_fire.button_pressed)
+	_update_button_visuals(btn_electric, btn_electric.button_pressed)
+	_update_button_visuals(btn_ice, btn_ice.button_pressed)
+	_update_button_visuals(btn_wood, btn_wood.button_pressed)
+
+func _update_utility_button_visual(button: TextureButton, is_available: bool) -> void:
+	if button == null:
+		return
+	if is_available:
+		button.modulate = Color.WHITE
+	else:
+		button.modulate = Color(0.5, 0.5, 0.5, 0.9)
 
 func setup_hearts():
 	for child in player_hearts_container.get_children():
@@ -401,11 +509,6 @@ func set_buttons_disabled(is_disabled: bool):
 		btn_c.modulate.a = 1.0
 		btn_d.modulate.a = 1.0
 	
-	btn_fire.disabled = is_disabled
-	btn_electric.disabled = is_disabled
-	btn_ice.disabled = is_disabled
-	btn_wood.disabled = is_disabled
-	
 	word_input.editable = !is_disabled
 	submit_btn.disabled = is_disabled
 	
@@ -421,6 +524,8 @@ func set_buttons_disabled(is_disabled: bool):
 		btn_electric.disabled = is_disabled
 		btn_ice.disabled = is_disabled
 		btn_wood.disabled = is_disabled
+	
+	_update_spell_ui()
 	
 	# Bỏ dòng "if is_disabled:" cũ đi, luôn luôn ép cập nhật màu sắc mỗi khi trạng thái thay đổi
 	_update_button_visuals(btn_fire, btn_fire.button_pressed)
@@ -619,7 +724,7 @@ func _on_timer_timeout():
 # Hàm đổi màu nút theo trạng thái (Bình thường / Chọn sáng rực / Khóa mờ)
 func _update_button_visuals(button: TextureButton, is_pressed: bool):
 	if button.disabled:
-		button.modulate = Color(0.2, 0.2, 0.2, 0.6) # Khóa mờ tịt
+		button.modulate = Color(0.5, 0.5, 0.5, 0.9) # Khóa trắng đen
 	elif is_pressed:
 		button.modulate = Color(1.8, 1.8, 1.8, 1.0) # Chọn sáng rực HDR
 	else:

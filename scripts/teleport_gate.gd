@@ -9,6 +9,7 @@ extends Area2D
 
 @onready var prompt = $DoorInteract
 var is_player_inside = false
+var gate_enabled := true
 
 @export_group("Audio Settings")
 @export var keep_bgm: bool = false
@@ -19,6 +20,8 @@ func _ready():
 	body_exited.connect(_on_body_exited)
 
 func _on_body_entered(body):
+	if not gate_enabled:
+		return
 	if body.name.contains("Player"):
 		is_player_inside = true
 		prompt.show()
@@ -29,8 +32,15 @@ func _on_body_exited(body):
 		prompt.hide()
 
 func _input(event):
-	if is_player_inside and prompt.visible and event.is_action_pressed("interact"):
+	if gate_enabled and is_player_inside and prompt.visible and event.is_action_pressed("interact"):
 		change_scene()
+
+func set_gate_enabled(enabled: bool) -> void:
+	gate_enabled = enabled
+	visible = enabled
+	if not enabled:
+		is_player_inside = false
+		prompt.hide()
 
 func change_scene():
 	if target_scene_path == "":

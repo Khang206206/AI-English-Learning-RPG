@@ -11,6 +11,8 @@ extends Node
 var db:
 	get: return DatabaseManager.db
 
+const TIER_UNLOCK_MASTERY_THRESHOLD := 0.3
+
 
 # ==============================================================================
 # 1. THUẬT TOÁN DDA — LẤY TỪ VỰNG YẾU NHẤT
@@ -174,6 +176,14 @@ func get_global_avg_mastery() -> float:
 	if db.query_result.is_empty() or db.query_result[0]["avg_mastery"] == null:
 		return 0.0
 	return float(db.query_result[0]["avg_mastery"])
+
+func get_tier_unlock_threshold() -> float:
+	return TIER_UNLOCK_MASTERY_THRESHOLD
+
+func can_access_tier(tier_id: int) -> bool:
+	if tier_id <= 1:
+		return true
+	return get_tier_avg_mastery(tier_id - 1) >= TIER_UNLOCK_MASTERY_THRESHOLD
 
 
 ## Tóm tắt toàn bộ tiến trình học (dùng cho màn hình Notebook/Stats).

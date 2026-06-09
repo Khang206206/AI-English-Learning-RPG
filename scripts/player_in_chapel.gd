@@ -1,13 +1,32 @@
 extends CharacterBody2D
 
 const SPEED = 150.0
+const PLAYER_OPENING_DIALOGUE = [
+	{
+		"name": "Bạn",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "Ơ... Mình đang ở đâu thế này"
+	},
+	{
+		"name": "Bạn",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "Quyển sách ở trên bục kia đang phát sáng thì phải."
+	},
+]
+
 var is_dead = false
 var is_waking = true
+var should_show_opening_dialogue = false
 var last_direction = "side"
 
 @onready var sprite = $AnimatedSprite2D
 
 func _ready():
+	should_show_opening_dialogue = (
+		not GameManager.should_load_position
+		and DatabaseManager != null
+		and not DatabaseManager.has_completed_intro_quiz()
+	)
 	sprite.play("wake")
 	sprite.animation_finished.connect(_on_animation_finished)
 	if GameManager.should_load_position:
@@ -46,6 +65,9 @@ func _physics_process(_delta):
 func _on_animation_finished():
 	if sprite.animation == "wake":
 		is_waking = false
+		if should_show_opening_dialogue:
+			should_show_opening_dialogue = false
+			DialogueSystem.start_dialogue(PLAYER_OPENING_DIALOGUE)
 
 func die():
 	is_dead = true

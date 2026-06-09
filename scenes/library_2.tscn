@@ -3573,7 +3573,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TeleportGate2/CanvasLayer/FlashRect:color")
+tracks/0/path = NodePath("ToChapel/CanvasLayer/FlashRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -3589,7 +3589,7 @@ length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TeleportGate2/CanvasLayer/FlashRect:color")
+tracks/0/path = NodePath("ToChapel/CanvasLayer/FlashRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -3655,16 +3655,16 @@ target_scene_path = "uid://ce8is5d4812re"
 destination_spawn_id = "SpawnFromLibrary2"
 keep_bgm = true
 
-[node name="TeleportGate2" parent="." unique_id=964040520 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("6_qdpyw")]
+[node name="ToChapel" parent="." unique_id=964040520 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("6_qdpyw")]
 position = Vector2(1017, 596)
 target_scene_path = "uid://bsemj1t7vqb73"
 destination_spawn_id = ""
 use_flash = true
 flash_animation_player = NodePath("../AnimationPlayer")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate2" unique_id=127186577]
+[node name="CanvasLayer" type="CanvasLayer" parent="ToChapel" unique_id=127186577]
 
-[node name="FlashRect" type="ColorRect" parent="TeleportGate2/CanvasLayer" unique_id=39783742]
+[node name="FlashRect" type="ColorRect" parent="ToChapel/CanvasLayer" unique_id=39783742]
 z_index = 4
 anchors_preset = 15
 anchor_right = 1.0
@@ -3687,6 +3687,7 @@ position = Vector2(704, 476)
 position = Vector2(704, 598)
 object_type = "NPC_Dialogue"
 quiz_ui_node = NodePath("../QuizUI")
+disable_after_intro_quiz_completed = true
 
 [node name="CollisionShape2D" parent="InteractableObject" index="0" unique_id=865465090]
 position = Vector2(7, -140)

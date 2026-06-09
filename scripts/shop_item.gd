@@ -135,7 +135,7 @@ func setup(p_name: String, p_icon_path: String, p_price: int, p_item_id: int = -
 	if buy_button != null:
 		if item_type == "spell":
 			if p_owned > 0:
-				buy_button.text = "BOUGHT"
+				buy_button.text = "Đã mua"
 				buy_button.disabled = true
 				buy_button.modulate.a = 0.5 # Làm mờ nút
 			else:

@@ -8,22 +8,29 @@ extends CanvasLayer
 var guide_map_ui = null
 var btn_guide_map = null
 var feature_dock: PanelContainer = null
+var settings_button: TextureButton = null
 
 func _ready():
 	# Đảm bảo HUD luôn hoạt động ngay cả khi game bị pause
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	if not get_viewport().size_changed.is_connected(_position_feature_dock):
 		get_viewport().size_changed.connect(_position_feature_dock)
+	if not get_viewport().size_changed.is_connected(_position_settings_button):
+		get_viewport().size_changed.connect(_position_settings_button)
 	
 	if shop_ui != null:
 		shop_ui.visible = false
 		if not shop_ui.is_connected("closed", Callable(self, "_on_shop_closed")):
 			shop_ui.connect("closed", Callable(self, "_on_shop_closed"))
+		if not shop_ui.visibility_changed.is_connected(_sync_hud_visibility):
+			shop_ui.visibility_changed.connect(_sync_hud_visibility)
 			
 	var gm_scene = load("res://scenes/GuideMapUI.tscn")
 	if gm_scene:
 		guide_map_ui = gm_scene.instantiate()
 		add_child(guide_map_ui)
+		if not guide_map_ui.visibility_changed.is_connected(_sync_hud_visibility):
+			guide_map_ui.visibility_changed.connect(_sync_hud_visibility)
 		
 		btn_guide_map = TextureButton.new()
 		btn_guide_map.texture_normal = _create_map_icon_texture(Color(0.95, 0.82, 0.50, 1.0))
@@ -31,8 +38,15 @@ func _ready():
 		btn_guide_map.texture_pressed = _create_map_icon_texture(Color(0.82, 0.66, 0.38, 1.0))
 		btn_guide_map.pressed.connect(_on_guide_map_pressed)
 		add_child(btn_guide_map)
+
+	if notebook_ui != null and not notebook_ui.visibility_changed.is_connected(_sync_hud_visibility):
+		notebook_ui.visibility_changed.connect(_sync_hud_visibility)
+	if GlobalPause != null and not GlobalPause.visibility_changed.is_connected(_sync_hud_visibility):
+		GlobalPause.visibility_changed.connect(_sync_hud_visibility)
 		
+	_build_settings_button()
 	_build_feature_dock()
+	_sync_hud_visibility()
 
 func _make_stylebox(bg_color: Color, border_color: Color, border_width: int = 2, radius: int = 8, margins: Vector4 = Vector4.ZERO) -> StyleBoxFlat:
 	var style = StyleBoxFlat.new()
@@ -87,6 +101,34 @@ func _build_feature_dock() -> void:
 
 	_position_feature_dock()
 
+func _build_settings_button() -> void:
+	if settings_button != null:
+		return
+
+	settings_button = TextureButton.new()
+	settings_button.name = "SettingsButton"
+	settings_button.process_mode = Node.PROCESS_MODE_ALWAYS
+	settings_button.focus_mode = Control.FOCUS_NONE
+	settings_button.tooltip_text = "Settings (Esc)"
+	settings_button.ignore_texture_size = true
+	settings_button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	settings_button.custom_minimum_size = Vector2(52, 52)
+	settings_button.texture_normal = _create_gear_icon_texture(Color(0.93, 0.76, 0.34, 1.0))
+	settings_button.texture_hover = _create_gear_icon_texture(Color(0.98, 0.86, 0.46, 1.0))
+	settings_button.texture_pressed = _create_gear_icon_texture(Color(0.82, 0.66, 0.30, 1.0))
+	settings_button.pressed.connect(_on_settings_button_pressed)
+	add_child(settings_button)
+	_position_settings_button()
+
+func _position_settings_button() -> void:
+	if settings_button == null:
+		return
+	settings_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	settings_button.offset_left = -76.0
+	settings_button.offset_top = 20.0
+	settings_button.offset_right = -20.0
+	settings_button.offset_bottom = 76.0
+
 func _reparent_to(node: Control, new_parent: Node) -> void:
 	if node.get_parent() == new_parent:
 		return
@@ -111,13 +153,32 @@ func _prepare_map_button(button: TextureButton) -> void:
 
 func _prepare_texture_button(button: TextureButton, label: String) -> void:
 	button.focus_mode = Control.FOCUS_NONE
-	button.tooltip_text = label
+	match label:
+		"Notebook":
+			button.tooltip_text = "Notebook (N)"
+		"Shop":
+			button.tooltip_text = "Shop (B)"
+		_:
+			button.tooltip_text = label
 	button.ignore_texture_size = true
 	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	button.custom_minimum_size = Vector2(58, 58)
 	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	button.modulate = Color(1.0, 0.95, 0.84, 1.0)
+
+func _sync_hud_visibility() -> void:
+	var should_show_hud := not _is_any_feature_panel_open()
+	if feature_dock != null:
+		feature_dock.visible = should_show_hud
+	if settings_button != null:
+		settings_button.visible = should_show_hud
+
+func _is_any_feature_panel_open() -> bool:
+	return (guide_map_ui != null and guide_map_ui.visible) \
+		or (notebook_ui != null and notebook_ui.visible) \
+		or (shop_ui != null and shop_ui.visible) \
+		or (GlobalPause != null and GlobalPause.visible)
 
 func _position_feature_dock() -> void:
 	if feature_dock == null:
@@ -172,14 +233,72 @@ func _create_map_icon_texture(paper_color: Color) -> Texture2D:
 	var texture := ImageTexture.create_from_image(image)
 	return texture
 
+func _create_gear_icon_texture(gear_color: Color) -> Texture2D:
+	var size := 48
+	var image := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0, 0, 0, 0))
+
+	var outline := Color(0.22, 0.12, 0.05, 1.0)
+	var center := Vector2(24, 24)
+
+	for x in range(size):
+		for y in range(size):
+			var point := Vector2(x + 0.5, y + 0.5)
+			var offset := point - center
+			var distance := offset.length()
+			var angle := atan2(offset.y, offset.x)
+			var tooth_wave := 1.0 if cos(angle * 8.0) > 0.35 else 0.0
+			var outer_radius := 14.0 + tooth_wave * 4.0
+
+			if distance <= outer_radius and distance >= 6.0:
+				image.set_pixel(x, y, gear_color)
+			elif distance < 6.0:
+				image.set_pixel(x, y, Color(0, 0, 0, 0))
+
+	for x in range(1, size - 1):
+		for y in range(1, size - 1):
+			var pixel := image.get_pixel(x, y)
+			if pixel.a == 0.0:
+				continue
+			var is_edge := false
+			for dx in range(-1, 2):
+				for dy in range(-1, 2):
+					if dx == 0 and dy == 0:
+						continue
+					if image.get_pixel(x + dx, y + dy).a == 0.0:
+						is_edge = true
+						break
+				if is_edge:
+					break
+			if is_edge:
+				image.set_pixel(x, y, outline)
+
+	for x in range(size):
+		for y in range(size):
+			var point := Vector2(x + 0.5, y + 0.5)
+			var distance := point.distance_to(center)
+			if distance >= 9.0 and distance <= 12.0:
+				image.set_pixel(x, y, gear_color.lightened(0.12))
+
+	return ImageTexture.create_from_image(image)
+
 func _input(event):
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_M:
-			_on_guide_map_pressed()
+		match event.keycode:
+			KEY_M:
+				_on_guide_map_pressed()
+			KEY_N:
+				_on_btn_notebook_pressed()
+			KEY_B:
+				_on_shop_button_pressed()
 
 func _on_guide_map_pressed():
 	if guide_map_ui and guide_map_ui.has_method("toggle_guide_map"):
 		guide_map_ui.toggle_guide_map()
+
+func _on_settings_button_pressed() -> void:
+	if GlobalPause and GlobalPause.has_method("show_pause"):
+		GlobalPause.show_pause()
 
 # Khi click chuột vào Logo Shop
 func _on_shop_button_pressed():

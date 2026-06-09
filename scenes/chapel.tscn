@@ -775,7 +775,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TeleportGate/CanvasLayer/FlashRect:modulate")
+tracks/0/path = NodePath("ToLibrary/CanvasLayer/FlashRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -791,7 +791,7 @@ length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TeleportGate/CanvasLayer/FlashRect:modulate")
+tracks/0/path = NodePath("ToLibrary/CanvasLayer/FlashRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -846,7 +846,7 @@ layer_8/tile_data = PackedInt32Array(262172, 65539, 0, 327708, 65539, 1, 393244,
 [node name="PlayerInChapel" parent="." unique_id=1446754781 instance=ExtResource("7_nog23")]
 position = Vector2(544, 143)
 
-[node name="TeleportGate" parent="." unique_id=527335235 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
+[node name="ToLibrary" parent="." unique_id=527335235 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
 position = Vector2(539, 149)
 scale = Vector2(0.5, 0.5)
 target_scene_path = "uid://ce8is5d4812re"
@@ -854,9 +854,9 @@ destination_spawn_id = ""
 use_flash = true
 flash_animation_player = NodePath("../AnimationPlayer")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate" unique_id=1474954135]
+[node name="CanvasLayer" type="CanvasLayer" parent="ToLibrary" unique_id=1474954135]
 
-[node name="FlashRect" type="ColorRect" parent="TeleportGate/CanvasLayer" unique_id=1423402934]
+[node name="FlashRect" type="ColorRect" parent="ToLibrary/CanvasLayer" unique_id=1423402934]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -867,7 +867,7 @@ grow_vertical = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=230635185]
 libraries/ = SubResource("AnimationLibrary_74dbc")
 
-[node name="TeleportGate2" parent="." unique_id=1746627368 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
+[node name="ToMap1" parent="." unique_id=1746627368 node_paths=PackedStringArray("flash_animation_player") instance=ExtResource("9_xy6rp")]
 position = Vector2(538, 325)
 scale = Vector2(0.5, 0.5)
 target_scene_path = "uid://l1dhtqji1d6x"
@@ -875,9 +875,9 @@ destination_spawn_id = ""
 use_flash = true
 flash_animation_player = NodePath("../AnimationPlayer")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="TeleportGate2" unique_id=1469143355]
+[node name="CanvasLayer" type="CanvasLayer" parent="ToMap1" unique_id=1469143355]
 
-[node name="FlashRect" type="ColorRect" parent="TeleportGate2/CanvasLayer" unique_id=803701058]
+[node name="FlashRect" type="ColorRect" parent="ToMap1/CanvasLayer" unique_id=803701058]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0

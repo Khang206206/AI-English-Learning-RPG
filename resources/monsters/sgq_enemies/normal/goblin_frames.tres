@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://w1mncl7gbyif"]
 
-[ext_resource type="Texture2D" uid="uid://fk3m10bpwhnt" path="res://resources/monsters/sgq_enemies/normal/16x16/goblin.png" id="1_a0ey4"]
+[ext_resource type="Texture2D" uid="uid://fk3m10bpwhnt" path="res://assets/textures/Enemies/SGQ_Enemies_v1_0_0/SGQ_Enemies/normal/16x16/goblin.png" id="1_a0ey4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tjgje"]
 atlas = ExtResource("1_a0ey4")
