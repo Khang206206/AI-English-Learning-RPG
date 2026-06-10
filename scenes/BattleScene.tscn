@@ -64,7 +64,7 @@
 [ext_resource type="AudioStream" uid="uid://b7t1ca8687nc6" path="res://assets/audio/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/victory!.mp3" id="51_giceh"]
 [ext_resource type="AudioStream" uid="uid://qh0kggwwp4iy" path="res://assets/audio/battleThemeA.mp3" id="51_ljqkc"]
 [ext_resource type="Texture2D" uid="uid://bpihk1bmyelpj" path="res://assets/textures/ElementUI-Icons/Ice-Icon.png" id="51_ofjeq"]
-[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://resources/ui/gui_assets/GuiAssets/sprites/gdp_styles.png" id="52_d1qpi"]
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/textures/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="52_d1qpi"]
 [ext_resource type="AudioStream" uid="uid://bk8dhndg3t5sd" path="res://assets/audio/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3" id="52_ljqkc"]
 [ext_resource type="Texture2D" uid="uid://42japmndwxs0" path="res://assets/textures/ElementUI-Icons/Life-Icon.png" id="52_r4kuy"]
 [ext_resource type="Texture2D" uid="uid://bw7avx7fexn2w" path="res://resources/items/hp.tres" id="57_72s1w"]

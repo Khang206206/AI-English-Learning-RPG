@@ -83,9 +83,11 @@ static func get_battle_victory_dialogue(enemy_id: int) -> Array:
 				_elaria("\"Họ luôn ở bên cậu, Albedou ạ. Đi đến cửa ải cuối cùng nào. Thời khắc phán quyết The Silence đã điểm!\""),
 			]
 		9:
-			return [
-				_albedou("\"Ta là Albedou, Thất Đại Pháp Sư chưa bao giờ gục ngã!\"", PLAYER_ANGRY),
-			]
+			var end_line = _albedou("\"Ta là Albedou, Thất Đại Pháp Sư chưa bao giờ gục ngã!\"", PLAYER_ANGRY)
+			end_line["next_scene"] = "res://scenes/CreditScene.tscn"
+			
+			# Xong xuôi rồi mới ném nó vào mảng để return
+			return [end_line]
 		_:
 			return []
 

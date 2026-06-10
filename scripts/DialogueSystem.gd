@@ -1,5 +1,5 @@
 extends CanvasLayer
-
+@export var title_music: AudioStream
 signal dialogue_finished
 
 # Sử dụng find_child để tìm chính xác Node bất kể cấu trúc cây có thay đổi
@@ -65,7 +65,6 @@ func show_line():
 	if not name_label or not content_label or not portrait:
 		push_error("Lỗi: Không tìm thấy các Node hiển thị UI trong DialogueSystem!")
 		return
-		
 	var line = dialogue_lines[current_line_index]
 	var portrait_path := str(line.get("portrait", ""))
 	var hide_portrait := bool(line.get("hide_portrait", false)) or portrait_path == ""
@@ -328,3 +327,10 @@ func finish_dialogue():
 		GlobalPause.game_resumed.emit()
 		
 	dialogue_finished.emit() # Phát tín hiệu để kích hoạt màn hình Quiz tiếp theo
+	if dialogue_lines.size() > 0:
+		var last_line = dialogue_lines.back() # Lấy câu thoại cuối cùng ra xem
+		if last_line.has("next_scene"):       # Nếu có cờ "next_scene"
+			var next_scene_path = str(last_line.get("next_scene", ""))
+			if next_scene_path != "":
+				# Nhảy sang scene được chỉ định (Ví dụ: CreditScene)
+				get_tree().change_scene_to_file(next_scene_path)

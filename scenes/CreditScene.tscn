@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://cfopruy0vfykx"]
+
+[ext_resource type="Script" uid="uid://b3xd1m0w2phte" path="res://scripts/credit_scene.gd" id="1_rt2cp"]
+[ext_resource type="AudioStream" uid="uid://dip05c6eba3ab" path="res://assets/audio/End Theme.mp3" id="2_i8sqb"]
+
+[node name="CreditScene" type="Control" unique_id=1724312705]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_rt2cp")
+title_music = ExtResource("2_i8sqb")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2041517304]
+custom_minimum_size = Vector2(1152, 1085)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_right = 1799.0
+offset_bottom = 1050.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1231918260]
+custom_minimum_size = Vector2(1152, 1075)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 1050.0
+bbcode_enabled = true
+text = "[center][b][font_size=50]CREDIT[/font_size][/b][/center]
+
+[center][b][font_size=35]ASSETS[/font_size][/b][/center]
+[center]
+Background battle: nidhoggn
+Character: greenpixels
+Chaple: Craftpix.net
+Chapter 1: Cainos 
+Clock needles: Saphatthachat
+Dialogue box: 2bitcrook
+Elaria: Otsoga
+Elemental icons: candycorrin
+Fonts: Nimble Beasts
+Gui: Flatus, Kenney.nl
+Hearts: AXIALE
+Library: yp
+Magic book: Craftpix.net
+Magic circle: Synthish
+Map: Cainos
+Spells: DevWizard, Pimen
+ShopUI: Free Game Asset (GUI, Sprite, Tileset) 
+Monster: Zerie, OboroPixel, Mattz Art
+NPC: Serial
+[/center]
+[center][b][font_size=35]MUSICS[/font_size][/b][/center]
+[center]
+Victory/Game Over sfx: EloLeChan
+Battle music: \"Battle Theme A\" by cynicmusic.com / pixelsphere.org 
+Title scene: “Town theme RPG” by cynicmusic.com / pixelsphere.org
+Chapel music: “(Blood) Stained Glass” by FoxSynergy
+Credit music: “The end” by tcarisland
+The stater area music: “forest” by syncopika[/center] 
+[indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent]
+Library music: \"The Aquarium\" (from The Carnival of the Animals) 
+- Composer: Camille Saint-Saëns 
+- Performers: Seattle Youth Symphony / Vilem Sokol 
+- Source: Pandora Records / Al Goldstein Archive (EFF Open Audio License) 
+- Link: https://www.ibiblio.org/pandora/HOMEPAGE.html
+[/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent][/indent]
+
+[center][b][font_size=40]Thank you for playing![/font_size][/b][/center]
+"
+
+[node name="Label" type="Label" parent="." unique_id=1599924224]
+layout_mode = 0
+offset_left = 918.00006
+offset_top = 608.0
+offset_right = 1123.0
+offset_bottom = 651.0
+scale = Vector2(1.25, 1.25)
+text = "Giữ space để tăng tốc"
+horizontal_alignment = 1
+vertical_alignment = 1
