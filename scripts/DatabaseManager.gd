@@ -183,7 +183,7 @@ func _migrate_grammar_srs_columns() -> void:
 		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN ease_factor REAL DEFAULT 2.5",
 		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN interval_days INTEGER DEFAULT 1",
 		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN next_review_date TEXT DEFAULT ''",
-		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN last_reviewed_date TEXT DEFAULT ''",
+		"ALTER TABLE Player_Gdrammar_Mastery ADD COLUMN last_reviewed_date TEXT DEFAULT ''",
 	]
 	for sql in cols_to_add:
 		db.query(sql) # SQLite sẽ bỏ qua nếu cột đã tồn tại ("duplicate column" error is silent)

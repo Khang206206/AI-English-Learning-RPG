@@ -5,42 +5,43 @@ const ELARIA_AFTER_QUIZ_DIALOGUE = [
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
-		"text": "Không tệ chút nào. Quyển sách đã không chọn nhầm người."
+		"text": "\"Không tệ chút nào. Mạch ngôn từ của cậu vẫn còn đáp lại Cổ Thư.\""
 	},
 	{
-		"name": "Bạn",
+		"name": "The Seeker",
 		"portrait": "res://assets/textures/player2/_Faces/face_happy.png",
-		"text": "Mình vẫn chưa hiểu hết, nhưng có vẻ mình thật sự có thể dùng pháp thuật ở đây."
+		"text": "\"Mình vẫn chưa hiểu hết, nhưng có vẻ mình thật sự có thể dùng pháp thuật ở đây.\""
+	},
+	{
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "Ngay khi bài kiểm tra kết thúc, cả thánh vực rung chuyển. Những vết nứt đen lan trên trần thư viện như mực loang."
 	},
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png",
-		"text": "Đây mới chỉ là khởi đầu. Bên ngoài nhà thờ, quái vật đang lang thang khắp vùng đất này."
+		"text": "\"Lũ sinh vật méo mó đang vây hãm! Bản thể của chúng đang giữ những mảnh ký ức bị đánh cắp của cậu.\""
 	},
 	{
-		"name": "Elaria",
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
-		"text": "Chúng được sinh ra từ những tri thức méo mó. Muốn đánh bại chúng, cậu phải rèn luyện từ vựng và ngữ pháp."
-	},
-	{
-		"name": "Bạn",
+		"name": "The Seeker",
 		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Nói cách khác... càng học tốt tiếng Anh, mình càng mạnh hơn?"
+		"text": "\"Nếu tôi đánh bại chúng, tôi sẽ biết mình là ai?\""
 	},
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png",
-		"text": "Chính xác. Hãy bước ra khỏi quyển sách, rời khỏi nhà thờ, và bắt đầu hành trình của cậu."
+		"text": "\"Đúng vậy. Muốn biết mình là ai, cậu phải tự tay thanh tẩy chúng.\""
 	},
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
-		"text": "Ngoài kia sẽ có những quái vật đầu tiên chờ đợi. Đừng sợ. Mỗi trận chiến cũng là một bài học."
+		"text": "\"Mỗi từ vựng là một mảnh năng lượng. Mỗi cấu trúc ngữ pháp là một câu thần chú. Học càng vững, cậu càng sống sót lâu hơn.\""
 	},
 	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Được. Nếu đây là thế giới dùng tiếng Anh làm pháp thuật, thì mình sẽ học cách chiến đấu bằng nó."
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_angry.png",
+		"text": "\"Được. Nếu ký ức của tôi đang nằm trong tay bọn chúng, tôi sẽ giành lại từng mảnh một.\""
 	},
 ]
 

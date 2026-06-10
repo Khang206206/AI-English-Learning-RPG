@@ -88,7 +88,7 @@ texture = ExtResource("3_inyt6")
 stretch_mode = 6
 
 [node name="NameLabel" type="Label" parent="Control/Panel/HBoxContainer/PortraitFrame" unique_id=2073388595]
-modulate = Color(0, 0, 0, 1)
+modulate = Color(1, 1, 1, 1)
 layout_mode = 0
 offset_left = 107.0
 offset_top = 218.0
@@ -97,7 +97,10 @@ offset_bottom = 271.0
 pivot_offset = Vector2(33, 7)
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 25
-text = "Elairia
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Elaria
 "
 horizontal_alignment = 1
 

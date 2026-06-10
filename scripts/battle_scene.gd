@@ -70,6 +70,7 @@ var gold_reward_earned: int = 0
 
 const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
 const ICE_EFFECT_SCENE = preload("res://scenes/ice_effect.tscn")
+const STORY_DIALOGUE = preload("res://scripts/story_dialogue.gd")
 var current_ice_instance: AnimatedSprite2D = null # Biến giữ thực thể băng để xóa khi rã băng
 const SPELL_ITEM_IDS := {
 	"fire": 5,
@@ -351,6 +352,19 @@ func _get_battle_gold_reward() -> int:
 		tier_id = max(1, int(GameManager.current_monster.tier_id))
 	return 10 + tier_id * 5
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_E:
+		_cheat_win_battle()
+
+func _cheat_win_battle() -> void:
+	if is_game_over or result_overlay.visible:
+		return
+	if DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active():
+		return
+	monster_hp = 0
+	update_health_ui()
+	win_battle()
+
 # --- LOAD CÂU HỎI TỨC THÌ (0.1 giây) ---
 func load_next_question():
 	if is_magic_locked > 0:
@@ -616,6 +630,7 @@ func win_battle():
 	if current_ice_instance and is_instance_valid(current_ice_instance):
 			current_ice_instance.queue_free()
 	if magic_timer: magic_timer.hide()
+	set_buttons_disabled(true)
 	_combat_log("[Combat] Victory.")
 	if bgm_player != null and bgm_player.playing:
 		bgm_player.stop() # Tắt nhạc nền đi
@@ -630,16 +645,30 @@ func win_battle():
 		DatabaseManager.add_gold(gold_reward_earned)
 		battle_reward_claimed = true
 	
+	var should_show_story_dialogue := false
+	var story_dialogue_lines: Array = []
 	if GameManager.current_enemy_id > 0:
+		should_show_story_dialogue = not DatabaseManager.is_enemy_dead(GameManager.current_enemy_id)
+		if should_show_story_dialogue:
+			story_dialogue_lines = STORY_DIALOGUE.get_battle_victory_dialogue(GameManager.current_enemy_id)
 		DatabaseManager.mark_enemy_dead(GameManager.current_enemy_id)
 		DatabaseManager.save_game(
 			GameManager.player_position.x,
 			GameManager.player_position.y,
 			GameManager.previous_scene_path
 		)
+
+	if should_show_story_dialogue and not story_dialogue_lines.is_empty():
+		await _show_story_dialogue(story_dialogue_lines)
 		
 	show_result_overlay(true)
 	set_buttons_disabled(true)
+
+func _show_story_dialogue(lines: Array) -> void:
+	if DialogueSystem == null or lines.is_empty():
+		return
+	DialogueSystem.start_dialogue(lines)
+	await DialogueSystem.dialogue_finished
 
 func lose_battle():
 	if current_ice_instance and is_instance_valid(current_ice_instance):

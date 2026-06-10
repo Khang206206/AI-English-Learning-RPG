@@ -15,54 +15,54 @@ extends Area2D
 @export_group("Dialogue Settings")
 var elaria_dialogue = [
 	{
-		"name": "Elaria", 
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png", 
-		"text": "Cuối cùng cậu cũng tỉnh lại rồi, lữ khách được quyển sách lựa chọn."
-	},
-	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Cô là ai? Và nơi này là đâu? Tại sao mình lại chui vào một quyển sách?"
-	},
-	{
-		"name": "Elaria", 
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png", 
-		"text": "Ta là Elaria, người canh giữ Thư Viện Cổ Thư Aelphurion."
-	},
-	{
 		"name": "Elaria",
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png", 
-		"text": "Ở thế giới này, tiếng Anh không chỉ là ngôn ngữ. Nó là pháp thuật."
+		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
+		"text": "\"Cuối cùng cậu cũng bước vào được thánh vực tri thức.\""
+	},
+	{
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "\"Cô là ai? Và nơi này là đâu? Tại sao mình lại chui vào một quyển sách?\""
 	},
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
-		"text": "Mỗi từ vựng là một mảnh năng lượng. Mỗi cấu trúc ngữ pháp là một câu thần chú."
-	},
-	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_empty.png",
-		"text": "Tiếng Anh... là pháp thuật?"
-	},
-	{
-		"name": "Elaria", 
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png", 
-		"text": "Đúng vậy. Nếu muốn sống sót ở vùng đất này, cậu phải học cách sử dụng nó."
-	},
-	{
-		"name": "Elaria",
-		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png", 
-		"text": "Trước tiên, hãy để ta kiểm tra nền tảng của cậu bằng một bài thử thách nhỏ."
-	},
-	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Một bài kiểm tra sao...? Được rồi. Nếu đó là cách để hiểu chuyện gì đang xảy ra."
+		"text": "\"Ta là Elaria, người canh giữ Cổ Thư Aelphurion.\""
 	},
 	{
 		"name": "Elaria",
 		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png",
-		"text": "Tốt. Hãy tập trung. Những câu trả lời của cậu sẽ quyết định phép thuật đầu tiên mà cậu có thể nắm giữ."
+		"text": "\"Nơi này lưu giữ ngôn ngữ, ký ức và ma thuật của cả vùng đất. Còn cậu là người được Cổ Thư lựa chọn.\""
+	},
+	{
+		"name": "Elaria",
+		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
+		"text": "\"Một thế lực tên The Silence đang nuốt chửng tri thức, bóp méo ngôn từ và đánh cắp ký ức của những pháp sư cuối cùng.\""
+	},
+	{
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_empty.png",
+		"text": "\"Ký ức...? Tôi không nhớ nổi cả tên mình. The Silence đã làm chuyện đó sao?\""
+	},
+	{
+		"name": "Elaria",
+		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png",
+		"text": "\"Có thể. Những mảnh ký ức của cậu đang bị giam trong huyết quản của lũ sinh vật méo mó ngoài kia.\""
+	},
+	{
+		"name": "Elaria",
+		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore1.png",
+		"text": "\"Nhưng trước khi đối mặt với chúng, ta phải kiểm tra xem mạch ngôn từ của cậu còn đáp lại pháp thuật hay không.\""
+	},
+	{
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "\"Một bài kiểm tra sao...? Được rồi. Nếu đó là cách để lấy lại ký ức, tôi sẽ thử.\""
+	},
+	{
+		"name": "Elaria",
+		"portrait": "res://assets/textures/npc_guide/portrait/Eleonore2.png",
+		"text": "\"Hãy tập trung. Ở thế giới này, tiếng Anh không chỉ là ngôn ngữ. Nó là pháp thuật.\""
 	},
 ]
 

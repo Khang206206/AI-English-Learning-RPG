@@ -21,6 +21,8 @@ const DEFAULT_PORTRAIT_RECT := Rect2(166, 47, 146, 148)
 const DEFAULT_NAME_RECT := Rect2(107, 206, 280, 53)
 const DEFAULT_NAME_FONT_SIZE := 23
 const DEFAULT_CONTENT_FONT_SIZE := 20
+const DEFAULT_NARRATION_MARGIN := Vector4(64, 38, 64, 38)
+const DEFAULT_NARRATION_FONT_SIZE := 18
 
 const COMPACT_PANEL_MIN_SIZE := Vector2(190, 150)
 const COMPACT_PANEL_RECT := Rect2(-500, -174, 500, -14)
@@ -29,6 +31,7 @@ const COMPACT_PORTRAIT_RECT := Rect2(49, 12, 58, 58)
 const COMPACT_NAME_RECT := Rect2(18, 72, 120, 28)
 const COMPACT_NAME_FONT_SIZE := 15
 const COMPACT_CONTENT_RECT := Rect2(224, 24, 696, 112)
+const COMPACT_CONTENT_NO_PORTRAIT_RECT := Rect2(46, 24, 874, 112)
 const COMPACT_CONTENT_FONT_SIZE := 14
 
 var dialogue_lines = []
@@ -38,6 +41,7 @@ var was_tree_paused_before_dialogue := false
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false # Ẩn giao diện khi bắt đầu game
+	_apply_name_label_style(DEFAULT_NAME_FONT_SIZE)
 
 func is_dialogue_active() -> bool:
 	return visible and not dialogue_lines.is_empty()
@@ -63,16 +67,21 @@ func show_line():
 		return
 		
 	var line = dialogue_lines[current_line_index]
-	name_label.text = line["name"]
-	content_label.text = line["text"]
+	var portrait_path := str(line.get("portrait", ""))
+	var hide_portrait := bool(line.get("hide_portrait", false)) or portrait_path == ""
+	name_label.text = str(line.get("name", ""))
+	content_label.text = str(line.get("text", ""))
 	var layout_name := str(line.get("dialogue_layout", "default"))
-	_apply_dialogue_layout(layout_name)
+	_apply_dialogue_layout(layout_name, hide_portrait)
 	
 	# Nạp ảnh chân dung, nếu lỗi đường dẫn ảnh thì bỏ qua không làm crash game
-	if ResourceLoader.exists(line["portrait"]):
-		portrait.texture = load(line["portrait"])
+	if not hide_portrait:
+		if ResourceLoader.exists(portrait_path):
+			portrait.texture = load(portrait_path)
+		else:
+			portrait.texture = null
 
-	if layout_name != "bottom_compact":
+	if not hide_portrait and layout_name != "bottom_compact":
 		_apply_portrait_side(str(line.get("portrait_side", "right")))
 	
 	# Hiệu ứng chạy chữ mượt mà
@@ -116,11 +125,53 @@ func _set_control_rect(control: Control, rect: Rect2) -> void:
 	control.offset_right = rect.position.x + rect.size.x
 	control.offset_bottom = rect.position.y + rect.size.y
 
-func _apply_dialogue_layout(layout_name: String) -> void:
+func _apply_dialogue_layout(layout_name: String, hide_portrait: bool = false) -> void:
 	if layout_name == "bottom_compact":
 		_apply_bottom_compact_layout()
+	elif hide_portrait:
+		_apply_default_narration_layout()
 	else:
 		_apply_default_layout()
+	_apply_portrait_visibility(hide_portrait, layout_name)
+
+func _apply_name_label_style(font_size: int) -> void:
+	if name_label == null:
+		return
+	name_label.modulate = Color.WHITE
+	name_label.add_theme_color_override("font_color", Color.WHITE)
+	name_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	name_label.add_theme_constant_override("outline_size", 3)
+	name_label.add_theme_font_size_override("font_size", font_size)
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+func _apply_portrait_visibility(hide_portrait: bool, layout_name: String) -> void:
+	if portrait_frame != null:
+		portrait_frame.visible = not hide_portrait
+	if portrait != null:
+		portrait.visible = not hide_portrait
+	if name_label != null:
+		name_label.visible = not hide_portrait
+
+	if layout_name != "bottom_compact":
+		if left_spacer != null:
+			left_spacer.visible = not hide_portrait
+		return
+
+	if content_label != null and hide_portrait:
+		_set_control_rect(content_label, COMPACT_CONTENT_NO_PORTRAIT_RECT)
+		content_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+func _set_control_stretch_margins(control: Control, margins: Vector4) -> void:
+	if control == null:
+		return
+	control.anchor_left = 0
+	control.anchor_top = 0
+	control.anchor_right = 1
+	control.anchor_bottom = 1
+	control.offset_left = margins.x
+	control.offset_top = margins.y
+	control.offset_right = -margins.z
+	control.offset_bottom = -margins.w
 
 func _apply_default_layout() -> void:
 	if dialogue_row != null:
@@ -161,8 +212,7 @@ func _apply_default_layout() -> void:
 		name_label.offset_top = DEFAULT_NAME_RECT.position.y
 		name_label.offset_right = DEFAULT_NAME_RECT.position.x + DEFAULT_NAME_RECT.size.x
 		name_label.offset_bottom = DEFAULT_NAME_RECT.position.y + DEFAULT_NAME_RECT.size.y
-		name_label.add_theme_font_size_override("font_size", DEFAULT_NAME_FONT_SIZE)
-		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_apply_name_label_style(DEFAULT_NAME_FONT_SIZE)
 	if content_label != null:
 		content_label.custom_minimum_size = Vector2.ZERO
 		content_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -170,6 +220,37 @@ func _apply_default_layout() -> void:
 		content_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		content_label.add_theme_font_size_override("normal_font_size", DEFAULT_CONTENT_FONT_SIZE)
 		content_label.clip_contents = false
+		content_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+func _apply_default_narration_layout() -> void:
+	if panel != null:
+		_move_control_to_parent(content_label, panel)
+	if dialogue_row != null:
+		dialogue_row.visible = false
+	if left_spacer != null:
+		left_spacer.visible = false
+	if panel != null:
+		panel.clip_contents = true
+		panel.anchor_left = 0
+		panel.anchor_top = 0
+		panel.anchor_right = 1
+		panel.anchor_bottom = 0
+		panel.offset_left = DEFAULT_PANEL_RECT.position.x
+		panel.offset_top = DEFAULT_PANEL_RECT.position.y
+		panel.offset_right = DEFAULT_PANEL_RECT.size.x
+		panel.offset_bottom = DEFAULT_PANEL_RECT.size.y
+		panel.custom_minimum_size = DEFAULT_PANEL_MIN_SIZE
+	if content_label != null:
+		content_label.custom_minimum_size = Vector2.ZERO
+		content_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		content_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		_set_control_stretch_margins(content_label, DEFAULT_NARRATION_MARGIN)
+		content_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		content_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		content_label.add_theme_font_size_override("normal_font_size", DEFAULT_NARRATION_FONT_SIZE)
+		content_label.clip_contents = true
+		content_label.fit_content = false
+		content_label.scroll_active = false
 		content_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 func _apply_bottom_compact_layout() -> void:
@@ -206,8 +287,7 @@ func _apply_bottom_compact_layout() -> void:
 		name_label.offset_top = COMPACT_NAME_RECT.position.y
 		name_label.offset_right = COMPACT_NAME_RECT.position.x + COMPACT_NAME_RECT.size.x
 		name_label.offset_bottom = COMPACT_NAME_RECT.position.y + COMPACT_NAME_RECT.size.y
-		name_label.add_theme_font_size_override("font_size", COMPACT_NAME_FONT_SIZE)
-		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_apply_name_label_style(COMPACT_NAME_FONT_SIZE)
 	if content_label != null:
 		content_label.custom_minimum_size = Vector2.ZERO
 		content_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN

@@ -3,19 +3,31 @@ extends Node2D
 
 const PLAYER_ENTER_LIBRARY_DIALOGUE = [
 	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Khoan đã... Mình vừa bước vào trong một quyển sách sao?"
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "Khoảnh khắc chạm vào trang sách, thế giới quanh The Seeker tan thành những dòng chữ phát sáng."
 	},
 	{
-		"name": "Bạn",
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "Khi mở mắt, cậu đã đứng giữa một thư viện mênh mông, nơi từng con chữ lơ lửng như những vì sao."
+	},
+	{
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
+		"text": "\"Khoan đã... Mình vừa bước vào trong một quyển sách sao?\""
+	},
+	{
+		"name": "The Seeker",
 		"portrait": "res://assets/textures/player2/_Faces/face_empty.png",
-		"text": "Không khí ở đây lạ quá. Cứ như từng con chữ đang bay lơ lửng quanh mình."
+		"text": "\"Không khí ở đây lạ quá. Cứ như từng con chữ đều có ma lực riêng.\""
 	},
 	{
-		"name": "Bạn",
+		"name": "The Seeker",
 		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Đây là pháp thuật của thế giới này à? Hay mình vẫn còn đang mơ?"
+		"text": "\"Nếu quyển sách này gọi mình đến đây, có lẽ nó biết mình là ai.\""
 	},
 ]
 

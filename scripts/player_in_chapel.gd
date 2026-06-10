@@ -3,14 +3,32 @@ extends CharacterBody2D
 const SPEED = 150.0
 const PLAYER_OPENING_DIALOGUE = [
 	{
-		"name": "Bạn",
-		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Ơ... Mình đang ở đâu thế này"
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "The Seeker thức tỉnh trên nền đá lạnh của một nhà thờ xa lạ."
 	},
 	{
-		"name": "Bạn",
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "Cậu không nhớ mình là ai, đến từ đâu, hay vì sao lại nằm ở nơi này."
+	},
+	{
+		"name": "The Seeker",
+		"portrait": "res://assets/textures/player2/_Faces/face_empty.png",
+		"text": "\"Mình... là ai? Sao trong đầu mình trống rỗng thế này?\""
+	},
+	{
+		"name": "",
+		"portrait": "",
+		"hide_portrait": true,
+		"text": "Trên bục thờ, một quyển sách cổ bỗng phát sáng, như thể đang gọi cậu lại gần."
+	},
+	{
+		"name": "The Seeker",
 		"portrait": "res://assets/textures/player2/_Faces/face_normal.png",
-		"text": "Quyển sách ở trên bục kia đang phát sáng thì phải."
+		"text": "\"Quyển sách đó... nó đang kéo mình về phía nó.\""
 	},
 ]
 
