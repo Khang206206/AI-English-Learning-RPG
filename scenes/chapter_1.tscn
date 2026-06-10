@@ -10473,7 +10473,6 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("17_samt2")
-bypass_tier_check = true
 enemy_id = 2
 
 [node name="CollisionShape2D" parent="GoblinInteract" index="0" unique_id=865465090]
@@ -10513,7 +10512,6 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_skeleton")
-bypass_tier_check = true
 enemy_id = 4
 
 [node name="CollisionShape2D" parent="SkeletonInteract" index="0" unique_id=865465090]
@@ -10608,7 +10606,6 @@ priority = 9
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_demon_king")
-bypass_tier_check = true
 enemy_id = 9
 
 [node name="CollisionShape2D" parent="DemonKingInteract" index="0" unique_id=865465090]

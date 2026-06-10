@@ -1,7 +1,6 @@
-[gd_resource type="AtlasTexture" format=3 uid="uid://dvfjk1ijue6gi"]
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dvfjk1ijue6gi"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xk5x2"]
-load_path = "res://.godot/imported/2.png-994950b92991a7b61463baffcf9d6f09.ctex"
+[ext_resource type="Texture2D" uid="uid://dwkmsaiwo4hf6" path="res://assets/textures/shop-item/item linh tinh/2.png" id="1_pnm7n"]
 
 [resource]
-atlas = SubResource("CompressedTexture2D_xk5x2")
+atlas = ExtResource("1_pnm7n")
