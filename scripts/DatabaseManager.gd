@@ -11,6 +11,8 @@ signal game_over_triggered()
 signal game_saved()
 signal game_loaded(data: Dictionary)
 signal intro_quiz_state_changed(is_completed: bool)
+signal enemy_progress_changed()
+signal gold_changed(new_gold: int)
 
 var db = null
 const DB_PATH: String = "res://data/data.db"
@@ -211,10 +213,6 @@ func seed_initial_data() -> void:
 	_seed_items()
 
 func _seed_enemies() -> void:
-	db.query("SELECT COUNT(*) as total FROM Enemy_Tier_Dict;")
-	if not db.query_result.is_empty() and db.query_result[0]["total"] > 0:
-		return
-
 	if not FileAccess.file_exists(ENEMIES_CSV_PATH):
 		push_warning("[DatabaseManager] Không tìm thấy '%s'. Bỏ qua." % ENEMIES_CSV_PATH)
 		return
@@ -244,7 +242,13 @@ func _seed_enemies() -> void:
 		var vocab_theme = parts[4].strip_edges()
 
 		db.query_with_bindings(
-			"INSERT OR IGNORE INTO Enemy_Tier_Dict (tier_id, enemy_type, required_level, hp, vocabulary_theme) VALUES (?, ?, ?, ?, ?);",
+			"""INSERT INTO Enemy_Tier_Dict (tier_id, enemy_type, required_level, hp, vocabulary_theme)
+			VALUES (?, ?, ?, ?, ?)
+			ON CONFLICT(tier_id) DO UPDATE SET
+			    enemy_type = excluded.enemy_type,
+			    required_level = excluded.required_level,
+			    hp = excluded.hp,
+				vocabulary_theme = excluded.vocabulary_theme;""",
 			[tier_id, enemy_type, req_level, hp, vocab_theme]
 		)
 		imported_count += 1
@@ -434,6 +438,7 @@ func add_gold(amount: int) -> void:
 	db.query_with_bindings(
 		"UPDATE Player_Profile SET gold = ? WHERE save_id = ?;",
 		[player_gold, CURRENT_SAVE_SLOT])
+	emit_signal("gold_changed", player_gold)
 
 func spend_gold(amount: int) -> bool:
 	if player_gold < amount:
@@ -442,6 +447,7 @@ func spend_gold(amount: int) -> bool:
 	db.query_with_bindings(
 		"UPDATE Player_Profile SET gold = ? WHERE save_id = ?;",
 		[player_gold, CURRENT_SAVE_SLOT])
+	emit_signal("gold_changed", player_gold)
 	return true
 
 # ==============================================================================
@@ -547,6 +553,7 @@ func reset_save_for_new_game() -> void:
 		GameManager.should_load_position = false
 
 	emit_signal("hp_changed", player_hearts)
+	emit_signal("gold_changed", player_gold)
 	emit_signal("intro_quiz_state_changed", intro_quiz_completed)
 	print("[DatabaseManager] Đã reset dữ liệu cho New Game.")
 
@@ -570,20 +577,20 @@ func load_game(save_slot: int) -> void:
 			GameManager.player_position = Vector2(pos_x, pos_y)
 			
 		var last_played = data.get("last_played", "")
-		has_save_data = (last_played != null and str(last_played).strip_edges() != "")
 		intro_quiz_completed = bool(data.get("intro_quiz_completed", 0))
+		has_save_data = (last_played != null and str(last_played).strip_edges() != "") or intro_quiz_completed
 
 		var raw_enemies: String = data.get("dead_enemies_list", "[]")
 		var json_parser         = JSON.new()
 		if json_parser.parse(raw_enemies) == OK and json_parser.get_data() is Array:
-			dead_enemies = json_parser.get_data()
+			dead_enemies = _normalize_enemy_id_array(json_parser.get_data())
 		else:
 			push_warning("[DatabaseManager] Không parse được dead_enemies_list, reset về [].")
 			dead_enemies = []
 
 		var raw_interacted: String = data.get("interacted_enemies_list", "[]")
 		if json_parser.parse(raw_interacted) == OK and json_parser.get_data() is Array:
-			interacted_enemies = json_parser.get_data()
+			interacted_enemies = _normalize_enemy_id_array(json_parser.get_data())
 		else:
 			push_warning("[DatabaseManager] Không parse được interacted_enemies_list, reset về [].")
 			interacted_enemies = []
@@ -592,6 +599,7 @@ func load_game(save_slot: int) -> void:
 			% [player_hearts, max_hearts, dead_enemies.size(), player_gold])
 
 		emit_signal("hp_changed", player_hearts)
+		emit_signal("gold_changed", player_gold)
 		emit_signal("intro_quiz_state_changed", intro_quiz_completed)
 		emit_signal("game_loaded", data)
 	else:
@@ -603,37 +611,83 @@ func load_game(save_slot: int) -> void:
 		intro_quiz_completed = false
 		print("[DatabaseManager] Không tìm thấy Save Slot %d — bắt đầu hành trình mới!" % save_slot)
 		emit_signal("hp_changed", player_hearts)
+		emit_signal("gold_changed", player_gold)
 		emit_signal("intro_quiz_state_changed", intro_quiz_completed)
 
 # ==============================================================================
 # 6. TIỆN ÍCH BỔ SUNG
 # ==============================================================================
 
+func _has_enemy_id(list: Array, enemy_id: int) -> bool:
+	for value in list:
+		if int(value) == enemy_id:
+			return true
+	return false
+
+func _normalize_enemy_id_array(raw_list: Array) -> Array:
+	var normalized: Array = []
+	for value in raw_list:
+		var enemy_id := int(value)
+		if enemy_id > 0 and not _has_enemy_id(normalized, enemy_id):
+			normalized.append(enemy_id)
+	return normalized
+
 func mark_enemy_dead(enemy_id: int) -> void:
-	if enemy_id not in dead_enemies:
+	if enemy_id <= 0:
+		return
+
+	var changed := false
+	if not _has_enemy_id(dead_enemies, enemy_id):
 		dead_enemies.append(enemy_id)
-		var serialized_enemies: String = JSON.stringify(dead_enemies)
+		changed = true
+	if not _has_enemy_id(interacted_enemies, enemy_id):
+		interacted_enemies.append(enemy_id)
+		changed = true
+
+	if changed:
+		has_save_data = true
+		var timestamp: String = Time.get_datetime_string_from_system()
 		db.query_with_bindings(
-			"UPDATE Player_Profile SET dead_enemies_list = ? WHERE save_id = ?;",
-			[serialized_enemies, CURRENT_SAVE_SLOT]
+			"""UPDATE Player_Profile
+			SET last_played = ?,
+			    dead_enemies_list = ?,
+			    interacted_enemies_list = ?
+			WHERE save_id = ?;""",
+			[timestamp, JSON.stringify(dead_enemies), JSON.stringify(interacted_enemies), CURRENT_SAVE_SLOT]
 		)
+		emit_signal("enemy_progress_changed")
+		emit_signal("game_saved")
 		print("[DatabaseManager] Đã lưu quái bị diệt! ID: %d" % enemy_id)
 
 func is_enemy_dead(enemy_id: int) -> bool:
-	return enemy_id in dead_enemies
+	return _has_enemy_id(dead_enemies, enemy_id)
 
 func mark_enemy_interacted(enemy_id: int) -> void:
-	if enemy_id not in interacted_enemies:
+	if enemy_id <= 0:
+		return
+	if not _has_enemy_id(interacted_enemies, enemy_id):
 		interacted_enemies.append(enemy_id)
 		var serialized_interacted: String = JSON.stringify(interacted_enemies)
+		has_save_data = true
 		db.query_with_bindings(
-			"UPDATE Player_Profile SET interacted_enemies_list = ? WHERE save_id = ?;",
-			[serialized_interacted, CURRENT_SAVE_SLOT]
+			"UPDATE Player_Profile SET interacted_enemies_list = ?, last_played = ? WHERE save_id = ?;",
+			[serialized_interacted, Time.get_datetime_string_from_system(), CURRENT_SAVE_SLOT]
 		)
+		emit_signal("enemy_progress_changed")
+		emit_signal("game_saved")
 		print("[DatabaseManager] Đã lưu quái đã tương tác! ID: %d" % enemy_id)
 
 func has_interacted_with_enemy(enemy_id: int) -> bool:
-	return enemy_id in interacted_enemies
+	return _has_enemy_id(interacted_enemies, enemy_id)
+
+func get_enemy_hp_for_tier(tier_id: int, fallback_hp: int = 20) -> int:
+	db.query_with_bindings(
+		"SELECT hp FROM Enemy_Tier_Dict WHERE tier_id = ?;",
+		[tier_id]
+	)
+	if db.query_result.is_empty():
+		return fallback_hp
+	return int(db.query_result[0].get("hp", fallback_hp))
 
 func has_completed_intro_quiz() -> bool:
 	return intro_quiz_completed
@@ -642,21 +696,43 @@ func mark_intro_quiz_completed() -> void:
 	if intro_quiz_completed:
 		return
 	intro_quiz_completed = true
+	has_save_data = true
+
+	var timestamp: String = Time.get_datetime_string_from_system()
+	var pos := GameManager.player_position if GameManager != null else Vector2.ZERO
+	var save_context := _resolve_save_context(pos.x, pos.y)
+	var resolved_position: Vector2 = save_context["position"]
+	var resolved_scene_path: String = save_context["scene_path"]
+	if resolved_scene_path != "":
+		current_biome = resolved_scene_path
+
 	db.query_with_bindings(
-		"UPDATE Player_Profile SET intro_quiz_completed = ? WHERE save_id = ?;",
-		[1, CURRENT_SAVE_SLOT]
+		"""UPDATE Player_Profile
+		SET last_played = ?,
+		    current_biome = ?,
+		    pos_x = ?,
+		    pos_y = ?,
+		    intro_quiz_completed = ?
+		WHERE save_id = ?;""",
+		[timestamp, current_biome, resolved_position.x, resolved_position.y, 1, CURRENT_SAVE_SLOT]
 	)
 	emit_signal("intro_quiz_state_changed", intro_quiz_completed)
+	emit_signal("game_saved")
 	print("[DatabaseManager] Đã đánh dấu hoàn thành bài test đầu game.")
 
 func restore_full_hp() -> void:
-	player_hearts = max_hearts
+	set_player_hp(max_hearts)
+	print("[DatabaseManager] HP đã phục hồi đầy: %d/%d" % [player_hearts, max_hearts])
+
+func set_player_hp(new_hp: int, check_game_over: bool = true) -> void:
+	player_hearts = clampi(new_hp, 0, max_hearts)
 	db.query_with_bindings(
 		"UPDATE Player_Profile SET hp = ? WHERE save_id = ?;",
 		[player_hearts, CURRENT_SAVE_SLOT]
 	)
 	emit_signal("hp_changed", player_hearts)
-	print("[DatabaseManager] HP đã phục hồi đầy: %d/%d" % [player_hearts, max_hearts])
+	if check_game_over and player_hearts <= 0:
+		emit_signal("game_over_triggered")
 
 # ==============================================================================
 # 7. TÍNH NĂNG NOTEBOOK

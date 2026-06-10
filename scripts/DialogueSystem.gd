@@ -39,6 +39,9 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false # Ẩn giao diện khi bắt đầu game
 
+func is_dialogue_active() -> bool:
+	return visible and not dialogue_lines.is_empty()
+
 # Hàm được gọi từ InteractableObject
 func start_dialogue(lines: Array):
 	dialogue_lines = lines

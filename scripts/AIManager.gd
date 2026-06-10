@@ -9,6 +9,8 @@ extends Node
 
 const OLLAMA_URL: String   = "http://127.0.0.1:11434/api/chat"
 const OLLAMA_MODEL: String = "qwen3.5:4b"
+const QUESTION_TIMEOUT_SECONDS: float = 20.0
+const VERBOSE_AI_LOGS: bool = false
 
 # Queue riêng cho từng tier — key là tier_id (int), value là Array câu hỏi
 var question_queues: Dictionary = {}
@@ -32,6 +34,7 @@ const TIER_THEMES: Dictionary = {
 }
 
 var current_tier_id: int = 1
+var ollama_url: String = OLLAMA_URL
 
 # ── Question type constants ──
 const QTYPE_MCQ:  String = "mcq"
@@ -47,14 +50,21 @@ signal mini_test_ready(questions: Array)
 var current_bg_http: HTTPRequest = null
 var current_bg_tier: int = -1
 
+func _debug_log(message: String) -> void:
+	if VERBOSE_AI_LOGS:
+		print(message)
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	var env_ollama_url := OS.get_environment("AI_RPG_OLLAMA_URL").strip_edges()
+	if not env_ollama_url.is_empty():
+		ollama_url = env_ollama_url
 	
 	for tier in MANAGED_TIERS:
 		question_queues[tier]  = []
 		_tier_generating[tier] = false
 
-	print("[AIManager] Khởi động — nạp queue cho %d tier..." % MANAGED_TIERS.size())
+	_debug_log("[AIManager] Khởi động — nạp queue cho %d tier..." % MANAGED_TIERS.size())
 	check_and_fill_all_queues()
 
 
@@ -86,7 +96,7 @@ func _interrupt_background_task() -> void:
 		
 		if current_bg_tier != -1:
 			_tier_generating[current_bg_tier] = false
-			print("[AIManager] 🛑 Đã hủy tạo câu hỏi ngầm tier %d để ưu tiên người chơi!" % current_bg_tier)
+			_debug_log("[AIManager] Đã hủy tạo câu hỏi ngầm tier %d để ưu tiên người chơi." % current_bg_tier)
 			current_bg_tier = -1
 
 func _generate_for_tier(tier_id: int) -> void:
@@ -134,7 +144,7 @@ func _generate_for_tier(tier_id: int) -> void:
 		var context_vocab: Dictionary = progress.get_weakest_vocab(tier_id)
 		var context_word: String = context_vocab.get("word", "adventurer") if not context_vocab.is_empty() else "adventurer"
 		
-		print("[AIManager] Nạp Ngữ pháp tier %d | topic='%s' (id=%d) | mastery=%.2f" \
+		_debug_log("[AIManager] Nạp Ngữ pháp tier %d | topic='%s' (id=%d) | mastery=%.2f" \
 			% [tier_id, word_or_topic, target_id, mastery_score])
 			
 		config = _resolve_grammar_config(mastery_score, encounter_count, word_or_topic)
@@ -148,7 +158,7 @@ func _generate_for_tier(tier_id: int) -> void:
 		var encounter_count: int = target_data.get("encounter_count", 0)
 		var avg_mastery: float = progress.get_tier_avg_mastery(tier_id)
 
-		print("[AIManager] Nạp Từ vựng tier %d | word='%s' (id=%d) | mastery=%.2f" \
+		_debug_log("[AIManager] Nạp Từ vựng tier %d | word='%s' (id=%d) | mastery=%.2f" \
 			% [tier_id, word_or_topic, target_id, mastery_score])
 
 		config = _resolve_question_config(mastery_score, encounter_count, avg_mastery, tier_id)
@@ -175,9 +185,33 @@ func _generate_for_tier(tier_id: int) -> void:
 	
 	current_bg_http = http
 	current_bg_tier = tier_id
+	var completed := [false]
+	var timeout_timer := get_tree().create_timer(QUESTION_TIMEOUT_SECONDS, true)
+
+	timeout_timer.timeout.connect(func():
+		if completed[0]:
+			return
+		completed[0] = true
+		if current_bg_http == http:
+			current_bg_http = null
+			current_bg_tier = -1
+		if is_instance_valid(http):
+			http.cancel_request()
+			http.queue_free()
+		push_warning("[AIManager] Timeout %.0fs khi tạo câu hỏi tier %d. Dùng fallback." % [QUESTION_TIMEOUT_SECONDS, tier_id])
+		if is_grammar:
+			_push_grammar_fallback(target_id, word_or_topic, meaning_or_formula, tier_id)
+		else:
+			_push_fallback(target_id, word_or_topic, meaning_or_formula, tier_id)
+		_tier_generating[tier_id] = false
+		check_and_fill_all_queues()
+	)
 
 	http.request_completed.connect(
 		func(result, code, _headers, body):
+			if completed[0]:
+				return
+			completed[0] = true
 			if current_bg_http == http:
 				current_bg_http = null
 				current_bg_tier = -1
@@ -187,13 +221,17 @@ func _generate_for_tier(tier_id: int) -> void:
 	)
 
 	var err = http.request(
-		OLLAMA_URL,
+		ollama_url,
 		["Content-Type: application/json"],
 		HTTPClient.METHOD_POST,
 		JSON.stringify(payload)
 	)
 
 	if err != OK:
+		completed[0] = true
+		if current_bg_http == http:
+			current_bg_http = null
+			current_bg_tier = -1
 		push_error("[AIManager] Gửi request thất bại (err=%d). Tier %d." % [err, tier_id])
 		http.queue_free()
 		_tier_generating[tier_id] = false
@@ -213,7 +251,7 @@ func _handle_response(
 	var ui_mode: String = config.get("ui_mode", QTYPE_MCQ)
 	var q_type: String  = config.get("q_type",  "vocab_meaning")
 
-	print("[AIManager] [DEBUG] Tier %d HTTP %d | %d chars | preview: %s" \
+	_debug_log("[AIManager] Tier %d HTTP %d | %d chars | preview: %s" \
 		% [tier_id, response_code, raw.length(), raw.left(300)])
 
 	var pushed := false
@@ -224,7 +262,7 @@ func _handle_response(
 			var outer_data: Variant = outer.get_data()
 			if outer_data is Dictionary and outer_data.has("message"):
 				var content: String = outer_data["message"].get("content", "").strip_edges()
-				print("[AIManager] [DEBUG] content: %s" % content.left(300))
+				_debug_log("[AIManager] content: %s" % content.left(300))
 
 				var json_str: String = _extract_json(content)
 				if not json_str.is_empty():
@@ -247,7 +285,7 @@ func _handle_response(
 									q["accept_alternatives"] = []
 
 							question_queues[tier_id].append(q)
-							print("[AIManager] ✓ Tier %d '%s' [%s] | Queue: %d/%d"
+							_debug_log("[AIManager] Tier %d '%s' [%s] | Queue: %d/%d"
 								% [tier_id, word_or_topic, q_type, question_queues[tier_id].size(), MAX_QUEUE_SIZE])
 							pushed = true
 						else:
@@ -546,7 +584,7 @@ func _push_fallback(word_id: int, word: String, meaning: String, tier_id: int) -
 			correct_label = labels[i]
 	q["correct_answer"] = correct_label
 	question_queues[tier_id].append(q)
-	print("[AIManager] [Fallback] Tier %d '%s' | Queue: %d/%d" \
+	_debug_log("[AIManager] Fallback tier %d '%s' | Queue: %d/%d" \
 		% [tier_id, word, question_queues[tier_id].size(), MAX_QUEUE_SIZE])
 
 func _push_grammar_fallback(grammar_id: int, topic: String, formula: String, tier_id: int) -> void:
@@ -650,7 +688,7 @@ liên tưởng âm thanh hoặc hình ảnh. JSON: {"hint": "..."}""" % [word, m
 	)
 	timer.start()
 
-	var err = http.request(OLLAMA_URL, ["Content-Type: application/json"],
+	var err = http.request(ollama_url, ["Content-Type: application/json"],
 				 HTTPClient.METHOD_POST, JSON.stringify(payload))
 	if err != OK:
 		_completed[0] = true
@@ -669,7 +707,7 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 	else:
 		prompt = "Make 1 English sentence using the word '%s' (meaning: %s). Reply JSON: {\"en\": \"English sentence\", \"vi\": \"Vietnamese translation\"}" % [word_or_topic, meaning_or_formula]
 
-	print("[AIManager] 📝 Requesting example sentence for: '%s'" % word_or_topic)
+	_debug_log("[AIManager] Requesting example sentence for: '%s'" % word_or_topic)
 
 	var payload: Dictionary = {
 		"model": OLLAMA_MODEL,
@@ -696,16 +734,16 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 		if is_instance_valid(timer): timer.queue_free()
 
 		var output: String = "Elaria chưa nghĩ ra câu nào..."
-		print("[AIManager] 📝 Example result=%d, HTTP code=%d" % [result, code])
+		_debug_log("[AIManager] Example result=%d, HTTP code=%d" % [result, code])
 		if result == HTTPRequest.RESULT_SUCCESS and code == 200:
 			var raw: String = body.get_string_from_utf8()
-			print("[AIManager] 📝 Example raw: %s" % raw.left(500))
+			_debug_log("[AIManager] Example raw: %s" % raw.left(500))
 			var outer := JSON.new()
 			if outer.parse(raw) == OK and outer.get_data() is Dictionary:
 				var outer_data: Dictionary = outer.get_data()
 				if outer_data.has("message"):
 					var content: String = str(outer_data["message"].get("content", ""))
-					print("[AIManager] 📝 Example content: %s" % content.left(300))
+					_debug_log("[AIManager] Example content: %s" % content.left(300))
 					var js: String = _extract_json(content)
 					if not js.is_empty():
 						var p := JSON.new()
@@ -715,9 +753,9 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 							var vi_str: String = str(data.get("vi", data.get("translation", "")))
 							if not en_str.is_empty():
 								output = "📖 %s\n📝 %s" % [en_str, vi_str]
-								print("[AIManager] ✅ Example sentence OK!")
+								_debug_log("[AIManager] Example sentence OK.")
 		elif result != HTTPRequest.RESULT_SUCCESS:
-			print("[AIManager] ⚠ Request failed. Result enum: %d" % result)
+			_debug_log("[AIManager] Example request failed. Result enum: %d" % result)
 			output = "⏳ Ollama đang bận, thử lại sau nhé!"
 		emit_signal("example_sentence_ready", output)
 		check_and_fill_all_queues()
@@ -728,7 +766,7 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 	timer.timeout.connect(func():
 		if _completed[0]: return
 		_completed[0] = true
-		print("[AIManager] ⏰ Manual timeout! Ollama không phản hồi sau 20s.")
+		push_warning("[AIManager] Timeout 20s khi tạo câu ví dụ.")
 		emit_signal("example_sentence_ready", "⏳ Ollama đang bận, thử lại sau nhé!")
 		check_and_fill_all_queues()
 		if is_instance_valid(http):
@@ -737,17 +775,17 @@ func request_example_sentence(word_or_topic: String, meaning_or_formula: String,
 	)
 	timer.start()
 
-	var err = http.request(OLLAMA_URL, ["Content-Type: application/json"],
+	var err = http.request(ollama_url, ["Content-Type: application/json"],
 				 HTTPClient.METHOD_POST, JSON.stringify(payload))
 	if err != OK:
 		_completed[0] = true
-		print("[AIManager] ❌ HTTP request failed with error: %d" % err)
+		push_warning("[AIManager] Gửi request câu ví dụ thất bại (err=%d)." % err)
 		emit_signal("example_sentence_ready", "Không thể kết nối Ollama...")
 		check_and_fill_all_queues()
 		if is_instance_valid(http): http.queue_free()
 		if is_instance_valid(timer): timer.queue_free()
 	else:
-		print("[AIManager] 📝 Request sent OK! Waiting for Ollama (max 20s)...")
+		_debug_log("[AIManager] Example request sent. Waiting max 20s.")
 
 
 # ==============================================================================
@@ -800,7 +838,7 @@ Return ONLY valid JSON.""" % [
 		type_v, type_g
 	]
 	
-	print("[AIManager] 📝 Requesting Mini Test...")
+	_debug_log("[AIManager] Requesting Mini Test.")
 	
 	var payload: Dictionary = {
 		"model": OLLAMA_MODEL,
@@ -866,7 +904,7 @@ Return ONLY valid JSON.""" % [
 	)
 	timer.start()
 	
-	var err = http.request(OLLAMA_URL, ["Content-Type: application/json"],
+	var err = http.request(ollama_url, ["Content-Type: application/json"],
 				 HTTPClient.METHOD_POST, JSON.stringify(payload))
 	if err != OK:
 		_completed[0] = true
@@ -885,7 +923,7 @@ func get_question() -> Dictionary:
 
 	if not queue.is_empty():
 		var q: Dictionary = queue.pop_front()
-		print("[AIManager] Phát câu | tier %d | word_id=%d | Queue còn: %d" \
+		_debug_log("[AIManager] Phát câu | tier %d | word_id=%d | Queue còn: %d" \
 			% [current_tier_id, q.get("word_id",-1), queue.size()])
 		return q
 
@@ -913,7 +951,7 @@ func set_tier(tier_id: int) -> void:
 		push_warning("[AIManager] Tier %d không tồn tại." % tier_id)
 		return
 	current_tier_id = tier_id
-	print("[AIManager] Chuyển sang tier %d | Queue: %d câu" \
+	_debug_log("[AIManager] Chuyển sang tier %d | Queue: %d câu" \
 		% [tier_id, question_queues[tier_id].size()])
 	check_and_fill_all_queues()
 

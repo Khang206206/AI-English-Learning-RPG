@@ -12,6 +12,7 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"): # Phím ESC
 		# Không hiện Pause menu nếu đang ở màn hình Title
 		if get_tree().current_scene.name == "TitleScreen": return
+		if _is_dialogue_active(): return
 
 		if not visible:
 			show_pause()
@@ -19,6 +20,8 @@ func _input(event):
 			_on_resume()
 
 func show_pause():
+	if _is_dialogue_active():
+		return
 	visible = true
 	$SettingsPanel.visible = true
 	$SettingsPanel.setup_mode(true)
@@ -27,3 +30,6 @@ func show_pause():
 func _on_resume():
 	visible = false
 	get_tree().paused = false
+
+func _is_dialogue_active() -> bool:
+	return DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active()

@@ -53,6 +53,7 @@ var is_monster_frozen: bool = false
 var current_question: Dictionary
 var player_hp: int
 var monster_hp: int = 20
+var max_monster_hp: int = 20
 var heart_red = preload("res://resources/ui/hearts/Heart_Full.tres")
 var heart_3_4 = preload("res://resources/ui/hearts/Heart_3_4.tres")
 var heart_2_4 = preload("res://resources/ui/hearts/Heart_2_4.tres")
@@ -62,6 +63,10 @@ var is_game_over: bool = false # Đánh dấu xem player đã "chết" chưa
 var is_player_time_frozen: bool = false # Người chơi có đang bị phạt giảm 50% thời gian không
 var is_magic_locked: int = 0
 var revealed_letters_count: int = 0
+var is_enforcing_revealed_prefix: bool = false
+var reward_label: Label = null
+var battle_reward_claimed: bool = false
+var gold_reward_earned: int = 0
 
 const SPELL_SCENE = preload("res://scenes/spell_effect.tscn")
 const ICE_EFFECT_SCENE = preload("res://scenes/ice_effect.tscn")
@@ -72,10 +77,19 @@ const SPELL_ITEM_IDS := {
 	"electric": 7,
 	"wood": 8,
 }
+const VERBOSE_COMBAT_LOGS := false
+const NORMAL_BULLET_DAMAGE := 4
+const FIRE_BULLET_DAMAGE := 5
+const ELEMENTAL_BULLET_DAMAGE := 4
+
+func _combat_log(message: String) -> void:
+	if VERBOSE_COMBAT_LOGS:
+		print(message)
 
 # 3. GLUE CODE
 func _ready():
 	ai_tutor_popup.hide()
+	_ensure_reward_label()
 	player_anim.play("idle")
 	_style_item_slots()
 	if GameManager.current_monster:
@@ -94,6 +108,8 @@ func _ready():
 		elif "monster_position" in GameManager.current_monster: # Đề phòng bồ đặt tên biến khác
 			monster_anim.position += GameManager.current_monster.monster_position
 		
+		max_monster_hp = DatabaseManager.get_enemy_hp_for_tier(GameManager.current_monster.tier_id, monster_hp)
+		monster_hp = max_monster_hp
 		monster_anim.play("idle") # Chạy animation idle
 		
 	else:
@@ -111,6 +127,7 @@ func _ready():
 	btn_d.pressed.connect(func(): check_answer("D"))
 	submit_btn.pressed.connect(func(): check_answer(word_input.text.strip_edges()))
 	word_input.text_submitted.connect(func(new_text): check_answer(new_text.strip_edges()))
+	word_input.text_changed.connect(_on_word_input_text_changed)
 	
 	try_again_btn.pressed.connect(_on_try_again_pressed)
 	go_back_btn.pressed.connect(_on_go_back_pressed)
@@ -303,18 +320,49 @@ func setup_hearts():
 		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		monster_hearts_container.add_child(new_heart)
 
+	update_health_ui()
+
+func _ensure_reward_label() -> void:
+	reward_label = get_node_or_null("ResultOverlay/RewardLabel")
+	if reward_label == null:
+		reward_label = Label.new()
+		reward_label.name = "RewardLabel"
+		result_overlay.add_child(reward_label)
+
+	reward_label.anchor_left = 0.5
+	reward_label.anchor_right = 0.5
+	reward_label.anchor_top = 0.0
+	reward_label.anchor_bottom = 0.0
+	reward_label.offset_left = -260.0
+	reward_label.offset_top = 170.0
+	reward_label.offset_right = 260.0
+	reward_label.offset_bottom = 226.0
+	reward_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	reward_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	reward_label.add_theme_font_size_override("font_size", 30)
+	reward_label.add_theme_color_override("font_color", Color(1.0, 0.82, 0.26, 1.0))
+	reward_label.add_theme_color_override("font_outline_color", Color(0.08, 0.04, 0.0, 1.0))
+	reward_label.add_theme_constant_override("outline_size", 5)
+	reward_label.hide()
+
+func _get_battle_gold_reward() -> int:
+	var tier_id := 1
+	if GameManager.current_monster and "tier_id" in GameManager.current_monster:
+		tier_id = max(1, int(GameManager.current_monster.tier_id))
+	return 10 + tier_id * 5
+
 # --- LOAD CÂU HỎI TỨC THÌ (0.1 giây) ---
 func load_next_question():
 	if is_magic_locked > 0:
 		is_magic_locked -= 1
 		if is_magic_locked == 0:
-			print("[Combat] Mạch ma thuật phục hồi ở câu hỏi này!")
+			_combat_log("[Combat] Mạch ma thuật phục hồi.")
 		else:
-			print("[Combat] Mạch ma thuật đang bị phong ấn ở câu hỏi này!")
+			_combat_log("[Combat] Mạch ma thuật đang bị phong ấn.")
 	current_question = AIManager.get_question()
 	question_label.text = current_question.get("question", "Lỗi hiển thị câu hỏi")
-	word_input.text = "" # Xóa chữ hiệp cũ
 	revealed_letters_count = 0
+	word_input.text = "" # Xóa chữ hiệp cũ
 	set_buttons_disabled(false)
 	var ui_mode = current_question.get("ui_mode", "mcq")
 	if ui_mode == "mcq": 
@@ -335,6 +383,64 @@ func load_next_question():
 		magic_timer.start_timer()
 	update_item_ui()
 
+func _get_revealed_answer_prefix() -> String:
+	if revealed_letters_count <= 0:
+		return ""
+	var correct_ans := str(current_question.get("correct_answer", "")).strip_edges()
+	return correct_ans.substr(0, min(revealed_letters_count, correct_ans.length()))
+
+func _on_word_input_text_changed(new_text: String) -> void:
+	if is_enforcing_revealed_prefix or revealed_letters_count <= 0:
+		return
+
+	var prefix := _get_revealed_answer_prefix()
+	if prefix == "" or new_text.begins_with(prefix):
+		return
+
+	var suffix := ""
+	if new_text.length() > prefix.length():
+		suffix = new_text.substr(prefix.length())
+
+	is_enforcing_revealed_prefix = true
+	word_input.text = prefix + suffix
+	word_input.caret_column = max(word_input.caret_column, prefix.length())
+	is_enforcing_revealed_prefix = false
+
+func _record_answer_result(word_id: int, grammar_id: int, is_correct: bool, is_combat: bool = true) -> void:
+	if grammar_id != -1:
+		ProgressManager.update_grammar_after_answer(grammar_id, is_correct, is_combat)
+	else:
+		ProgressManager.update_after_answer(word_id, is_correct, is_combat)
+
+func _handle_frozen_miss(word_id: int, grammar_id: int) -> void:
+	_combat_log("[Combat] Quái đang bị đóng băng, bỏ qua phản công.")
+	is_monster_frozen = false
+	_record_answer_result(word_id, grammar_id, false, false)
+
+	if current_ice_instance and is_instance_valid(current_ice_instance):
+		current_ice_instance.play("ending")
+		await current_ice_instance.animation_finished
+		current_ice_instance.queue_free()
+	monster_anim.play("idle")
+
+func _apply_wrong_bullet_penalty() -> void:
+	match current_bullet:
+		"wood":
+			monster_hp = clampi(monster_hp + 1, 0, max_monster_hp)
+			_combat_log("[Combat] Đạn Mộc phản pháo: quái hồi 1 HP.")
+		"fire":
+			player_hp = max(0, player_hp - 1)
+			DatabaseManager.set_player_hp(player_hp)
+			_combat_log("[Combat] Đạn Lửa phản tác dụng: người chơi mất thêm 1 HP.")
+		"ice":
+			is_player_time_frozen = true
+			_combat_log("[Combat] Đạn Băng phản tác dụng: lượt sau bị giảm thời gian.")
+		"electric":
+			is_magic_locked = 2
+			current_bullet = "normal"
+			btn_electric.button_pressed = false
+			_combat_log("[Combat] Đạn Điện phản tác dụng: khóa phép 2 câu.")
+
 
 # 4. COMBAT STATE MACHINE
 func check_answer(selected_choice: String):
@@ -344,7 +450,6 @@ func check_answer(selected_choice: String):
 
 	var word_id: int     = current_question.get("word_id", -1)
 	var grammar_id: int  = current_question.get("grammar_id", -1)
-	var is_grammar: bool = (grammar_id != -1)
 	var ui_mode = current_question.get("ui_mode", "mcq")
 	var is_correct: bool = false
 
@@ -354,7 +459,10 @@ func check_answer(selected_choice: String):
 		var answer_input = selected_choice.to_lower().strip_edges()
 		var correct_ans = str(current_question.get("correct_answer", "")).to_lower().strip_edges()
 		var alternatives = current_question.get("accept_alternatives", [])
-		is_correct = (answer_input == correct_ans) or (answer_input in alternatives)
+		var normalized_alternatives := []
+		for alternative in alternatives:
+			normalized_alternatives.append(str(alternative).to_lower().strip_edges())
+		is_correct = (answer_input == correct_ans) or (answer_input in normalized_alternatives)
 
 	if is_correct:
 		player_anim.position.y -= 40
@@ -378,20 +486,20 @@ func check_answer(selected_choice: String):
 		player_anim.play("idle")
 		match current_bullet:
 			"fire":
-				monster_hp -= 5 # Đạn lửa bạo kích mạnh: -5 máu lẻ (1 tim và 1/4 tim)
-				print("[Combat] Đạn Lửa thiêu đốt! Quái bị trừ 5 máu.")
+				monster_hp -= FIRE_BULLET_DAMAGE # Đạn lửa gây 5 HP.
+				_combat_log("[Combat] Đạn Lửa thiêu đốt: quái mất 5 HP.")
 			"wood":
-				monster_hp -= 4 # Đạn mộc gây sát thương cơ bản
+				monster_hp -= ELEMENTAL_BULLET_DAMAGE # Đạn mộc gây sát thương cơ bản
 				# Hồi lại 1 HP cho Player nhưng không vượt quá trần 20
 				player_hp = clampi(player_hp + 1, 0, 20)
 				# Đồng bộ ngược xuống DB để lưu trữ tiến trình tim mới hồi
-				DatabaseManager.player_hearts = player_hp
-				print("[Combat] Đạn Mộc hút máu! Hồi 1 HP cho người chơi.")
+				DatabaseManager.set_player_hp(player_hp)
+				_combat_log("[Combat] Đạn Mộc hút máu: hồi 1 HP.")
 			"ice":
-				monster_hp -= 4
+				monster_hp -= ELEMENTAL_BULLET_DAMAGE
 				if randf() <= 0.5:
 					is_monster_frozen = true 
-					print("[Combat] Đạn Băng kích hoạt ĐÓNG BĂNG THÀNH CÔNG (50%)!")
+					_combat_log("[Combat] Đạn Băng đóng băng thành công.")
 					
 					# ĐỨNG HÌNH QUÁI VÀ SINH KHỐI BĂNG:
 					monster_anim.pause() # Dừng animation idle của quái vật lại
@@ -403,20 +511,17 @@ func check_answer(selected_choice: String):
 						current_ice_instance = ice
 				else:
 					is_monster_frozen = false
-					print("[Combat] Đạn Băng trúng quái nhưng quái KHÔNG bị đóng băng (Xui xẻo)!")
+					_combat_log("[Combat] Đạn Băng không kích hoạt đóng băng.")
 			"electric":
 				current_bullet = "electric"
 				# ⚡ ĐẠN ĐIỆN ĐÂY NHA BỒ:
-				monster_hp -= 4 # Gây 4 sát thương cơ bản
-				print("[Combat] Đạn Điện giật tê liệt! Hiệp kế tiếp la bàn đếm ngược tăng lên 30 giây.")
+				monster_hp -= ELEMENTAL_BULLET_DAMAGE # Gây 4 sát thương cơ bản
+				_combat_log("[Combat] Đạn Điện: tăng thời gian lượt kế tiếp.")
 			_:
-				monster_hp -= 4 # Các hệ đạn khác (normal, ice, electric) gây 4 sát thương cơ bản
+				monster_hp -= NORMAL_BULLET_DAMAGE # Đạn thường gây 1 tim sát thương.
 		update_health_ui()
-		if is_grammar:
-			ProgressManager.update_grammar_after_answer(grammar_id, true)
-		else:
-			ProgressManager.update_after_answer(word_id, true)
-		print("Đánh trúng quái! Quái còn: ", monster_hp, " máu")
+		_record_answer_result(word_id, grammar_id, true)
+		_combat_log("[Combat] Đánh trúng quái. HP còn: %d" % monster_hp)
 		
 		if monster_hp <= 0:
 			win_battle()
@@ -427,15 +532,7 @@ func check_answer(selected_choice: String):
 	else:
 		if SPELL_SCENE:
 			if is_monster_frozen:
-				print("[Combat] Quái đang bị đóng băng! May quá không bị phản công.")
-				is_monster_frozen = false
-				# BỔ SUNG: Rã băng đồ họa và cho quái chạy tiếp idle
-				if current_ice_instance and is_instance_valid(current_ice_instance):
-					current_ice_instance.play("ending")
-					await current_ice_instance.animation_finished
-					current_ice_instance.queue_free()
-				monster_anim.play("idle") # Cho quái thở tiếp
-				
+				await _handle_frozen_miss(word_id, grammar_id)
 				await get_tree().create_timer(1.0).timeout
 				load_next_question()
 				return
@@ -458,26 +555,8 @@ func check_answer(selected_choice: String):
 				player_anim.play("idle")
 		# -------------------------------------------------------------------
 
-		# Gọi ProgressManager xử lý trừ tim trong hệ thống và lưu SQLite
-		if is_grammar:
-			ProgressManager.update_grammar_after_answer(grammar_id, false)
-		else:
-			ProgressManager.update_after_answer(word_id, false)
-		if current_bullet == "wood":
-			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 1 HP
-			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 1 HP.")
-		if current_bullet == "fire":
-			player_hp = max(0, player_hp - 1) # Bị quái phản công rát, trừ thêm 1 máu lẻ nữa (Tổng cộng thành 5)
-			DatabaseManager.player_hearts = player_hp # Cập nhật lại cho DB giữ state
-			print("[Combat] Đạn Lửa nổ ngược! Người chơi bị vả tổng cộng 5 máu.")
-		if current_bullet == "ice":
-			is_player_time_frozen = true
-			print("[Combat] Đạn Băng nổ ngược! Bị đóng băng thanh thời gian ở hiệp sau.")
-		if current_bullet == "electric":
-			is_magic_locked = 2
-			current_bullet = "normal"
-			btn_electric.button_pressed = false # Nhả nút điện ra
-			print("[Combat] Hết giờ khi dùng đạn Điện! Khóa mạch ma thuật ở hiệp sau.")
+		_record_answer_result(word_id, grammar_id, false)
+		_apply_wrong_bullet_penalty()
 
 		update_health_ui()
 		# Cập nhật lại biến player_hp local từ DatabaseManager để UI vẽ tim cho đúng
@@ -537,7 +616,7 @@ func win_battle():
 	if current_ice_instance and is_instance_valid(current_ice_instance):
 			current_ice_instance.queue_free()
 	if magic_timer: magic_timer.hide()
-	print("Victory!")
+	_combat_log("[Combat] Victory.")
 	if bgm_player != null and bgm_player.playing:
 		bgm_player.stop() # Tắt nhạc nền đi
 	if victory_sfx != null:
@@ -545,9 +624,19 @@ func win_battle():
 	var db = get_node_or_null("/root/DatabaseManager")
 	if db:
 		db.restore_full_hp()
+
+	if not battle_reward_claimed:
+		gold_reward_earned = _get_battle_gold_reward()
+		DatabaseManager.add_gold(gold_reward_earned)
+		battle_reward_claimed = true
 	
 	if GameManager.current_enemy_id > 0:
 		DatabaseManager.mark_enemy_dead(GameManager.current_enemy_id)
+		DatabaseManager.save_game(
+			GameManager.player_position.x,
+			GameManager.player_position.y,
+			GameManager.previous_scene_path
+		)
 		
 	show_result_overlay(true)
 	set_buttons_disabled(true)
@@ -556,7 +645,7 @@ func lose_battle():
 	if current_ice_instance and is_instance_valid(current_ice_instance):
 		current_ice_instance.queue_free()
 	if magic_timer: magic_timer.hide()
-	print("Game Over!")
+	_combat_log("[Combat] Game Over.")
 	if bgm_player != null and bgm_player.playing:
 		bgm_player.stop() # Tắt nhạc nền đi
 	if defeat_sfx != null:
@@ -603,6 +692,7 @@ func show_result_overlay(is_win: bool):
 	# Reset alpha về 0 cho tất cả elements trước khi tween
 	background.modulate.a    = 0
 	result_label.modulate.a  = 0
+	reward_label.modulate.a  = 0
 	go_back_btn.modulate.a   = 0
 	go_back2_btn.modulate.a  = 0
 	try_again_btn.modulate.a = 0
@@ -618,6 +708,8 @@ func show_result_overlay(is_win: bool):
 		panel_border2.visible = false
 		panel_border3.visible = true
 		result_label.text     = "VICTORY!"
+		reward_label.text     = "Bạn đã nhận được %d vàng" % gold_reward_earned
+		reward_label.visible  = gold_reward_earned > 0
 	else:
 		go_back_btn.visible   = true
 		go_back2_btn.visible  = false
@@ -626,6 +718,7 @@ func show_result_overlay(is_win: bool):
 		panel_border2.visible = true
 		panel_border3.visible = false
 		result_label.text     = "GAME OVER!"
+		reward_label.visible  = false
 
 	result_overlay.show()
 
@@ -635,6 +728,7 @@ func show_result_overlay(is_win: bool):
 	tween.parallel().tween_property(result_label, "modulate:a", 1.0, 0.5)
 
 	if is_win:
+		tween.parallel().tween_property(reward_label, "modulate:a", 1.0, 0.5)
 		tween.parallel().tween_property(go_back2_btn,  "modulate:a", 1.0, 0.5)
 		tween.parallel().tween_property(panel_border3, "modulate:a", 1.0, 0.5)
 	else:
@@ -659,18 +753,9 @@ func _on_timer_timeout():
 	set_buttons_disabled(true)
 	var word_id: int = current_question.get("word_id", -1)
 	var grammar_id: int = current_question.get("grammar_id", -1)
-	var is_grammar: bool = (grammar_id != -1)
 	if SPELL_SCENE:
 		if is_monster_frozen:
-			print("[Combat] Quái đang bị đóng băng! May quá không bị phản công.")
-			is_monster_frozen = false
-			# BỔ SUNG: Rã băng đồ họa và cho quái chạy tiếp idle
-			if current_ice_instance and is_instance_valid(current_ice_instance):
-				current_ice_instance.play("ending") # Xóa block băng
-				await current_ice_instance.animation_finished
-				current_ice_instance.queue_free()
-			monster_anim.play("idle") # Cho quái thở tiếp
-				
+			await _handle_frozen_miss(word_id, grammar_id)
 			await get_tree().create_timer(1.0).timeout
 			load_next_question()
 			return
@@ -695,25 +780,8 @@ func _on_timer_timeout():
 				# Chờ anim hit diễn ra xong (tầm 0.2 - 0.3s) rồi trả về idle
 				await get_tree().create_timer(0.3).timeout 
 				player_anim.play("idle")
-	if is_grammar:
-		ProgressManager.update_grammar_after_answer(grammar_id, false)
-	else:
-		ProgressManager.update_after_answer(word_id, false)
-	if current_bullet == "wood":
-			monster_hp = clampi(monster_hp + 1, 0, 20) # Quái hút tinh hoa hồi 1 HP
-			print("[Combat] Đạn Mộc phản pháo! Quái vật được hồi 1 HP.")
-	if current_bullet == "fire":
-		player_hp = max(0, player_hp - 1) # Phạt thêm 1 máu lẻ (Tổng cộng thành 5)
-		DatabaseManager.player_hearts = player_hp
-		print("[Combat] Hết giờ! Đạn Lửa quá nhiệt nổ ngược 5 máu.")
-	if current_bullet == "ice":
-			is_player_time_frozen = true
-			print("[Combat] Đạn Băng nổ ngược! Bị đóng băng thanh thời gian ở hiệp sau.")
-	if current_bullet == "electric":
-		is_magic_locked = 2
-		current_bullet = "normal"
-		btn_electric.button_pressed = false # Nhả nút điện ra
-		print("[Combat] Hết giờ khi dùng đạn Điện! Khóa mạch ma thuật ở hiệp sau.")
+	_record_answer_result(word_id, grammar_id, false)
+	_apply_wrong_bullet_penalty()
 	player_hp = DatabaseManager.player_hearts 
 	update_health_ui()
 	explanation_text.text = "Đã hết thời gian suy nghĩ! " + current_question.get("explanation", "")
@@ -777,10 +845,10 @@ func _on_btn_wood_toggled(toggled_on: bool):
 func _use_potion():
 	if ProgressManager.consume_item(1):
 		player_hp = clampi(player_hp + 4, 0, 20)
-		DatabaseManager.player_hearts = player_hp
+		DatabaseManager.set_player_hp(player_hp)
 		update_health_ui()
 		update_item_ui()
-		print("[Battle] Dùng Tinh Dược Sinh Lực! HP: %d" % player_hp)
+		_combat_log("[Battle] Dùng Tinh Dược Sinh Lực. HP: %d" % player_hp)
 
 func _use_fifty_fifty():
 	var ui_mode = current_question.get("ui_mode", "mcq")
@@ -799,13 +867,13 @@ func _use_fifty_fifty():
 					"C": btn_c.disabled = true; btn_c.modulate.a = 0.3
 					"D": btn_d.disabled = true; btn_d.modulate.a = 0.3
 			update_item_ui()
-			print("[Battle] Dùng Lá Bài Tiên Tri! Ẩn 2 đáp án sai.")
+			_combat_log("[Battle] Dùng Lá Bài Tiên Tri: ẩn 2 đáp án sai.")
 	else:
 		var correct_ans = str(current_question.get("correct_answer", "")).strip_edges()
 		if correct_ans == "": return
 		
 		if revealed_letters_count >= correct_ans.length():
-			print("[Battle] Đã hiển thị toàn bộ đáp án!")
+			_combat_log("[Battle] Đã hiển thị toàn bộ đáp án.")
 			return
 			
 		if ProgressManager.consume_item(2):
@@ -816,20 +884,21 @@ func _use_fifty_fifty():
 			var revealed_str = correct_ans.substr(0, revealed_letters_count)
 			word_input.text = revealed_str
 			word_input.caret_column = revealed_str.length()
+			_on_word_input_text_changed(word_input.text)
 			
 			update_item_ui()
-			print("[Battle] Dùng Lá Bài Tiên Tri! Hé lộ: ", revealed_str)
+			_combat_log("[Battle] Dùng Lá Bài Tiên Tri: hé lộ '%s'." % revealed_str)
 
 func _use_skip():
 	if ProgressManager.consume_item(3):
-		print("[Battle] Dùng Cuộn Giấy Không Gian! Bỏ qua câu hỏi.")
+		_combat_log("[Battle] Dùng Cuộn Giấy Không Gian: bỏ qua câu hỏi.")
 		if magic_timer: magic_timer.stop_timer()
 		update_item_ui()
 		load_next_question()
 
 func _use_time_freeze():
 	if ProgressManager.consume_item(4):
-		print("[Battle] Dùng Băng Phong Thời Gian!")
+		_combat_log("[Battle] Dùng Băng Phong Thời Gian.")
 		if magic_timer:
 			magic_timer.stop_timer()
 			# Khởi tạo timer 10s độc lập
@@ -838,6 +907,6 @@ func _use_time_freeze():
 				# Chỉ chạy lại timer nếu game chưa kết thúc và vẫn ở câu hỏi hiện tại
 				if not is_game_over and magic_timer and !btn_a.disabled:
 					magic_timer.start_timer()
-					print("[Battle] Hết hiệu lực Băng Phong Thời Gian!")
+					_combat_log("[Battle] Hết hiệu lực Băng Phong Thời Gian.")
 			)
 		update_item_ui()

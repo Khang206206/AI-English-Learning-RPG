@@ -8,6 +8,8 @@ extends CanvasLayer
 var guide_map_ui = null
 var btn_guide_map = null
 var feature_dock: PanelContainer = null
+var gold_panel: PanelContainer = null
+var gold_label: Label = null
 var settings_button: TextureButton = null
 
 func _ready():
@@ -17,6 +19,10 @@ func _ready():
 		get_viewport().size_changed.connect(_position_feature_dock)
 	if not get_viewport().size_changed.is_connected(_position_settings_button):
 		get_viewport().size_changed.connect(_position_settings_button)
+	if not get_viewport().size_changed.is_connected(_position_gold_panel):
+		get_viewport().size_changed.connect(_position_gold_panel)
+	if DatabaseManager != null and not DatabaseManager.gold_changed.is_connected(_on_gold_changed):
+		DatabaseManager.gold_changed.connect(_on_gold_changed)
 	
 	if shop_ui != null:
 		shop_ui.visible = false
@@ -45,6 +51,7 @@ func _ready():
 		GlobalPause.visibility_changed.connect(_sync_hud_visibility)
 		
 	_build_settings_button()
+	_build_gold_panel()
 	_build_feature_dock()
 	_sync_hud_visibility()
 
@@ -100,6 +107,35 @@ func _build_feature_dock() -> void:
 		_reparent_to(shop_button, list)
 
 	_position_feature_dock()
+
+func _build_gold_panel() -> void:
+	if gold_panel != null:
+		return
+
+	gold_panel = PanelContainer.new()
+	gold_panel.name = "GoldPanel"
+	gold_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+	gold_panel.add_theme_stylebox_override("panel", _make_stylebox(
+		Color(0.10, 0.065, 0.035, 0.82),
+		Color(0.95, 0.74, 0.33, 0.95),
+		2,
+		8,
+		Vector4(12, 6, 12, 6)
+	))
+	add_child(gold_panel)
+
+	gold_label = Label.new()
+	gold_label.name = "GoldLabel"
+	gold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	gold_label.add_theme_font_size_override("font_size", 22)
+	gold_label.add_theme_color_override("font_color", Color(1.0, 0.82, 0.26, 1.0))
+	gold_label.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.03, 1.0))
+	gold_label.add_theme_constant_override("outline_size", 4)
+	gold_panel.add_child(gold_label)
+
+	_update_gold_display(DatabaseManager.get_gold())
+	_position_gold_panel()
 
 func _build_settings_button() -> void:
 	if settings_button != null:
@@ -171,6 +207,8 @@ func _sync_hud_visibility() -> void:
 	var should_show_hud := not _is_any_feature_panel_open()
 	if feature_dock != null:
 		feature_dock.visible = should_show_hud
+	if gold_panel != null:
+		gold_panel.visible = should_show_hud
 	if settings_button != null:
 		settings_button.visible = should_show_hud
 
@@ -186,6 +224,19 @@ func _position_feature_dock() -> void:
 	var viewport_size = get_viewport().get_visible_rect().size
 	var dock_size = feature_dock.get_combined_minimum_size()
 	feature_dock.position = viewport_size - dock_size - Vector2(24.0, 24.0)
+
+func _position_gold_panel() -> void:
+	if gold_panel == null:
+		return
+	gold_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	gold_panel.position = Vector2(24.0, 20.0)
+
+func _on_gold_changed(new_gold: int) -> void:
+	_update_gold_display(new_gold)
+
+func _update_gold_display(gold_amount: int) -> void:
+	if gold_label != null:
+		gold_label.text = "Vàng: %d" % gold_amount
 
 func _create_map_icon_texture(paper_color: Color) -> Texture2D:
 	var size := 48
@@ -297,6 +348,8 @@ func _on_guide_map_pressed():
 		guide_map_ui.toggle_guide_map()
 
 func _on_settings_button_pressed() -> void:
+	if DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active():
+		return
 	if GlobalPause and GlobalPause.has_method("show_pause"):
 		GlobalPause.show_pause()
 

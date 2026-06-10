@@ -187,6 +187,8 @@ func _ready() -> void:
 	btn_guide.pressed.connect(func(): _switch_tab(0))
 	btn_map.pressed.connect(func(): _switch_tab(1))
 	btn_monster.pressed.connect(func(): _switch_tab(2))
+	if DatabaseManager != null and DatabaseManager.has_signal("enemy_progress_changed") and not DatabaseManager.enemy_progress_changed.is_connected(_on_enemy_progress_changed):
+		DatabaseManager.enemy_progress_changed.connect(_on_enemy_progress_changed)
 	
 	hide()
 	
@@ -202,6 +204,16 @@ func toggle_guide_map() -> void:
 func _on_close_requested() -> void:
 	hide()
 	get_tree().paused = false
+
+func _on_enemy_progress_changed() -> void:
+	_update_header_stats()
+	if not visible:
+		return
+	match current_tab_index:
+		1:
+			_refresh_map_tab()
+		2:
+			_refresh_monster_tab()
 
 func _switch_tab(index: int) -> void:
 	current_tab_index = index

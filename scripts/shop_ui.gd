@@ -22,6 +22,8 @@ const COLOR_PANEL := Color(0.94, 0.84, 0.58, 1.0)
 const COLOR_DARK := Color(0.19, 0.10, 0.05, 1.0)
 const COLOR_GREEN := Color(0.29, 0.66, 0.45, 1.0)
 
+var is_spell_tab_active := true
+
 func _ready():
 	_apply_shop_theme()
 	if not get_viewport().size_changed.is_connected(_center_shop):
@@ -47,6 +49,7 @@ func _ready():
 func _on_visibility_changed() -> void:
 	if visible:
 		_center_shop()
+		_refresh_current_tab()
 
 func _make_stylebox(bg_color: Color, border_color: Color = Color.TRANSPARENT, border_width: int = 0, radius: int = 8, margins: Vector4 = Vector4.ZERO) -> StyleBoxFlat:
 	var style = StyleBoxFlat.new()
@@ -229,12 +232,23 @@ func _on_close_pressed():
 	visible = false
 
 func _on_tab_spell_pressed():
+	is_spell_tab_active = true
 	_load_items_into_grid(_get_spell_list())
 	_update_tab_visuals(true)
 
 func _on_tab_item_pressed():
+	is_spell_tab_active = false
 	_load_items_into_grid(_get_item_list())
 	_update_tab_visuals(false)
+
+func _refresh_current_tab() -> void:
+	_update_gold_display()
+	if is_spell_tab_active:
+		_load_items_into_grid(_get_spell_list())
+		_update_tab_visuals(true)
+	else:
+		_load_items_into_grid(_get_item_list())
+		_update_tab_visuals(false)
 
 func _update_tab_visuals(is_spell_active: bool):
 	_style_tab(tab_spell, is_spell_active)

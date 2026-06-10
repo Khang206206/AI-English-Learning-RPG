@@ -54,6 +54,7 @@ func setup_mode(is_ingame: bool):
 		$Backbutton.visible = true
 		if has_node("SaveGameButton"): $SaveGameButton.visible = false
 		if has_node("QuitGameButton"): $QuitGameButton.visible = false
+	_apply_dialogue_save_guard()
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _on_volume_changed(value):
@@ -63,6 +64,8 @@ func _on_brightness_changed(value):
 	GlobalBrightness.update_brightness(value)
 
 func _on_save_pressed():
+	if _is_dialogue_active():
+		return
 	DatabaseManager.save_game(GameManager.player_position.x, GameManager.player_position.y)
 	if has_node("SaveGameButton"):
 		$SaveGameButton.text = "SAVED!"
@@ -70,9 +73,13 @@ func _on_save_pressed():
 		timer.timeout.connect(func(): $SaveGameButton.text = "SAVE GAME")
 
 func _on_quit_pressed():
+	if _is_dialogue_active():
+		return
 	show_quit_dialog()
 
 func show_quit_dialog(close_panel_on_cancel: bool = false, dialog_only: bool = false) -> void:
+	if _is_dialogue_active():
+		return
 	close_panel_on_quit_cancel = close_panel_on_cancel
 	quit_dialog_only_mode = dialog_only
 	_apply_base_visibility()
@@ -100,13 +107,37 @@ func _apply_base_visibility() -> void:
 		save_game_button.visible = (not quit_dialog_only_mode) and is_ingame_mode
 	if quit_game_button != null:
 		quit_game_button.visible = not quit_dialog_only_mode
+	_apply_dialogue_save_guard()
 
 func _on_save_and_quit_pressed() -> void:
+	if _is_dialogue_active():
+		return
+	if not is_ingame_mode and not DatabaseManager.has_save_data:
+		get_tree().quit()
+		return
+
 	DatabaseManager.save_and_quit(
 		GameManager.player_position.x,
 		GameManager.player_position.y,
-		DatabaseManager.current_biome if not is_ingame_mode else ""
+		_resolve_settings_save_scene_path()
 	)
+
+func _resolve_settings_save_scene_path() -> String:
+	if is_ingame_mode:
+		return ""
+	return DatabaseManager.current_biome if DatabaseManager.current_biome.begins_with("res://") else ""
 
 func _on_quit_without_saving_pressed() -> void:
 	get_tree().quit()
+
+func _is_dialogue_active() -> bool:
+	return DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active()
+
+func _apply_dialogue_save_guard() -> void:
+	var disabled := _is_dialogue_active()
+	if save_game_button != null:
+		save_game_button.disabled = disabled
+	if quit_game_button != null:
+		quit_game_button.disabled = disabled
+	if save_and_quit_button != null:
+		save_and_quit_button.disabled = disabled
