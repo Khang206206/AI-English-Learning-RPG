@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ckcp0gat3kqjr"]
 
-[ext_resource type="Script" uid="uid://bwnlxh1kt6i66" path="res://scenes/notebook_ui.gd" id="1_ns2gq"]
+[ext_resource type="Script" uid="uid://bslu4rm6tia1i" path="res://scripts/notebook_ui.gd" id="1_ns2gq"]
 
 [node name="NotebookUI" type="CanvasLayer" unique_id=2104752377]
 script = ExtResource("1_ns2gq")

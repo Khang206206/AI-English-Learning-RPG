@@ -1,6 +1,6 @@
 [gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://ddwytxci5k3b5"]
 
-[ext_resource type="FontFile" uid="uid://bl4mmm33ymfxa" path="res://resources/ui/gui_assets/GuiAssets/fonts/m5x7.ttf" id="1_l4ar8"]
+[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://assets/textures/GuiAssets/GuiAssets/fonts/TinyPixie2.ttf" id="1_l4ar8"]
 
 [resource]
 base_font = ExtResource("1_l4ar8")

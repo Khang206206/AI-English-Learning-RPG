@@ -352,19 +352,6 @@ func _get_battle_gold_reward() -> int:
 		tier_id = max(1, int(GameManager.current_monster.tier_id))
 	return 10 + tier_id * 5
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_E:
-		_cheat_win_battle()
-
-func _cheat_win_battle() -> void:
-	if is_game_over or result_overlay.visible:
-		return
-	if DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active():
-		return
-	monster_hp = 0
-	update_health_ui()
-	win_battle()
-
 # --- LOAD CÂU HỎI TỨC THÌ (0.1 giây) ---
 func load_next_question():
 	if is_magic_locked > 0:

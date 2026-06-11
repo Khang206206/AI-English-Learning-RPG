@@ -54,8 +54,8 @@ const COLOR_LOCKED := Color(0.13, 0.13, 0.13, 1.0)
 const COLOR_DISCOVERED := Color(0.88, 0.68, 0.26, 1.0)
 const COLOR_DEFEATED := Color(0.74, 0.10, 0.08, 1.0)
 const COLOR_GATED := Color(0.85, 0.66, 0.22, 1.0)
-const DEFAULT_MARKER_PATH := "res://assets/textures/guide_map/ui/marker_default.png"
-const DEFAULT_SILHOUETTE_PATH := "res://assets/textures/guide_map/ui/silhouette_default.png"
+const DEFAULT_MARKER_PATH := "res://icon.svg"
+const DEFAULT_SILHOUETTE_PATH := "res://icon.svg"
 const DEFAULT_TEXTURE_PATH := "res://icon.svg"
 
 var map_center_offset := Vector2.ZERO

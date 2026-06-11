@@ -15,7 +15,8 @@ signal enemy_progress_changed()
 signal gold_changed(new_gold: int)
 
 var db = null
-const DB_PATH: String = "res://data/data.db"
+const DB_PATH: String = "user://data.db"
+const SEED_DB_PATH: String = "res://data/data.db"
 const CSV_PATH: String = "res://data/vocabulary.csv"
 const ENEMIES_CSV_PATH: String = "res://data/enemies.csv"
 const GRAMMAR_CSV_PATH: String = "res://data/grammar.csv"
@@ -23,7 +24,7 @@ const CURRENT_SAVE_SLOT: int = 1
 
 var player_hearts: int = 20
 var max_hearts: int = 20
-var player_gold: int = 100
+var player_gold: int = 0
 var current_biome: String = "Beginner Forest"
 var dead_enemies: Array = []
 var interacted_enemies: Array = []
@@ -50,6 +51,7 @@ func _notification(what: int) -> void:
 # ==============================================================================
 
 func init_database() -> void:
+	_ensure_user_database()
 	db = ClassDB.instantiate("SQLite")
 	db.path = DB_PATH
 
@@ -69,13 +71,36 @@ func init_database() -> void:
 	_migrate_intro_quiz_completed_column()
 	seed_initial_data()
 
+func _ensure_user_database() -> void:
+	if FileAccess.file_exists(DB_PATH):
+		return
+	if not FileAccess.file_exists(SEED_DB_PATH):
+		print("[DatabaseManager] Không tìm thấy seed DB, sẽ tạo database mới tại: " + DB_PATH)
+		return
+
+	var source := FileAccess.open(SEED_DB_PATH, FileAccess.READ)
+	if source == null:
+		push_warning("[DatabaseManager] Không thể đọc seed DB: " + SEED_DB_PATH)
+		return
+
+	var target := FileAccess.open(DB_PATH, FileAccess.WRITE)
+	if target == null:
+		push_warning("[DatabaseManager] Không thể tạo user DB: " + DB_PATH)
+		source.close()
+		return
+
+	target.store_buffer(source.get_buffer(source.get_length()))
+	source.close()
+	target.close()
+	print("[DatabaseManager] Đã tạo user DB từ seed: " + DB_PATH)
+
 func _create_tables() -> void:
 	db.query("""
 		CREATE TABLE IF NOT EXISTS Player_Profile (
 			save_id             INTEGER PRIMARY KEY,
 			last_played         TEXT,
 			hp                  INTEGER DEFAULT 20,
-			gold                INTEGER DEFAULT 100,
+			gold                INTEGER DEFAULT 0,
 			current_biome       TEXT    DEFAULT 'Beginner Forest',
 			pos_x               REAL    DEFAULT 0.0,
 			pos_y               REAL    DEFAULT 0.0,
@@ -168,6 +193,11 @@ func _create_tables() -> void:
 			grammar_id          INTEGER NOT NULL,
 			encounter_count     INTEGER DEFAULT 0,
 			correct_count       INTEGER DEFAULT 0,
+			streak              INTEGER DEFAULT 0,
+			ease_factor         REAL    DEFAULT 2.5,
+			interval_days       INTEGER DEFAULT 1,
+			next_review_date    TEXT    DEFAULT '',
+			last_reviewed_date  TEXT    DEFAULT '',
 			PRIMARY KEY (save_id, grammar_id),
 			FOREIGN KEY (save_id) REFERENCES Player_Profile(save_id),
 			FOREIGN KEY (grammar_id) REFERENCES Grammar_Bank(grammar_id)
@@ -178,28 +208,39 @@ func _create_tables() -> void:
 
 ## Migration an toàn: thêm các cột SRS vào bảng Player_Grammar_Mastery nếu chưa có
 func _migrate_grammar_srs_columns() -> void:
-	var cols_to_add := [
-		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN streak INTEGER DEFAULT 0",
-		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN ease_factor REAL DEFAULT 2.5",
-		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN interval_days INTEGER DEFAULT 1",
-		"ALTER TABLE Player_Grammar_Mastery ADD COLUMN next_review_date TEXT DEFAULT ''",
-		"ALTER TABLE Player_Gdrammar_Mastery ADD COLUMN last_reviewed_date TEXT DEFAULT ''",
-	]
-	for sql in cols_to_add:
-		db.query(sql) # SQLite sẽ bỏ qua nếu cột đã tồn tại ("duplicate column" error is silent)
+	var cols_to_add := {
+		"streak": "ALTER TABLE Player_Grammar_Mastery ADD COLUMN streak INTEGER DEFAULT 0",
+		"ease_factor": "ALTER TABLE Player_Grammar_Mastery ADD COLUMN ease_factor REAL DEFAULT 2.5",
+		"interval_days": "ALTER TABLE Player_Grammar_Mastery ADD COLUMN interval_days INTEGER DEFAULT 1",
+		"next_review_date": "ALTER TABLE Player_Grammar_Mastery ADD COLUMN next_review_date TEXT DEFAULT ''",
+		"last_reviewed_date": "ALTER TABLE Player_Grammar_Mastery ADD COLUMN last_reviewed_date TEXT DEFAULT ''",
+	}
+	for column_name in cols_to_add.keys():
+		if not _table_has_column("Player_Grammar_Mastery", column_name):
+			db.query(cols_to_add[column_name])
 	print("[DatabaseManager] Migration grammar SRS columns: done.")
 
 func _migrate_vocabulary_cefr_column() -> void:
-	db.query("ALTER TABLE Vocabulary_Bank ADD COLUMN cefr_level TEXT DEFAULT 'A1'")
+	if not _table_has_column("Vocabulary_Bank", "cefr_level"):
+		db.query("ALTER TABLE Vocabulary_Bank ADD COLUMN cefr_level TEXT DEFAULT 'A1'")
 	print("[DatabaseManager] Migration vocabulary cefr_level column: done.")
 
 func _migrate_interacted_enemies_column() -> void:
-	db.query("ALTER TABLE Player_Profile ADD COLUMN interacted_enemies_list TEXT DEFAULT '[]'")
+	if not _table_has_column("Player_Profile", "interacted_enemies_list"):
+		db.query("ALTER TABLE Player_Profile ADD COLUMN interacted_enemies_list TEXT DEFAULT '[]'")
 	print("[DatabaseManager] Migration interacted_enemies_list column: done.")
 
 func _migrate_intro_quiz_completed_column() -> void:
-	db.query("ALTER TABLE Player_Profile ADD COLUMN intro_quiz_completed INTEGER DEFAULT 0")
+	if not _table_has_column("Player_Profile", "intro_quiz_completed"):
+		db.query("ALTER TABLE Player_Profile ADD COLUMN intro_quiz_completed INTEGER DEFAULT 0")
 	print("[DatabaseManager] Migration intro_quiz_completed column: done.")
+
+func _table_has_column(table_name: String, column_name: String) -> bool:
+	db.query("PRAGMA table_info(%s);" % table_name)
+	for row in db.query_result:
+		if str(row.get("name", "")) == column_name:
+			return true
+	return false
 
 # ==============================================================================
 # 2. SEED DỮ LIỆU BAN ĐẦU
@@ -514,7 +555,7 @@ func save_and_quit(pos_x: float, pos_y: float, scene_path: String = "") -> void:
 
 func reset_save_for_new_game() -> void:
 	player_hearts = max_hearts
-	player_gold = 100
+	player_gold = 0
 	current_biome = "res://scenes/chapel.tscn"
 	dead_enemies = []
 	interacted_enemies = []
@@ -567,7 +608,7 @@ func load_game(save_slot: int) -> void:
 		var data: Dictionary = db.query_result[0]
 
 		player_hearts = data.get("hp",            max_hearts)
-		player_gold   = data.get("gold",          100)
+		player_gold   = data.get("gold",          0)
 		current_biome = data.get("current_biome", "res://scenes/chapel.tscn")
 		
 		# Nạp vị trí người chơi
@@ -604,7 +645,7 @@ func load_game(save_slot: int) -> void:
 		emit_signal("game_loaded", data)
 	else:
 		player_hearts = max_hearts
-		player_gold = 100
+		player_gold = 0
 		dead_enemies  = []
 		interacted_enemies = []
 		has_save_data = false

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dk5sn515nlsj2"]
 
-[ext_resource type="Texture2D" uid="uid://ij6ub1gi4xxp" path="res://resources/monsters/fill/demon/demon-idle.png" id="1_275ao"]
+[ext_resource type="Texture2D" uid="uid://ij6ub1gi4xxp" path="res://assets/textures/Enemies/Fill/Demon/demon-idle.png" id="1_275ao"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jksfe"]
 atlas = ExtResource("1_275ao")

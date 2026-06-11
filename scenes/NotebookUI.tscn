@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c7cch05hiaq57"]
 
-[ext_resource type="Script" uid="uid://bwnlxh1kt6i66" path="res://scenes/notebook_ui.gd" id="1_4wsej"]
+[ext_resource type="Script" uid="uid://bslu4rm6tia1i" path="res://scripts/notebook_ui.gd" id="1_4wsej"]
 [ext_resource type="Texture2D" uid="uid://vifbxit6uybu" path="res://assets/textures/magic book/Open_book.png" id="2_35wx4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_35wx4"]

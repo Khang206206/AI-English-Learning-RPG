@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvlrlbv1wtv3c"]
 
-[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://resources/ui/gui_assets/GuiAssets/sprites/gdp_styles.png" id="1_61k36"]
-[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://resources/ui/gui_assets/GuiAssets/fonts/TinyPixie2.ttf" id="2_ypp13"]
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/textures/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="1_61k36"]
+[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://assets/textures/GuiAssets/GuiAssets/fonts/TinyPixie2.ttf" id="2_ypp13"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ypp13"]
 atlas = ExtResource("1_61k36")
