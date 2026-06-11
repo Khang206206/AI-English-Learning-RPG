@@ -46,12 +46,9 @@ var quiz_data = [
 ]
 
 func _ready():
-	if chapel_music != null:
-		BgmManager.play_music(chapel_music, -10)
-	else:
-		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
-		BgmManager.stop_music()
+	
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	hide()
 	
 	# Sinh ra trạm kết nối mạng bằng code để tránh lỗi Null

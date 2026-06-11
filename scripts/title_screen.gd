@@ -4,7 +4,7 @@ extends Control
 
 func _ready():
 	if title_music != null:
-		BgmManager.play_music(title_music)
+		BgmManager.play_music(title_music, -15)
 	else:
 		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
 		BgmManager.stop_music()

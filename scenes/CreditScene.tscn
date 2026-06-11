@@ -18,7 +18,7 @@ anchor_bottom = 1.0
 offset_left = -576.0
 offset_top = -17.5
 offset_right = 1799.0
-offset_bottom = 1142.0
+offset_bottom = 1111.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -27,7 +27,7 @@ color = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(1152, 1075)
 layout_mode = 0
 offset_right = 1152.0
-offset_bottom = 1144.0
+offset_bottom = 1100.0
 bbcode_enabled = true
 text = "[center][b][font_size=50]CREDIT[/font_size][/b][/center]
 
@@ -57,7 +57,6 @@ NPC: Serial
 [/center]
 [center][b][font_size=35]MUSICS[/font_size][/b][/center]
 [center]
-bg_quiz music: XtremeFreddy (Pixabay)
 Victory/Game Over sfx: EloLeChan
 Battle music: \"Battle Theme A\" by cynicmusic.com / pixelsphere.org 
 Title scene: “Town theme RPG” by cynicmusic.com / pixelsphere.org

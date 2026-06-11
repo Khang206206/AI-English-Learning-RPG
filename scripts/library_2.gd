@@ -54,7 +54,7 @@ var has_played_after_quiz_dialogue := false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if lib2_music != null:
-		BgmManager.play_music(lib2_music)
+		BgmManager.play_music(lib2_music, -1)
 	else:
 		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
 		BgmManager.stop_music()

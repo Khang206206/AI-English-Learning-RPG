@@ -119,6 +119,7 @@ func show_line():
 			blip_player.stream = sound_albedou
 		elif char_name == "Elaria":
 			blip_player.stream = sound_elaria
+			blip_player.volume_db = 5
 		else:
 			blip_player.stream = sound_narration
 	
