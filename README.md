@@ -1,5 +1,36 @@
 # AI English Learning RPG
 
+<p align="center">
+  <img src="logo-khtn.png" alt="Logo Trường ĐH KHTN" width="150" />
+</p>
+
+**ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH**  
+**TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN**  
+**KHOA CÔNG NGHỆ THÔNG TIN**  
+
+**Ngành:** Trí Tuệ Nhân Tạo  
+**Môn học:** Tư duy tính toán cho Trí tuệ nhân tạo  
+
+---
+
+## Bài báo cáo: Tổng quan và Phân tích đồ án AI English Learning RPG
+
+**Tên Nhóm:** Nhóm Vibe coding Mixi  
+**Giảng viên hướng dẫn:** Ths. Nguyễn Lê Hoàng Dũng  
+
+**Sinh viên thực hiện:**
+
+| STT | Họ và Tên | Mã số sinh viên |
+| :---: | :--- | :---: |
+| 1 | Trần Phước Minh Khang | 24122036 |
+| 2 | Nguyễn Việt Khoa | 24122037 |
+| 3 | Huỳnh Tiến Mạnh | 24122042 |
+| 4 | Hà Huy Nguyên | 24122044 |
+| 5 | Dương Thiên Phú | 24122047 |
+| 6 | Thái Hữu Phúc | 24122049 |
+
+---
+
 AI English Learning RPG là game nhập vai học tiếng Anh được xây dựng bằng Godot. Người chơi luyện từ vựng, ngữ pháp và phản xạ tiếng Anh thông qua khám phá bản đồ, tương tác NPC, notebook học tập và các trận chiến dạng câu hỏi.
 
 Game được thiết kế để chạy offline. Phần AI local qua Ollama là tuỳ chọn, dùng để tạo nội dung học phong phú hơn khi máy người chơi đã có sẵn Ollama và model phù hợp.
