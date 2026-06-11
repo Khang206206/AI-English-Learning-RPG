@@ -2,7 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bhq3mjacn1th4" path="res://scripts/DialogueSystem.gd" id="1_rfu8f"]
 [ext_resource type="Texture2D" uid="uid://b0kjp5kdie4er" path="res://assets/textures/Dialogue box/vecteezy_game-dialogue-boxes-speech-bubbles-and-frames_21493984.jpg" id="2_6m0vd"]
+[ext_resource type="AudioStream" uid="uid://8vyhui1bj6an" path="res://assets/audio/dmochas-dialogue_bleeps_pack/dmochas-dialogue_bleeps_pack/mp3/bleep013.mp3" id="2_ibuoc"]
+[ext_resource type="AudioStream" uid="uid://d6psc8nglone" path="res://assets/audio/dmochas-dialogue_bleeps_pack/dmochas-dialogue_bleeps_pack/mp3/bleep028.mp3" id="3_5sulm"]
 [ext_resource type="Texture2D" uid="uid://bvoswy0molnvi" path="res://assets/textures/npc_guide/portrait/Eleonore2.png" id="3_inyt6"]
+[ext_resource type="AudioStream" uid="uid://da5765hrgkyng" path="res://assets/audio/dmochas-dialogue_bleeps_pack/dmochas-dialogue_bleeps_pack/mp3/bleep007.mp3" id="4_w4lx1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_er51x"]
 atlas = ExtResource("2_6m0vd")
@@ -17,6 +20,10 @@ margin = Rect2(20, 2, 20, 0)
 [node name="DialogueSystem" type="CanvasLayer" unique_id=597164315]
 layer = 100
 script = ExtResource("1_rfu8f")
+sound_seeker = ExtResource("2_ibuoc")
+sound_albedou = ExtResource("2_ibuoc")
+sound_elaria = ExtResource("3_5sulm")
+sound_narration = ExtResource("4_w4lx1")
 
 [node name="Control" type="Control" parent="." unique_id=779068359]
 layout_mode = 3
@@ -104,3 +111,6 @@ text = "Elaria
 horizontal_alignment = 1
 
 [node name="TextTimer" type="Timer" parent="Control" unique_id=1236730698]
+
+[node name="BlipPlayer" type="AudioStreamPlayer" parent="." unique_id=1396960145]
+process_mode = 3

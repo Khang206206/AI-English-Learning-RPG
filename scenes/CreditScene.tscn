@@ -16,8 +16,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -576.0
+offset_top = -17.5
 offset_right = 1799.0
-offset_bottom = 1050.0
+offset_bottom = 1142.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -26,7 +27,7 @@ color = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(1152, 1075)
 layout_mode = 0
 offset_right = 1152.0
-offset_bottom = 1050.0
+offset_bottom = 1144.0
 bbcode_enabled = true
 text = "[center][b][font_size=50]CREDIT[/font_size][/b][/center]
 
@@ -38,6 +39,7 @@ Chaple: Craftpix.net
 Chapter 1: Cainos 
 Clock needles: Saphatthachat
 Dialogue box: 2bitcrook
+Dialogue vocal: dmochas-assets
 Elaria: Otsoga
 Elemental icons: candycorrin
 Fonts: Nimble Beasts
@@ -55,15 +57,14 @@ NPC: Serial
 [/center]
 [center][b][font_size=35]MUSICS[/font_size][/b][/center]
 [center]
+bg_quiz music: XtremeFreddy (Pixabay)
 Victory/Game Over sfx: EloLeChan
 Battle music: \"Battle Theme A\" by cynicmusic.com / pixelsphere.org 
 Title scene: “Town theme RPG” by cynicmusic.com / pixelsphere.org
 Chapel music: “(Blood) Stained Glass” by FoxSynergy
 Credit music: “The end” by tcarisland
 The stater area music: “forest” by syncopika[/center] 
-[indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent]
-Background QuizUI: XtremeFreddy (Pixabay)
-Library music: \"The Aquarium\" (from The Carnival of the Animals) 
+[indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent][indent]Library music: \"The Aquarium\" (from The Carnival of the Animals) 
 - Composer: Camille Saint-Saëns 
 - Performers: Seattle Youth Symphony / Vilem Sokol 
 - Source: Pandora Records / Al Goldstein Archive (EFF Open Audio License) 
@@ -75,10 +76,10 @@ Library music: \"The Aquarium\" (from The Carnival of the Animals)
 
 [node name="Label" type="Label" parent="." unique_id=1599924224]
 layout_mode = 0
-offset_left = 918.00006
-offset_top = 608.0
-offset_right = 1123.0
-offset_bottom = 651.0
+offset_left = 896.0
+offset_top = 597.0
+offset_right = 1101.0
+offset_bottom = 640.0
 scale = Vector2(1.25, 1.25)
 text = "Giữ space để tăng tốc"
 horizontal_alignment = 1

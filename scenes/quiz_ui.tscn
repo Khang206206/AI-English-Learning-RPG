@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bwisenv78tcms"]
 
 [ext_resource type="Script" uid="uid://uk3c75fn0kg" path="res://scripts/quiz_ui.gd" id="1_501xa"]
+[ext_resource type="AudioStream" uid="uid://brsqxhs6pyst5" path="res://assets/audio/quiz_ui.mp3" id="2_8dmau"]
 [ext_resource type="Texture2D" uid="uid://dls5uf52avm4s" path="res://assets/textures/BG/cavern/bg_14.png" id="2_topby"]
 [ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://assets/textures/GuiAssets/GuiAssets/fonts/TinyPixie2.ttf" id="4_8dmau"]
 
@@ -50,6 +51,7 @@ cache/0/16/0/scale = 1.0
 [node name="QuizUI" type="CanvasLayer" unique_id=70507873]
 process_mode = 3
 script = ExtResource("1_501xa")
+chapel_music = ExtResource("2_8dmau")
 
 [node name="background" type="TextureRect" parent="." unique_id=37291263]
 anchors_preset = 15

@@ -2,7 +2,7 @@ extends CanvasLayer
 
 signal quiz_completed
 signal quiz_result_closed
-
+@export var chapel_music: AudioStream
 @onready var question_text = $QuestionText
 @onready var prompt_text = $PromptText
 @onready var answers_container = $AnswersContainer
@@ -46,6 +46,11 @@ var quiz_data = [
 ]
 
 func _ready():
+	if chapel_music != null:
+		BgmManager.play_music(chapel_music, -10)
+	else:
+		# Nếu bạn quên chưa kéo nhạc vào thì tự động tắt nhạc cũ cho an toàn
+		BgmManager.stop_music()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hide()
 	

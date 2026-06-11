@@ -1,6 +1,16 @@
 extends CanvasLayer
+
 @export var title_music: AudioStream
 signal dialogue_finished
+
+# 🌟 4 Ô THUỘC TÍNH ĐỂ BỒ KÉO THẢ FILE NHẠC CHO TỪNG ĐỨA NGOÀI INSPECTOR
+@export var sound_seeker: AudioStream
+@export var sound_albedou: AudioStream
+@export var sound_elaria: AudioStream
+@export var sound_narration: AudioStream
+
+# 🌟 TỐC ĐỘ BÍP: Cứ sau bao nhiêu giây thì kêu 1 tiếng (0.07 là chuẩn Undertale)
+@export var blip_rate: float = 0.07 
 
 # Sử dụng find_child để tìm chính xác Node bất kể cấu trúc cây có thay đổi
 @onready var panel = find_child("Panel", true, false)
@@ -11,6 +21,7 @@ signal dialogue_finished
 @onready var content_label = find_child("ContentLabel", true, false)
 @onready var text_timer = find_child("TextTimer", true, false)
 @onready var left_spacer = find_child("VBoxContainer", true, false)
+@onready var blip_player = find_child("BlipPlayer", true, false)
 
 const DEFAULT_PANEL_MIN_SIZE := Vector2(190, 180)
 const DEFAULT_PANEL_RECT := Rect2(0, 0, 0, 276)
@@ -38,10 +49,26 @@ var dialogue_lines = []
 var current_line_index = 0
 var was_tree_paused_before_dialogue := false
 
+# 🌟 BIẾN QUẢN LÝ NHỊP ĐIỆU TIẾNG BÍP TỰ ĐỘNG VÀ TWEEN CHẠY CHỮ
+var is_typing := false
+var blip_timer := 0.0
+var text_tween: Tween # Biến dùng để nắm đầu và giết Tween khi người chơi bấm bỏ qua
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false # Ẩn giao diện khi bắt đầu game
 	_apply_name_label_style(DEFAULT_NAME_FONT_SIZE)
+
+# Hàm chạy theo thời gian thực để phát tiếng bíp đều đặn
+func _process(delta):
+	if is_typing:
+		if content_label and content_label.visible_ratio >= 1.0:
+			is_typing = false # Tự tắt bíp khi chữ chạy xong hoàn toàn
+		else:
+			blip_timer -= delta
+			if blip_timer <= 0.0:
+				_play_blip_sound()
+				blip_timer = blip_rate # Đặt lại bộ đếm thời gian cho tiếng bíp tiếp theo
 
 func is_dialogue_active() -> bool:
 	return visible and not dialogue_lines.is_empty()
@@ -54,26 +81,47 @@ func start_dialogue(lines: Array):
 	visible = true
 	get_tree().paused = true
 	
-	# Khóa người chơi lại thông qua Autoload GlobalPause của bạn
 	if GlobalPause.has_signal("game_paused"):
 		GlobalPause.game_paused.emit()
 		
 	show_line()
 
 func show_line():
-	# Kiểm tra an toàn xem các Node có bị null không trước khi gán dữ liệu
 	if not name_label or not content_label or not portrait:
 		push_error("Lỗi: Không tìm thấy các Node hiển thị UI trong DialogueSystem!")
 		return
 	var line = dialogue_lines[current_line_index]
+	
+	if line.has("music"):
+		var music_path = str(line.get("music", ""))
+		if music_path != "" and BgmManager.has_method("play_music"):
+			var new_bgm = load(music_path)
+			if new_bgm:
+				BgmManager.play_music(new_bgm)
+	elif line.has("stop_music") and line.get("stop_music") == true:
+		if BgmManager.has_method("stop_music"):
+			BgmManager.stop_music()
+			
 	var portrait_path := str(line.get("portrait", ""))
 	var hide_portrait := bool(line.get("hide_portrait", false)) or portrait_path == ""
-	name_label.text = str(line.get("name", ""))
+	
+	var char_name = str(line.get("name", ""))
+	name_label.text = char_name
 	content_label.text = str(line.get("text", ""))
 	var layout_name := str(line.get("dialogue_layout", "default"))
 	_apply_dialogue_layout(layout_name, hide_portrait)
 	
-	# Nạp ảnh chân dung, nếu lỗi đường dẫn ảnh thì bỏ qua không làm crash game
+	# TỰ ĐỘNG ĐỔI GIỌNG BÍP CHO TỪNG NV ĐANG NÓI
+	if blip_player:
+		if char_name == "The Seeker":
+			blip_player.stream = sound_seeker
+		elif char_name == "Albedou":
+			blip_player.stream = sound_albedou
+		elif char_name == "Elaria":
+			blip_player.stream = sound_elaria
+		else:
+			blip_player.stream = sound_narration
+	
 	if not hide_portrait:
 		if ResourceLoader.exists(portrait_path):
 			portrait.texture = load(portrait_path)
@@ -83,12 +131,26 @@ func show_line():
 	if not hide_portrait and layout_name != "bottom_compact":
 		_apply_portrait_side(str(line.get("portrait_side", "right")))
 	
-	# Hiệu ứng chạy chữ mượt mà
-	content_label.visible_ratio = 0
+	# 🌟 KHÚC AN TOÀN: Kiểm tra xem có cái Tween cũ nào chưa chạy xong không thì giết nó trước
+	if text_tween and text_tween.is_valid():
+		text_tween.kill()
+		
+	# HIỆU ỨNG CHẠY CHỮ VÀ KÍCH HOẠT NHỊP BÍP LIÊN TỤC
+	content_label.visible_ratio = 0.0
 	var duration = content_label.text.length() * 0.03
-	var tween = create_tween()
-	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	tween.tween_property(content_label, "visible_ratio", 1.0, duration)
+	
+	# Lưu cái Tween mới tạo vào biến text_tween toàn cục
+	text_tween = create_tween()
+	text_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	text_tween.tween_property(content_label, "visible_ratio", 1.0, duration)
+	
+	# KÍCH HOẠT TIẾNG BÍP LIÊN TỤC KHÔNG CHỜ CHỮ
+	is_typing = true
+	blip_timer = 0.0 # Kêu ngay lập tức từ chữ đầu tiên
+
+func _play_blip_sound():
+	if blip_player and blip_player.stream != null:
+		blip_player.play()
 
 func _apply_portrait_side(side: String) -> void:
 	if dialogue_row == null or portrait_frame == null or content_label == null:
@@ -301,17 +363,25 @@ func _apply_bottom_compact_layout() -> void:
 		content_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 func _input(event):
-	# Thay 'is_action_just_pressed' thành 'is_action_pressed'
-	if visible and event.is_action_pressed("ui_accept"): 
+	if visible and event.is_action_pressed("ui_accept"):
 		get_viewport().set_input_as_handled()
 		
-		# Ngăn không cho sự kiện này kích hoạt liên tục khi đè giữ phím
 		if event.is_echo(): 
 			return
 			
+		# 🌟 KHÚC THAY ĐỔI ĂN TIỀN NHẤT CHỖ NÀY NÈ 🌟
 		if content_label.visible_ratio < 1.0:
-			content_label.visible_ratio = 1.0 # Hiện toàn bộ chữ ngay lập tức nếu đang chạy
+			# 1. Giết cái Tween đang chạy ngầm ngay lập tức để nó không kéo chữ lại
+			if text_tween and text_tween.is_valid():
+				text_tween.kill()
+			
+			# 2. Quăng chữ ra hết màn hình 100%
+			content_label.visible_ratio = 1.0
+			
+			# 3. Chốt chặn tắt tiếng bíp ngay lập tức
+			is_typing = false 
 		else:
+			# Nếu chữ đã đầy rồi, bấm Space lần nữa sẽ vọt qua thoại kế tiếp
 			current_line_index += 1
 			if current_line_index < dialogue_lines.size():
 				show_line()
@@ -320,17 +390,17 @@ func _input(event):
 
 func finish_dialogue():
 	visible = false
+	is_typing = false # Đảm bảo tắt hẳn tiếng bíp khi đóng hộp thoại
 	get_tree().paused = was_tree_paused_before_dialogue
 	
-	# Giải phóng người chơi ra ngoài
 	if GlobalPause.has_signal("game_resumed"):
 		GlobalPause.game_resumed.emit()
 		
-	dialogue_finished.emit() # Phát tín hiệu để kích hoạt màn hình Quiz tiếp theo
+	dialogue_finished.emit() # Phát tín hiệu kích hoạt Quiz
+	
 	if dialogue_lines.size() > 0:
-		var last_line = dialogue_lines.back() # Lấy câu thoại cuối cùng ra xem
-		if last_line.has("next_scene"):       # Nếu có cờ "next_scene"
+		var last_line = dialogue_lines.back()
+		if last_line.has("next_scene"):
 			var next_scene_path = str(last_line.get("next_scene", ""))
 			if next_scene_path != "":
-				# Nhảy sang scene được chỉ định (Ví dụ: CreditScene)
 				get_tree().change_scene_to_file(next_scene_path)
