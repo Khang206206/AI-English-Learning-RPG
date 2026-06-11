@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://c8oqers73iqvs"
+
+[deps]
+
+files=["res://data/grammar.formula.translation", "res://data/grammar.explanation.translation", "res://data/grammar.example.translation", "res://data/grammar.tier.translation"]
+
+source_file="res://data/grammar.csv"
+dest_files=["res://data/grammar.formula.translation", "res://data/grammar.explanation.translation", "res://data/grammar.example.translation", "res://data/grammar.tier.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

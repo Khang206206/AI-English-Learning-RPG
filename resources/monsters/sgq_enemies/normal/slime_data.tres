@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3 uid="uid://nt0ixdayhdee"]
+
+[ext_resource type="SpriteFrames" uid="uid://d2st37e6j0krv" path="res://resources/monsters/sgq_enemies/normal/slime_frames.tres" id="1_27n3f"]
+[ext_resource type="Script" uid="uid://cf2ac2r4ucqxr" path="res://scripts/MonsterData.gd" id="1_jvgbg"]
+
+[resource]
+script = ExtResource("1_jvgbg")
+monster_name = "Slime"
+idle_animation = ExtResource("1_27n3f")
+flip_h = true
+scale = Vector2(6, 6)
+position_offset = Vector2(0, 10)
+metadata/_custom_type_script = "uid://cf2ac2r4ucqxr"

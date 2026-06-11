@@ -1,0 +1,370 @@
+extends CanvasLayer
+
+
+@onready var shop_ui = get_node_or_null("ShopUI")
+@onready var shop_button = get_node_or_null("ShopButton")
+@onready var notebook_ui = get_node_or_null("NotebookUI2")
+
+var guide_map_ui = null
+var btn_guide_map = null
+var feature_dock: PanelContainer = null
+var gold_panel: PanelContainer = null
+var gold_label: Label = null
+var settings_button: TextureButton = null
+
+func _ready():
+	# Đảm bảo HUD luôn hoạt động ngay cả khi game bị pause
+	self.process_mode = Node.PROCESS_MODE_ALWAYS
+	if not get_viewport().size_changed.is_connected(_position_feature_dock):
+		get_viewport().size_changed.connect(_position_feature_dock)
+	if not get_viewport().size_changed.is_connected(_position_settings_button):
+		get_viewport().size_changed.connect(_position_settings_button)
+	if not get_viewport().size_changed.is_connected(_position_gold_panel):
+		get_viewport().size_changed.connect(_position_gold_panel)
+	if DatabaseManager != null and not DatabaseManager.gold_changed.is_connected(_on_gold_changed):
+		DatabaseManager.gold_changed.connect(_on_gold_changed)
+	
+	if shop_ui != null:
+		shop_ui.visible = false
+		if not shop_ui.is_connected("closed", Callable(self, "_on_shop_closed")):
+			shop_ui.connect("closed", Callable(self, "_on_shop_closed"))
+		if not shop_ui.visibility_changed.is_connected(_sync_hud_visibility):
+			shop_ui.visibility_changed.connect(_sync_hud_visibility)
+			
+	var gm_scene = load("res://scenes/GuideMapUI.tscn")
+	if gm_scene:
+		guide_map_ui = gm_scene.instantiate()
+		add_child(guide_map_ui)
+		if not guide_map_ui.visibility_changed.is_connected(_sync_hud_visibility):
+			guide_map_ui.visibility_changed.connect(_sync_hud_visibility)
+		
+		btn_guide_map = TextureButton.new()
+		btn_guide_map.texture_normal = _create_map_icon_texture(Color(0.95, 0.82, 0.50, 1.0))
+		btn_guide_map.texture_hover = _create_map_icon_texture(Color(1.0, 0.90, 0.60, 1.0))
+		btn_guide_map.texture_pressed = _create_map_icon_texture(Color(0.82, 0.66, 0.38, 1.0))
+		btn_guide_map.pressed.connect(_on_guide_map_pressed)
+		add_child(btn_guide_map)
+
+	if notebook_ui != null and not notebook_ui.visibility_changed.is_connected(_sync_hud_visibility):
+		notebook_ui.visibility_changed.connect(_sync_hud_visibility)
+	if GlobalPause != null and not GlobalPause.visibility_changed.is_connected(_sync_hud_visibility):
+		GlobalPause.visibility_changed.connect(_sync_hud_visibility)
+		
+	_build_settings_button()
+	_build_gold_panel()
+	_build_feature_dock()
+	_sync_hud_visibility()
+
+func _make_stylebox(bg_color: Color, border_color: Color, border_width: int = 2, radius: int = 8, margins: Vector4 = Vector4.ZERO) -> StyleBoxFlat:
+	var style = StyleBoxFlat.new()
+	style.bg_color = bg_color
+	style.border_color = border_color
+	style.border_width_left = border_width
+	style.border_width_top = border_width
+	style.border_width_right = border_width
+	style.border_width_bottom = border_width
+	style.corner_radius_top_left = radius
+	style.corner_radius_top_right = radius
+	style.corner_radius_bottom_right = radius
+	style.corner_radius_bottom_left = radius
+	style.content_margin_left = margins.x
+	style.content_margin_top = margins.y
+	style.content_margin_right = margins.z
+	style.content_margin_bottom = margins.w
+	return style
+
+func _build_feature_dock() -> void:
+	if feature_dock != null:
+		return
+
+	feature_dock = PanelContainer.new()
+	feature_dock.name = "FeatureDock"
+	feature_dock.process_mode = Node.PROCESS_MODE_ALWAYS
+	feature_dock.add_theme_stylebox_override("panel", _make_stylebox(
+		Color(0.10, 0.065, 0.035, 0.82),
+		Color(0.95, 0.74, 0.33, 0.95),
+		2,
+		8,
+		Vector4(8, 8, 8, 8)
+	))
+	add_child(feature_dock)
+
+	var list = HBoxContainer.new()
+	list.name = "FeatureButtons"
+	list.add_theme_constant_override("separation", 8)
+	feature_dock.add_child(list)
+
+	if btn_guide_map:
+		_prepare_map_button(btn_guide_map)
+		_reparent_to(btn_guide_map, list)
+	if notebook_ui != null:
+		var notebook_button = get_node_or_null("BtnNotebook")
+		if notebook_button:
+			_prepare_texture_button(notebook_button, "Notebook")
+			_reparent_to(notebook_button, list)
+	if shop_button != null:
+		_prepare_texture_button(shop_button, "Shop")
+		_reparent_to(shop_button, list)
+
+	_position_feature_dock()
+
+func _build_gold_panel() -> void:
+	if gold_panel != null:
+		return
+
+	gold_panel = PanelContainer.new()
+	gold_panel.name = "GoldPanel"
+	gold_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+	gold_panel.add_theme_stylebox_override("panel", _make_stylebox(
+		Color(0.10, 0.065, 0.035, 0.82),
+		Color(0.95, 0.74, 0.33, 0.95),
+		2,
+		8,
+		Vector4(12, 6, 12, 6)
+	))
+	add_child(gold_panel)
+
+	gold_label = Label.new()
+	gold_label.name = "GoldLabel"
+	gold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	gold_label.add_theme_font_size_override("font_size", 22)
+	gold_label.add_theme_color_override("font_color", Color(1.0, 0.82, 0.26, 1.0))
+	gold_label.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.03, 1.0))
+	gold_label.add_theme_constant_override("outline_size", 4)
+	gold_panel.add_child(gold_label)
+
+	_update_gold_display(DatabaseManager.get_gold())
+	_position_gold_panel()
+
+func _build_settings_button() -> void:
+	if settings_button != null:
+		return
+
+	settings_button = TextureButton.new()
+	settings_button.name = "SettingsButton"
+	settings_button.process_mode = Node.PROCESS_MODE_ALWAYS
+	settings_button.focus_mode = Control.FOCUS_NONE
+	settings_button.tooltip_text = "Settings (Esc)"
+	settings_button.ignore_texture_size = true
+	settings_button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	settings_button.custom_minimum_size = Vector2(52, 52)
+	settings_button.texture_normal = _create_gear_icon_texture(Color(0.93, 0.76, 0.34, 1.0))
+	settings_button.texture_hover = _create_gear_icon_texture(Color(0.98, 0.86, 0.46, 1.0))
+	settings_button.texture_pressed = _create_gear_icon_texture(Color(0.82, 0.66, 0.30, 1.0))
+	settings_button.pressed.connect(_on_settings_button_pressed)
+	add_child(settings_button)
+	_position_settings_button()
+
+func _position_settings_button() -> void:
+	if settings_button == null:
+		return
+	settings_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	settings_button.offset_left = -76.0
+	settings_button.offset_top = 20.0
+	settings_button.offset_right = -20.0
+	settings_button.offset_bottom = 76.0
+
+func _reparent_to(node: Control, new_parent: Node) -> void:
+	if node.get_parent() == new_parent:
+		return
+	var old_parent = node.get_parent()
+	if old_parent:
+		old_parent.remove_child(node)
+	new_parent.add_child(node)
+	node.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	node.offset_left = 0.0
+	node.offset_top = 0.0
+	node.offset_right = 0.0
+	node.offset_bottom = 0.0
+
+func _prepare_map_button(button: TextureButton) -> void:
+	button.focus_mode = Control.FOCUS_NONE
+	button.tooltip_text = "Guide Map (M)"
+	button.ignore_texture_size = true
+	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	button.custom_minimum_size = Vector2(58, 58)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+
+func _prepare_texture_button(button: TextureButton, label: String) -> void:
+	button.focus_mode = Control.FOCUS_NONE
+	match label:
+		"Notebook":
+			button.tooltip_text = "Notebook (N)"
+		"Shop":
+			button.tooltip_text = "Shop (B)"
+		_:
+			button.tooltip_text = label
+	button.ignore_texture_size = true
+	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	button.custom_minimum_size = Vector2(58, 58)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.modulate = Color(1.0, 0.95, 0.84, 1.0)
+
+func _sync_hud_visibility() -> void:
+	var should_show_hud := not _is_any_feature_panel_open()
+	if feature_dock != null:
+		feature_dock.visible = should_show_hud
+	if gold_panel != null:
+		gold_panel.visible = should_show_hud
+	if settings_button != null:
+		settings_button.visible = should_show_hud
+
+func _is_any_feature_panel_open() -> bool:
+	return (guide_map_ui != null and guide_map_ui.visible) \
+		or (notebook_ui != null and notebook_ui.visible) \
+		or (shop_ui != null and shop_ui.visible) \
+		or (GlobalPause != null and GlobalPause.visible)
+
+func _position_feature_dock() -> void:
+	if feature_dock == null:
+		return
+	var viewport_size = get_viewport().get_visible_rect().size
+	var dock_size = feature_dock.get_combined_minimum_size()
+	feature_dock.position = viewport_size - dock_size - Vector2(24.0, 24.0)
+
+func _position_gold_panel() -> void:
+	if gold_panel == null:
+		return
+	gold_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	gold_panel.position = Vector2(24.0, 20.0)
+
+func _on_gold_changed(new_gold: int) -> void:
+	_update_gold_display(new_gold)
+
+func _update_gold_display(gold_amount: int) -> void:
+	if gold_label != null:
+		gold_label.text = "Vàng: %d" % gold_amount
+
+func _create_map_icon_texture(paper_color: Color) -> Texture2D:
+	var size := 48
+	var image := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0, 0, 0, 0))
+
+	var border := Color(0.25, 0.14, 0.06, 1.0)
+	var fold := Color(0.76, 0.56, 0.28, 1.0)
+	var route := Color(0.18, 0.38, 0.64, 1.0)
+	var mark := Color(0.72, 0.12, 0.10, 1.0)
+
+	for x in range(8, 40):
+		for y in range(6, 42):
+			image.set_pixel(x, y, paper_color)
+
+	for y in range(6, 42):
+		image.set_pixel(8, y, border)
+		image.set_pixel(39, y, border)
+	for x in range(8, 40):
+		image.set_pixel(x, 6, border)
+		image.set_pixel(x, 41, border)
+
+	for y in range(8, 40):
+		image.set_pixel(18, y, fold)
+		image.set_pixel(29, y, fold)
+	for x in range(10, 18):
+		for y in range(7, 41):
+			if (x + y) % 9 == 0:
+				image.set_pixel(x, y, paper_color.lightened(0.10))
+	for x in range(30, 38):
+		for y in range(7, 41):
+			if (x + y) % 8 == 0:
+				image.set_pixel(x, y, paper_color.darkened(0.08))
+
+	var route_points := [Vector2i(13, 32), Vector2i(17, 29), Vector2i(21, 27), Vector2i(25, 24), Vector2i(29, 20), Vector2i(33, 17)]
+	for p in route_points:
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				image.set_pixel(p.x + dx, p.y + dy, route)
+
+	for dx in range(-3, 4):
+		image.set_pixel(15 + dx, 14, mark)
+		image.set_pixel(15, 14 + dx, mark)
+
+	var texture := ImageTexture.create_from_image(image)
+	return texture
+
+func _create_gear_icon_texture(gear_color: Color) -> Texture2D:
+	var size := 48
+	var image := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0, 0, 0, 0))
+
+	var outline := Color(0.22, 0.12, 0.05, 1.0)
+	var center := Vector2(24, 24)
+
+	for x in range(size):
+		for y in range(size):
+			var point := Vector2(x + 0.5, y + 0.5)
+			var offset := point - center
+			var distance := offset.length()
+			var angle := atan2(offset.y, offset.x)
+			var tooth_wave := 1.0 if cos(angle * 8.0) > 0.35 else 0.0
+			var outer_radius := 14.0 + tooth_wave * 4.0
+
+			if distance <= outer_radius and distance >= 6.0:
+				image.set_pixel(x, y, gear_color)
+			elif distance < 6.0:
+				image.set_pixel(x, y, Color(0, 0, 0, 0))
+
+	for x in range(1, size - 1):
+		for y in range(1, size - 1):
+			var pixel := image.get_pixel(x, y)
+			if pixel.a == 0.0:
+				continue
+			var is_edge := false
+			for dx in range(-1, 2):
+				for dy in range(-1, 2):
+					if dx == 0 and dy == 0:
+						continue
+					if image.get_pixel(x + dx, y + dy).a == 0.0:
+						is_edge = true
+						break
+				if is_edge:
+					break
+			if is_edge:
+				image.set_pixel(x, y, outline)
+
+	for x in range(size):
+		for y in range(size):
+			var point := Vector2(x + 0.5, y + 0.5)
+			var distance := point.distance_to(center)
+			if distance >= 9.0 and distance <= 12.0:
+				image.set_pixel(x, y, gear_color.lightened(0.12))
+
+	return ImageTexture.create_from_image(image)
+
+func _input(event):
+	if event is InputEventKey and event.pressed and not event.echo:
+		match event.keycode:
+			KEY_M:
+				_on_guide_map_pressed()
+			KEY_N:
+				_on_btn_notebook_pressed()
+			KEY_B:
+				_on_shop_button_pressed()
+
+func _on_guide_map_pressed():
+	if guide_map_ui and guide_map_ui.has_method("toggle_guide_map"):
+		guide_map_ui.toggle_guide_map()
+
+func _on_settings_button_pressed() -> void:
+	if DialogueSystem != null and DialogueSystem.has_method("is_dialogue_active") and DialogueSystem.is_dialogue_active():
+		return
+	if GlobalPause and GlobalPause.has_method("show_pause"):
+		GlobalPause.show_pause()
+
+# Khi click chuột vào Logo Shop
+func _on_shop_button_pressed():
+	if shop_ui != null:
+		shop_ui.visible = !shop_ui.visible
+		get_tree().paused = shop_ui.visible
+
+# Khi Shop gửi tín hiệu đóng lại
+func _on_shop_closed():
+	get_tree().paused = false
+
+# Khi click chuột vào Logo Quyển Sổ
+func _on_btn_notebook_pressed():
+	if notebook_ui != null:
+		if notebook_ui.has_method("toggle_notebook"):
+			notebook_ui.toggle_notebook()

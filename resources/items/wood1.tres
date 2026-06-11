@@ -1,0 +1,6 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://djyqxgaj8l3r4"]
+
+[ext_resource type="Texture2D" uid="uid://42japmndwxs0" path="res://assets/textures/ElementUI-Icons/Life-Icon.png" id="1_h6566"]
+
+[resource]
+atlas = ExtResource("1_h6566")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dip05c6eba3ab"
+path="res://.godot/imported/End Theme.mp3-9cf5feedf4f236bd9fd14b8865902401.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/End Theme.mp3"
+dest_files=["res://.godot/imported/End Theme.mp3-9cf5feedf4f236bd9fd14b8865902401.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

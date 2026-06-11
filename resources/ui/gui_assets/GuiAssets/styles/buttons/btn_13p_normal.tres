@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://csbn8rh8qokbg"]
+
+[ext_resource type="Texture2D" uid="uid://cmxwe65ra8mc2" path="res://assets/textures/GuiAssets/GuiAssets/sprites/gdp_styles.png" id="1_g6wwk"]
+
+[resource]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("1_g6wwk")
+region_rect = Rect2(3.106998, 31.00875, 8.86631, 9.032162)

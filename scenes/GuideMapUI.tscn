@@ -1,0 +1,279 @@
+[gd_scene format=3 uid="uid://ts62owpmm0c8"]
+
+[ext_resource type="Script" uid="uid://bxac21ow6eskg" path="res://scripts/guide_map_ui.gd" id="1_guide_map_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.878431, 0.823529, 0.619608, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.35, 0.2, 0.1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="GuideMapUI" type="CanvasLayer" unique_id=783274983 groups=["guide_map_ui"]]
+process_mode = 3
+script = ExtResource("1_guide_map_ui")
+
+[node name="ContentUI" type="Control" parent="." unique_id=1030564394]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="ContentUI" unique_id=823090891]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="Panel" parent="ContentUI" unique_id=1616003736]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="TabBar" type="HBoxContainer" parent="ContentUI/Panel" unique_id=776506893]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="BtnGuide" type="Button" parent="ContentUI/Panel/TabBar" unique_id=751261308]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hướng dẫn chơi"
+
+[node name="BtnMap" type="Button" parent="ContentUI/Panel/TabBar" unique_id=1968534868]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bản đồ game"
+
+[node name="BtnMonster" type="Button" parent="ContentUI/Panel/TabBar" unique_id=1572870354]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Danh sách quái"
+
+[node name="Tabs" type="Control" parent="ContentUI/Panel" unique_id=1758903479]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 70.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabGuide" type="Control" parent="ContentUI/Panel/Tabs" unique_id=1955495738]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GuideText" type="RichTextLabel" parent="ContentUI/Panel/Tabs/TabGuide" unique_id=265741483]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "HƯỚNG DẪN CHƠI GAME:
+1. Di chuyển bằng phím WASD hoặc Mũi tên.
+2. Lại gần đồ vật, nhân vật hoặc quái vật và nhấn F để tương tác.
+3. Chạm trán quái vật sẽ kích hoạt trận đấu ngữ pháp/từ vựng. Trả lời đúng để gây sát thương!
+4. Sử dụng Sổ tay (Notebook) để ôn tập.
+5. Xem lại bản đồ và thông tin quái ở tab Bản đồ và Danh sách quái."
+
+[node name="TabMap" type="Control" parent="ContentUI/Panel/Tabs" unique_id=1379650090]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainerMap" type="ScrollContainer" parent="ContentUI/Panel/Tabs/TabMap" unique_id=648812223]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapContainer" type="Control" parent="ContentUI/Panel/Tabs/TabMap/ScrollContainerMap" unique_id=1845155380]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(2000, 2000)
+layout_mode = 2
+
+[node name="MapMonstersContainer" type="Control" parent="ContentUI/Panel/Tabs/TabMap/ScrollContainerMap/MapContainer" unique_id=335073054]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+
+[node name="TabMonster" type="Control" parent="ContentUI/Panel/Tabs" unique_id=1694027344]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="ContentUI/Panel/Tabs/TabMonster" unique_id=1509384743]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="LeftScroll" type="ScrollContainer" parent="ContentUI/Panel/Tabs/TabMonster/HBox" unique_id=1326583993]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="MonsterListContainer" type="VBoxContainer" parent="ContentUI/Panel/Tabs/TabMonster/HBox/LeftScroll" unique_id=1411353971]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RightDetail" type="Control" parent="ContentUI/Panel/Tabs/TabMonster/HBox" unique_id=176496712]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Panel" type="Panel" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail" unique_id=484034866]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel" unique_id=791619254]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MonTierLabel" type="Label" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox" unique_id=266916234]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.4, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "Tier: X"
+
+[node name="HBoxTop" type="HBoxContainer" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox" unique_id=1272409423]
+layout_mode = 2
+
+[node name="MonTexture" type="TextureRect" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox/HBoxTop" unique_id=1204528060]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MonNameLabel" type="Label" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox/HBoxTop" unique_id=1688193484]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Tên quái vật"
+vertical_alignment = 1
+
+[node name="MonStoryLabel" type="Label" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox" unique_id=442746651]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cốt truyện..."
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox" unique_id=1793811989]
+layout_mode = 2
+
+[node name="MonLearningLabel" type="Label" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/Panel/VBox" unique_id=202900404]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Nội dung học tập..."
+autowrap_mode = 3
+
+[node name="MonLockedOverlay" type="ColorRect" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail" unique_id=1046363471]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="LockIcon" type="Label" parent="ContentUI/Panel/Tabs/TabMonster/HBox/RightDetail/MonLockedOverlay" unique_id=4191580]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "🔒"
+
+[node name="CloseButton" type="Button" parent="." unique_id=1277701202]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 50.0
+grow_horizontal = 0
+text = "X"

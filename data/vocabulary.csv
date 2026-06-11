@@ -1,0 +1,176 @@
+﻿word,meaning,tier_id,cefr_level
+timber,Gỗ rừng / Cây lấy gỗ,1,A1
+canopy,Vòm lá / Tán cây rừng,1,A1
+flora,Hệ thực vật,1,A1
+fauna,Hệ động vật,1,A1
+moss,Rêu rừng,1,A1
+creek,Dòng suối nhỏ,1,A1
+foliage,Tán lá / Bộ lá,1,A1
+wilderness,Vùng hoang dã,1,A1
+sprout,Mầm cây / Nảy mầm,1,A1
+bough,Cành cây lớn,1,A1
+thicket,Bụi rậm / Lùm cây hoang,1,A1
+woodland,Vùng đất rừng / Miền rừng,1,A1
+rustle,Tiếng xào xạc của lá,1,A1
+brook,Con suối nhỏ,1,A1
+fern,Cây dương xỉ,1,A1
+acorn,Quả sồi,1,A1
+bark,Vỏ cây,1,A1
+branch,Cành cây,1,A1
+meadow,Đồng cỏ,1,A1
+mushroom,Cây nấm,1,A1
+owl,Con cú,1,A1
+path,Đường mòn,1,A1
+pine,Cây thông,1,A1
+root,Rễ cây,1,A1
+swamp,Đầm lầy,1,A1
+lantern,Đèn lồng / Đèn xách tay,2,A2
+backpack,Balo hành lý,2,A2
+compass,La bàn chỉ hướng,2,A2
+hatchet,Rìu nhỏ cầm tay,2,A2
+campfire,Lửa trại,2,A2
+tinder,Bùi nhùi nhóm lửa,2,A2
+flask,Bình nước giữ nhiệt / Bình vát,2,A2
+utility,Vật dụng tiện ích / Đa năng,2,A2
+rope,Dây thừng bền,2,A2
+pocketknife,Dao gấp bỏ túi,2,A2
+hammock,Cái võng ngủ,2,A2
+tarp,Bạt che mưa / Bạt cắm trại,2,A2
+canteen,Bình toong đựng nước,2,A2
+matches,Diêm nhóm lửa,2,A2
+whistle,Còi cứu hộ / Còi báo hiệu,2,A2
+axe,Cái rìu,2,A2
+boots,Giày bốt / Giày leo núi,2,A2
+gear,Trang thiết bị / Đồ dùng,2,A2
+hike,Đi bộ đường dài,2,A2
+insect,Côn trùng,2,A2
+map,Bản đồ,2,A2
+sleeping_bag,Túi ngủ,2,A2
+stove,Bếp lò,2,A2
+tent,Lều trại,2,A2
+torch,Đuốc,2,A2
+blizzard,Trận bão tuyết,3,B1
+shelter,Nơi trú ẩn / Chỗ che mưa nắng,3,B1
+frostbite,Bỏng lạnh / Bị tê cóng,3,B1
+humidity,Độ ẩm không khí,3,B1
+forecast,Dự báo thời tiết,3,B1
+gale,Cơn gió mạnh / Gió bão,3,B1
+avalanche,Trận lở tuyết,3,B1
+drench,Làm ướt sũng,3,B1
+temperature,Nhiệt độ cơ thể / Thời tiết,3,B1
+predator,Động vật săn mồi,3,B1
+downpour,Trận mưa rào / Mưa như trút nước,3,B1
+hypothermia,Sự hạ thân nhiệt,3,B1
+terrain,Địa hình / Địa thế,3,B1
+hydration,Sự bù nước / Sự giữ nước,3,B1
+navigation,Sự định hướng / Kỹ năng tìm đường,3,B1
+breeze,Gió nhẹ,3,B1
+climate,Khí hậu,3,B1
+endure,Chịu đựng,3,B1
+fog,Sương mù,3,B1
+hazard,Mối nguy hiểm,3,B1
+lightning,Tia chớp,3,B1
+mist,Sương muối / Sương mù nhẹ,3,B1
+rescue,Giải cứu,3,B1
+storm,Cơn bão,3,B1
+thunder,Sấm sét,3,B1
+castle,Lâu đài,4,B1
+century,Thế kỷ,4,B1
+empire,Đế chế,4,B1
+kingdom,Vương quốc,4,B1
+legend,Truyền thuyết,4,B1
+museum,Bảo tàng,4,B1
+palace,Cung điện,4,B1
+ruin,Tàn tích / Di tích,4,B1
+statue,Tượng,4,B1
+temple,Ngôi đền,4,B1
+fossil,Hóa thạch,4,B1
+ancient,Cổ xưa / Cổ kính,4,B1
+artifact,Cổ vật / Di vật lịch sử,4,B1
+civilization,Nền văn minh,4,B1
+monument,Đài tưởng niệm / Công trình kiến trúc cổ,4,B1
+dynasty,Triều đại,4,B1
+relic,Di tích / Tàn tích còn sót lại,4,B1
+excavation,Sự khai quật khảo cổ,4,B1
+medieval,Thuộc về thời trung cổ,4,B1
+heritage,Di sản văn hóa,4,B1
+inscription,Chữ khắc / Văn bia cổ,4,B1
+tomb,Ngôi mộ / Lăng mộ cổ,4,B1
+sanctuary,Thánh địa / Nơi linh thiêng,4,B1
+archive,Kho lưu trữ lịch sử,4,B1
+hieroglyph,Chữ tượng hình,4,B1
+armor,Bộ áo giáp bảo vệ,5,B2
+blade,Lưỡi kiếm / Lưỡi dao,5,B2
+shield,Cái khiên phòng thủ,5,B2
+archery,Bắn cung / Môn bắn cung,5,B2
+spear,Cây giáo / Cây thương,5,B2
+siege,Sự bao vây / Cuộc vây hãm,5,B2
+arsenal,Kho vũ khí,5,B2
+onslaught,Cuộc tấn công dữ dội,5,B2
+crossbow,Cái nỏ,5,B2
+fortress,Pháo đài kiên cố,5,B2
+gauntlet,Bao tay giáp,5,B2
+dagger,Dao găm,5,B2
+vanguard,Đội tiên phong,5,B2
+cavalry,Kỵ binh / Đội quân cưỡi ngựa,5,B2
+skirmish,Cuộc đụng độ nhỏ / Trận giao tranh ngắn,5,B2
+stalactite,Nhũ đá hang động,6,B2
+cavern,Hang động lớn / Đại địa động,6,B2
+ore,Quặng khoáng sản,6,B2
+crystal,Tinh thể / Pha lê,6,B2
+gemstone,Đá quý,6,B2
+tunnel,Đường hầm xuyên đất,6,B2
+deposit,Mỏ khoáng sản / Lớp trầm tích,6,B2
+mineral,Khoáng chất,6,B2
+subterranean,Dưới lòng đất / Ngầm dưới lòng đất,6,B2
+shaft,Hầm mỏ theo phương thẳng đứng,6,B2
+stalagmite,Măng đá hang động,6,B2
+pickaxe,Cúp khai khoáng / Cuốc chim,6,B2
+stratum,Tầng đất đá / Lớp địa chất,6,B2
+quarry,Mỏ đá / Nơi khai thác đá,6,B2
+abyss,Vực sâu vô tạm,6,B2
+sorcery,Ma thuật / Phép thuật,7,C1
+incantation,Lời thần chú / Câu chú,7,C1
+potion,Thuốc độc / Dược chất ma thuật,7,C1
+spellbook,Sách phép thuật,7,C1
+elixir,Thuốc trường sinh / Thần dược,7,C1
+wizardry,Phép phù thủy,7,C1
+ritual,Nghi lễ ma thuật,7,C1
+amulet,Bùa hộ mệnh,7,C1
+scroll,Cuộn giấy da chứa phép thuật,7,C1
+enchantment,Bùa mê / Sự yểm bùa,7,C1
+cauldron,Vạc nấu thuốc phù thủy,7,C1
+talisman,Bùa chú / Vật hộ thân,7,C1
+mana,Năng lượng ma thuật,7,C1
+runes,Chữ cổ rune / Ký tự phép thuật,7,C1
+transmutation,Sự chuyển hóa vật chất / Thuật giả kim,7,C1
+labyrinth,Mê cung,8,C1
+minotaur,Nhân ngưu / Quái vật đầu bò,8,C1
+maze,Mê lộ / Lạc đường,8,C1
+horn,Sừng,8,C1
+mythology,Thần thoại,8,C1
+bull,Con bò tót,8,C1
+muscular,Cơ bắp,8,C1
+axe,Cây rìu,8,C1
+beast,Quái thú / Dã thú,8,C1
+trap,Cạm bẫy,8,C1
+corridor,Hành lang dài,8,C1
+dead-end,Ngõ cụt,8,C1
+roar,Tiếng gầm,8,C1
+giant,Khổng lồ,8,C1
+darkness,Bóng tối,8,C1
+underworld,Địa ngục / Thế giới ngầm,9,C2
+demon,Ác quỷ,9,C2
+immortal,Bất tử / Trường sinh,9,C2
+catastrophic,Thảm khốc / Mang tính hủy diệt,9,C2
+dominion,Lãnh thổ thống trị / Quyền lực,9,C2
+throne,Ngai vàng,9,C2
+evil,Tà ác,9,C2
+tyrant,Kẻ bạo chúa,9,C2
+reign,Triều đại trị vì / Trị vì,9,C2
+curse,Lời nguyền,9,C2
+doom,Sự diệt vong,9,C2
+hellfire,Lửa địa ngục,9,C2
+soul,Linh hồn,9,C2
+malevolent,Độc ác / Hiểm ác,9,C2
+abyss,Vực thẳm vô tận,9,C2

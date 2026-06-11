@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://c7cch05hiaq57"]
+
+[ext_resource type="Script" uid="uid://bslu4rm6tia1i" path="res://scripts/notebook_ui.gd" id="1_4wsej"]
+[ext_resource type="Texture2D" uid="uid://vifbxit6uybu" path="res://assets/textures/magic book/Open_book.png" id="2_35wx4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_35wx4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ux6k2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35wx4"]
+bg_color = Color(0.01, 0.01, 0.01, 1)
+
+[sub_resource type="Animation" id="Animation_ux6k2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BookBackground:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_3w1dn"]
+resource_name = "open_book"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BookBackground:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4g00e"]
+_data = {
+&"RESET": SubResource("Animation_ux6k2"),
+&"open_book": SubResource("Animation_3w1dn")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3w1dn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4g00e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pjbyc"]
+
+[node name="NotebookUI" type="CanvasLayer" unique_id=2104752377]
+process_mode = 3
+layer = 10
+script = ExtResource("1_4wsej")
+
+[node name="BookBackground" type="Sprite2D" parent="." unique_id=629078689]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(590, 195.00002)
+scale = Vector2(5.5482607, 3.9964738)
+texture = ExtResource("2_35wx4")
+hframes = 4
+vframes = 3
+
+[node name="ContentUI" type="Control" parent="." unique_id=1666331890]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="PanelContainer" parent="ContentUI" unique_id=1580368791]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_35wx4")
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentUI/MainPanel" unique_id=58851529]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="SplitScreen" type="HBoxContainer" parent="ContentUI/MainPanel/MarginContainer" unique_id=50935363]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen" unique_id=494093186]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Title" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1991081607]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.01, 0.01, 0.01, 1)
+theme_override_font_sizes/font_size = 35
+text = "SỔ TAY TỪ VỰNG"
+
+[node name="TabButtons" type="HBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=959390331]
+layout_mode = 2
+
+[node name="BtnVocab" type="Button" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=1679594822]
+layout_mode = 2
+
+[node name="BtnGrammar" type="Button" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=915946831]
+layout_mode = 2
+
+[node name="BtnReview" type="Button" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/TabButtons" unique_id=86893939]
+layout_mode = 2
+
+[node name="FilterBar" type="HBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1175145087]
+layout_mode = 2
+
+[node name="SearchBar" type="LineEdit" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1508344097]
+layout_mode = 2
+
+[node name="TierFilter" type="OptionButton" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=955195420]
+layout_mode = 2
+
+[node name="StatusFilter" type="OptionButton" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/FilterBar" unique_id=1465436097]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=1576780799]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="VocabList" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/ScrollContainer" unique_id=558559941]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer" unique_id=655116889]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 7.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ux6k2")
+
+[node name="DetailPanel" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer" unique_id=442467994]
+layout_mode = 2
+
+[node name="DetWord" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=1138962930]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.116078965, 0.116078965, 0.11607895, 1)
+theme_override_font_sizes/font_size = 32
+
+[node name="DetMeaning" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=666732995]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.01, 0.01, 0.01, 1)
+
+[node name="DetMastery" type="RichTextLabel" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=957129192]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/default_color = Color(0.02, 0.02, 0.02, 1)
+
+[node name="DetStats" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=1928504378]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.04, 0.04, 0.04, 1)
+
+[node name="DetExample" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=765574762]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MasteryBar" type="ProgressBar" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/VBoxContainer/PanelContainer/DetailPanel" unique_id=313132964]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_35wx4")
+
+[node name="GrammarMargin" type="MarginContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen" unique_id=1900637229]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 200
+
+[node name="GrammarContainer" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin" unique_id=762704563]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GrammarTitle" type="Label" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer" unique_id=1649533548]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Grammar"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer" unique_id=1981676276]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GrammarList" type="VBoxContainer" parent="ContentUI/MainPanel/MarginContainer/SplitScreen/GrammarMargin/GrammarContainer/ScrollContainer" unique_id=725171427]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=932042053]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_4g00e")
+
+[node name="CloseButton" type="Button" parent="." unique_id=1310473500]
+unique_name_in_owner = true
+process_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -19.0
+offset_bottom = 42.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.028499972, 0.028499972, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3w1dn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_4g00e")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_pjbyc")
+text = "X"

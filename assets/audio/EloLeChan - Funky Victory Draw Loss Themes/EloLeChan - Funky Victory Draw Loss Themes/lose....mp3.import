@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bk8dhndg3t5sd"
+path="res://.godot/imported/lose....mp3-6646961c85a722b1ec47c13189eb10df.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/EloLeChan - Funky Victory Draw Loss Themes/EloLeChan - Funky Victory Draw Loss Themes/lose....mp3"
+dest_files=["res://.godot/imported/lose....mp3-6646961c85a722b1ec47c13189eb10df.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

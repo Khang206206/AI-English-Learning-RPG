@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bui3tjqhfmca7"]
+
+[ext_resource type="Texture2D" uid="uid://vv5ysjqoeuf0" path="res://assets/textures/Chapter 1/Map.png" id="1_6e84v"]
+
+[node name="Node2D" type="Node2D" unique_id=1984931985]
+
+[node name="Map" type="Sprite2D" parent="." unique_id=1349282611]
+position = Vector2(-1, 0)
+texture = ExtResource("1_6e84v")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=634560294]
+position = Vector2(44, -308)

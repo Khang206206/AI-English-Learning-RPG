@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://bvfapl8qaw16s"]
+
+[ext_resource type="Texture2D" uid="uid://bejgtqd87do3o" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_000.png" id="1_mhixx"]
+[ext_resource type="Texture2D" uid="uid://dycdyv6wvtv2u" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_001.png" id="2_0vgwy"]
+[ext_resource type="Texture2D" uid="uid://dq7m0pg61fgcq" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_002.png" id="3_552d6"]
+[ext_resource type="Texture2D" uid="uid://dju38eol7qcou" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_003.png" id="4_ovbf4"]
+[ext_resource type="Texture2D" uid="uid://bly6xj5xltdee" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_004.png" id="5_7yvuq"]
+[ext_resource type="Texture2D" uid="uid://bo30airq53qau" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_005.png" id="6_kbwqp"]
+[ext_resource type="Texture2D" uid="uid://gwqs1fn3retp" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_006.png" id="7_rt8k7"]
+[ext_resource type="Texture2D" uid="uid://dkw46m4self3" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_007.png" id="8_s5wak"]
+[ext_resource type="Texture2D" uid="uid://jwan5k3vtkro" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_008.png" id="9_8p4rs"]
+[ext_resource type="Texture2D" uid="uid://le7lnnvr5e0n" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_009.png" id="10_pe5xp"]
+[ext_resource type="Texture2D" uid="uid://dgp52g7fpk5pa" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_010.png" id="11_6hrfy"]
+[ext_resource type="Texture2D" uid="uid://dfnpmsxnnwia3" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_011.png" id="12_xkbm8"]
+[ext_resource type="Texture2D" uid="uid://dameq2ujdhoa6" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_012.png" id="13_2jqg1"]
+[ext_resource type="Texture2D" uid="uid://d2t486dcmmtpq" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_013.png" id="14_l4nl7"]
+[ext_resource type="Texture2D" uid="uid://ww0hsdpehejo" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_014.png" id="15_3oi56"]
+[ext_resource type="Texture2D" uid="uid://27i1wvssocqt" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_015.png" id="16_o2m04"]
+[ext_resource type="Texture2D" uid="uid://didta0uk2wdrd" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_016.png" id="17_mu4na"]
+[ext_resource type="Texture2D" uid="uid://rojyh3w4wcjj" path="res://assets/textures/Enemies/Golem/0_Golem_Idle Blinking_017.png" id="18_o8duh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_spqho"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mhixx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0vgwy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_552d6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ovbf4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7yvuq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_kbwqp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_rt8k7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_s5wak")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_8p4rs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pe5xp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_6hrfy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xkbm8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_2jqg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_l4nl7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_3oi56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_o2m04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_mu4na")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_o8duh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mhixx"]
+radius = 23.0
+height = 52.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=49818825]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=82050456]
+position = Vector2(-0.49999857, -30.124996)
+scale = Vector2(0.14777778, 0.11083334)
+sprite_frames = SubResource("SpriteFrames_spqho")
+animation = &"idle"
+autoplay = "idle"
+frame = 11
+frame_progress = 0.38060543
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=547404408]
+position = Vector2(-3, -20)
+shape = SubResource("CapsuleShape2D_mhixx")

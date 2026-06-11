@@ -1,0 +1,19 @@
+topic_name,formula,explanation_vi,example_en,tier_id
+Present Simple,S + V(s/es),"Thì hiện tại đơn: dùng để mô tả thói quen, sự thật hiển nhiên.","The slime attacks every night in the forest.",1
+Articles a/an/the,a/an + N (ít) / the + N (xác định),"Mạo từ: a/an cho danh từ chưa xác định, the cho danh từ đã biết.","A slime appeared. The slime was green.",1
+Past Simple,S + V-ed / V2,"Thì quá khứ đơn: diễn tả hành động đã xảy ra và kết thúc trong quá khứ.","The goblin stole my compass yesterday.",2
+Present Continuous,S + am/is/are + V-ing,"Thì hiện tại tiếp diễn: diễn tả hành động đang xảy ra tại thời điểm nói.","Look! The goblin is lighting a campfire.",2
+Future Simple,S + will + V,"Thì tương lai đơn: diễn tả một quyết định hoặc dự đoán trong tương lai.","The blizzard will freeze you if you do not find shelter.",3
+Comparatives & Superlatives,S + V + adj-er/est,"So sánh hơn và so sánh nhất: dùng để so sánh các đặc điểm của sự vật.","This wolf is stronger than the goblin, but the dragon is the strongest.",3
+Present Perfect,S + have/has + V3/V-ed,"Thì hiện tại hoàn thành: diễn tả hành động bắt đầu trong quá khứ và còn liên quan đến hiện tại.","I have explored this ancient tomb three times.",4
+Gerunds,V-ing làm danh từ,"Danh động từ: động từ thêm đuôi -ing đóng vai trò như một danh từ trong câu.","Excavating the ruins is very dangerous.",4
+Conditional Type 1 & 2,If + S + V / S + will/would + V,"Câu điều kiện 1 và 2: diễn tả điều kiện có thể hoặc không thể xảy ra ở hiện tại.","If you drop your shield, the orc warrior will strike.",5
+Past Continuous,S + was/were + V-ing,"Thì quá khứ tiếp diễn: diễn tả hành động đang xảy ra tại một thời điểm cụ thể trong quá khứ.","The vanguard was marching when the ambush happened.",5
+Passive Voice,S + be + V3/V-ed,"Câu bị động: nhấn mạnh vào đối tượng chịu tác động của hành động.","The rare gemstones were guarded by a giant golem.",6
+Past Perfect,S + had + V3/V-ed,"Thì quá khứ hoàn thành: diễn tả một hành động xảy ra trước một hành động khác trong quá khứ.","The tunnel had collapsed before the miners arrived.",6
+Relative Clauses,N + who/which/that + V,"Mệnh đề quan hệ: dùng để bổ nghĩa cho danh từ đứng trước nó.","The witch who cast the spell has disappeared.",7
+Reported Speech,S + said (that) + S + V (lùi thì),"Câu gián tiếp: dùng để thuật lại lời nói của người khác.","The wizard said that the elixir was ready.",7
+Compound Nouns,Noun + Noun,"Danh từ ghép: hai danh từ kết hợp tạo thành một từ có nghĩa mới.","The minotaur guards the dark labyrinth.",8
+Participles as Adjectives,V-ing / V-ed làm tính từ,"Phân từ làm tính từ: V-ing mang nghĩa chủ động, V-ed mang nghĩa bị động.","The terrifying minotaur roared at the trapped adventurers.",8
+Inversion,Trợ động từ + S + V,"Đảo ngữ: đưa trợ động từ hoặc phó từ lên đầu câu để nhấn mạnh.","Never have I seen such a powerful demon king.",9
+Cleft Sentences,It is/was + ... + that + ...,"Cấu trúc nhấn mạnh: dùng để tập trung sự chú ý vào một phần cụ thể của câu.","It was the demon king who ruled the underworld.",9
