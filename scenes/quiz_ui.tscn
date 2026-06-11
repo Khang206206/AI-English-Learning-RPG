@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bwisenv78tcms"]
 
 [ext_resource type="Script" uid="uid://uk3c75fn0kg" path="res://scripts/quiz_ui.gd" id="1_501xa"]
-[ext_resource type="Texture2D" uid="uid://br7xhmdr3cvdg" path="res://assets/textures/tileset_book/black background.jpg" id="2_4vc25"]
-[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://resources/ui/gui_assets/GuiAssets/fonts/TinyPixie2.ttf" id="4_8dmau"]
+[ext_resource type="Texture2D" uid="uid://dls5uf52avm4s" path="res://assets/textures/BG/cavern/bg_14.png" id="2_topby"]
+[ext_resource type="FontFile" uid="uid://b0fhden5lnkil" path="res://assets/textures/GuiAssets/GuiAssets/fonts/TinyPixie2.ttf" id="4_8dmau"]
 
 [sub_resource type="FontFile" id="FontFile_8dmau"]
 subpixel_positioning = 0
@@ -57,7 +57,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_4vc25")
+texture = ExtResource("2_topby")
 
 [node name="QuestionText" type="Label" parent="." unique_id=1314767701]
 anchors_preset = 10
