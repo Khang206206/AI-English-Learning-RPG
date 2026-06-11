@@ -269,9 +269,29 @@ func search_vocab(keyword: String, limit: int = 30) -> Array:
 	""", [DatabaseManager.CURRENT_SAVE_SLOT, pattern, pattern, limit])
 	return db.query_result.duplicate()
 
-## Lấy tổng số từ vựng trong hệ thống
-func get_total_vocab_count() -> int:
-	db.query("SELECT COUNT(*) AS cnt FROM Vocabulary_Bank;")
+## Lấy tổng số từ vựng trong hệ thống hoặc trong một tier cụ thể.
+func get_total_vocab_count(tier_id: int = 0) -> int:
+	if tier_id > 0:
+		db.query_with_bindings("SELECT COUNT(*) AS cnt FROM Vocabulary_Bank WHERE tier_id = ?;", [tier_id])
+	else:
+		db.query("SELECT COUNT(*) AS cnt FROM Vocabulary_Bank;")
+	if not db.query_result.is_empty():
+		return db.query_result[0].get("cnt", 0)
+	return 0
+
+## Lấy số từ người chơi đã gặp trong hệ thống hoặc trong một tier cụ thể.
+func get_encountered_vocab_count(tier_id: int = 0) -> int:
+	var sql := """
+		SELECT COUNT(*) AS cnt
+		FROM Vocabulary_Bank v
+		JOIN Player_Vocab_Mastery m ON v.word_id = m.word_id
+		WHERE m.save_id = ? AND m.encounter_count > 0
+	"""
+	var bindings: Array = [DatabaseManager.CURRENT_SAVE_SLOT]
+	if tier_id > 0:
+		sql += " AND v.tier_id = ?"
+		bindings.append(tier_id)
+	db.query_with_bindings(sql, bindings)
 	if not db.query_result.is_empty():
 		return db.query_result[0].get("cnt", 0)
 	return 0

@@ -86,6 +86,7 @@ Nếu thiếu các file hoặc thư mục trên, game có thể không mở đư
 
 - Vàng khởi đầu của save mới là `0`.
 - Cheat thắng trận bằng phím `E` đã bị vô hiệu hoá.
+- Tắt bypass tier cheat cho cơ chế chặn quái.
 - Save runtime được lưu tại `user://data.db`.
 - Database seed được copy từ `res://data/data.db` trong lần chạy đầu.
 - SQLite GDExtension phải được phát hành kèm bản build.

@@ -9,7 +9,7 @@ extends Area2D
 @export_group("Battle Settings")
 @export_file("*.tscn") var battle_scene_path: String
 @export var monster_data: MonsterData
-@export var bypass_tier_check: bool = false # Biến dùng cho tester/dev để test quái mà không cần cày cuốc
+@export var bypass_tier_check: bool = false # Chỉ giữ để tương thích scene cũ; release không dùng bypass tier.
 @export var enemy_id: int = 0 # ID duy nhất để lưu tiến trình tiêu diệt quái
 
 @export_group("Dialogue Settings")
@@ -91,7 +91,7 @@ func _ready():
 	body_exited.connect(_on_body_exited)
 
 func _is_battle_locked_by_mastery() -> bool:
-	if object_type != "Battle" or monster_data == null or bypass_tier_check:
+	if object_type != "Battle" or monster_data == null:
 		return false
 	return not ProgressManager.can_access_tier(monster_data.tier_id)
 
@@ -165,8 +165,7 @@ func _handle_battle_action():
 	if monster_data:
 		var required_tier = monster_data.tier_id
 		
-		# Bỏ qua kiểm tra tier nếu biến bypass_tier_check = true
-		if required_tier > 1 and not bypass_tier_check:
+		if required_tier > 1:
 			var prev_tier_mastery = ProgressManager.get_tier_avg_mastery(required_tier - 1)
 			var required_mastery = ProgressManager.get_tier_unlock_threshold()
 			if prev_tier_mastery < required_mastery:

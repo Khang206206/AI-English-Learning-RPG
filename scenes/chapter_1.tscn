@@ -10452,7 +10452,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("16_ct7bd")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 1
 
 [node name="CollisionShape2D" parent="SlimeInteract" index="0" unique_id=865465090]
@@ -10473,7 +10473,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("17_samt2")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 2
 
 [node name="CollisionShape2D" parent="GoblinInteract" index="0" unique_id=865465090]
@@ -10492,7 +10492,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_wolf")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 3
 
 [node name="CollisionShape2D" parent="WolfInteract" index="0" unique_id=865465090]
@@ -10514,7 +10514,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_skeleton")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 4
 
 [node name="CollisionShape2D" parent="SkeletonInteract" index="0" unique_id=865465090]
@@ -10533,7 +10533,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_orc")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 5
 
 [node name="CollisionShape2D" parent="OrcInteract" index="0" unique_id=865465090]
@@ -10552,7 +10552,7 @@ position = Vector2(-366, 525)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_golem")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 6
 
 [node name="CollisionShape2D" parent="GolemInteract" index="0" unique_id=865465090]
@@ -10573,7 +10573,7 @@ priority = 7
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_witch")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 7
 
 [node name="CollisionShape2D" parent="WitchInteract" index="0" unique_id=865465090]
@@ -10592,7 +10592,7 @@ position = Vector2(-361, -96)
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_minotaur")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 8
 
 [node name="CollisionShape2D" parent="MinotaurInteract" index="0" unique_id=865465090]
@@ -10613,7 +10613,7 @@ priority = 9
 object_type = "Battle"
 battle_scene_path = "uid://bwhhjevm2e65s"
 monster_data = ExtResource("res_demon_king")
-bypass_tier_check = true
+bypass_tier_check = false
 enemy_id = 9
 
 [node name="CollisionShape2D" parent="DemonKingInteract" index="0" unique_id=865465090]

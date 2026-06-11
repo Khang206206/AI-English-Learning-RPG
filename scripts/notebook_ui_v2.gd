@@ -603,8 +603,16 @@ func _refresh_vocab_list(query: String) -> void:
 		v["status_str"] = status_str
 		filtered_list.append(v)
 
-	var total_words = progress_manager.get_total_vocab_count() if progress_manager.has_method("get_total_vocab_count") else raw_list.size()
-	var base_text = "Từ tìm thấy: %d/%d" % [filtered_list.size(), total_words]
+	var total_words := raw_list.size()
+	var encountered_words := filtered_list.size()
+	if progress_manager.has_method("get_total_vocab_count"):
+		total_words = progress_manager.get_total_vocab_count(tier_idx)
+	if progress_manager.has_method("get_encountered_vocab_count"):
+		encountered_words = progress_manager.get_encountered_vocab_count(tier_idx)
+
+	var base_text := "Từ đã gặp: %d/%d" % [encountered_words, total_words]
+	if tier_idx > 0:
+		base_text = "Tier %d  |  %s" % [tier_idx, base_text]
 	
 	var mastery_text = ""
 	if progress_manager.has_method("get_tier_avg_mastery") and progress_manager.has_method("get_global_avg_mastery"):
