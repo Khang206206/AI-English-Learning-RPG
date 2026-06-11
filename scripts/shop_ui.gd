@@ -182,7 +182,7 @@ func _get_spell_list() -> Array:
 		"Hỏa Cầu": "res://resources/items/fire.tres",
 		"Băng Tiễn": "res://resources/items/ice.tres",
 		"Sét Đánh": "res://resources/items/electric.tres",
-		"Gỗ Xưa": "res://resources/items/wood.tres",
+		"Gỗ Xưa": "res://resources/items/wood1.tres",
 	}
 	
 	for row in DatabaseManager.db.query_result:

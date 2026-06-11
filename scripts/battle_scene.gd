@@ -522,6 +522,7 @@ func check_answer(selected_choice: String):
 						var ice = ICE_EFFECT_SCENE.instantiate()
 						get_node("Node2D").add_child(ice)
 						ice.global_position = monster_anim.global_position
+						ice.play("freeze")
 						current_ice_instance = ice
 				else:
 					is_monster_frozen = false

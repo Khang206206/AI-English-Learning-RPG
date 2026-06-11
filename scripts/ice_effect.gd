@@ -4,7 +4,7 @@ func _ready() -> void:
 	animation_finished.connect(_on_animation_finished)
 	play("starting")
 
-func _on_animation_finished() -> void:
-	if animation == "starting":
-		stop()
+func _on_animation_finished(anim_name: String) -> void:
+	if anim_name == "starting":
+		play("ending")
 		print("[IceEffect] Khối băng đông cứng, quái bị giam cầm!")
